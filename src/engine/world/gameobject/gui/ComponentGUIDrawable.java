@@ -1,5 +1,10 @@
 package engine.world.gameobject.gui;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.gameobject.Component;
 import engine.world.gameobject.Drawable;
@@ -62,6 +67,13 @@ public class ComponentGUIDrawable extends Component implements Drawable {
 	public Vec2d getSize() {
 		return this.getObject().getSystem().getWorld().getViewport()
 				.toGameSpace(screenSize, true);
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+
+		Element componentGUIDrawable = doc.createElement("ComponentGUIDrawable");
+		return componentGUIDrawable;
 	}
 
 }

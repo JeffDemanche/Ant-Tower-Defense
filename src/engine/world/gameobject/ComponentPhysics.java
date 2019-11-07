@@ -1,6 +1,12 @@
 package engine.world.gameobject;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
+import engine.world.serialization.XMLEngine;
 import javafx.scene.canvas.GraphicsContext;
 
 public class ComponentPhysics extends Component {
@@ -21,7 +27,7 @@ public class ComponentPhysics extends Component {
 	private Vec2d gravity;
 
 	private ComponentPhysicsCollider collider;
-	
+
 	private Vec2d lastMTV;
 
 	public ComponentPhysics(GameObject object, Drawable drawable,
@@ -42,8 +48,26 @@ public class ComponentPhysics extends Component {
 		this.collider = collider;
 
 		this.gravity = gravity;
-		
+
 		this.lastMTV = null;
+	}
+
+	public ComponentPhysics(GameObject object, Drawable drawable,
+			ComponentPhysicsCollider collider, Element element) {
+		super("Physics", object);
+
+		this.mass = Double.parseDouble(element.getAttribute("mass"));
+		this.restitution = Double
+				.parseDouble(element.getAttribute("restitution"));
+		this.stationary = Boolean
+				.parseBoolean(element.getAttribute("stationary"));
+		this.drawable = drawable;
+		this.velocity = XMLEngine.readVec2d(element.getAttribute("velocity"));
+		this.impulse = XMLEngine.readVec2d(element.getAttribute("impulse"));
+		this.force = XMLEngine.readVec2d(element.getAttribute("force"));
+		this.collider = collider;
+		this.gravity = XMLEngine.readVec2d(element.getAttribute("gravity"));
+		this.lastMTV = XMLEngine.readVec2d(element.getAttribute("lastMTV"));
 	}
 
 	/**
@@ -54,21 +78,23 @@ public class ComponentPhysics extends Component {
 	 */
 	public void recieveCollision(Vec2d mtv, ComponentPhysics otherObject) {
 		this.lastMTV = mtv;
-		
+
 		if (!stationary) {
 			if (mtv != null) {
 				drawable.adjustPosition(mtv.reflect());
-				// System.out.println("here");
 				double COR = Math
 						.sqrt(this.restitution * otherObject.restitution);
 
 				double u_a = this.velocity.dot(mtv.normalize());
-				// TODO Should mtv be reflected?
 				double u_b = otherObject.velocity
 						.dot(mtv.normalize().reflect());
 
 				double I_a = ((this.mass * otherObject.mass * (1 + COR))
 						/ (this.mass + otherObject.mass)) * (u_b - u_a);
+
+				if (otherObject.stationary) {
+					I_a = -this.mass * (1 + COR) * (u_a - u_b);
+				}
 
 				Vec2d impulse = mtv.smult(I_a);
 				if (!(Double.isNaN(impulse.x) || Double.isNaN(impulse.y)))
@@ -76,7 +102,11 @@ public class ComponentPhysics extends Component {
 			}
 		}
 	}
-	
+
+	public boolean isStationary() {
+		return this.stationary;
+	}
+
 	public void jumpIfOnGround(double impulse) {
 		if (Math.abs(velocity.y) < 5) {
 			this.applyImpulse(new Vec2d(0, -impulse));
@@ -102,7 +132,7 @@ public class ComponentPhysics extends Component {
 		double seconds = nanosSincePreviousTick / 1000000000D;
 		if (seconds > 1)
 			return;
-		
+
 		this.force = gravity;
 
 		this.velocity = this.velocity.plus(force.sdiv((float) mass)
@@ -115,6 +145,23 @@ public class ComponentPhysics extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentPhysics = doc.createElement("ComponentPhysics");
+		componentPhysics.setAttribute("stationary",
+				new Boolean(stationary).toString());
+		componentPhysics.setAttribute("mass", new Double(mass).toString());
+		componentPhysics.setAttribute("restitution",
+				new Double(restitution).toString());
+		componentPhysics.setAttribute("velocity",
+				XMLEngine.writeVec2d(velocity));
+		componentPhysics.setAttribute("impulse", XMLEngine.writeVec2d(impulse));
+		componentPhysics.setAttribute("force", XMLEngine.writeVec2d(force));
+		componentPhysics.setAttribute("gravity", XMLEngine.writeVec2d(gravity));
+		componentPhysics.setAttribute("lastMTV", XMLEngine.writeVec2d(lastMTV));
+		return componentPhysics;
 	}
 
 }

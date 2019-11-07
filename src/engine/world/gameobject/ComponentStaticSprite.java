@@ -2,6 +2,11 @@ package engine.world.gameobject;
 
 import java.util.HashMap;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.WorldError;
 import javafx.scene.canvas.GraphicsContext;
@@ -69,7 +74,7 @@ public class ComponentStaticSprite extends Component {
 	public void setCurrentImage(String path) {
 		this.currentPath = path;
 	}
-	
+
 	public void setFlip(boolean x, boolean y) {
 		this.flipX = x;
 		this.flipY = y;
@@ -79,7 +84,7 @@ public class ComponentStaticSprite extends Component {
 	public void onDraw(GraphicsContext g) {
 		Vec2d screenPos = this.drawable.getScreenPosition();
 		Vec2d screenSize = this.drawable.getScreenSize();
-		
+
 		if (!flipX && !flipY) {
 			g.drawImage(this.spriteImages.get(currentPath), screenPos.x,
 					screenPos.y, screenSize.x * this.scale.x,
@@ -93,9 +98,9 @@ public class ComponentStaticSprite extends Component {
 					screenPos.x + screenSize.x, screenPos.y,
 					-screenSize.x * this.scale.x, screenSize.y * this.scale.y);
 		} else if (flipY) {
-			g.drawImage(this.spriteImages.get(currentPath),
-					screenPos.x, screenPos.y + screenSize.y,
-					screenSize.x * this.scale.x, -screenSize.y * this.scale.y);
+			g.drawImage(this.spriteImages.get(currentPath), screenPos.x,
+					screenPos.y + screenSize.y, screenSize.x * this.scale.x,
+					-screenSize.y * this.scale.y);
 		}
 	}
 
@@ -105,6 +110,13 @@ public class ComponentStaticSprite extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentStaticSprite = doc
+				.createElement("ComponentStaticSprite");
+		return componentStaticSprite;
 	}
 
 }

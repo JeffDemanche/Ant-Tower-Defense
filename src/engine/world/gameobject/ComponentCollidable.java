@@ -2,6 +2,11 @@ package engine.world.gameobject;
 
 import java.util.ArrayList;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import engine.world.WorldError;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -30,7 +35,7 @@ public class ComponentCollidable extends Component {
 		}
 		this.collisions.add(object);
 	}
-	
+
 	protected CollisionHandler getCollisionHandler() {
 		return this.handler;
 	}
@@ -52,6 +57,12 @@ public class ComponentCollidable extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentCollidable = doc.createElement("ComponentCollidable");
+		return componentCollidable;
 	}
 
 }

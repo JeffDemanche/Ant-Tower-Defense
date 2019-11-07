@@ -1,6 +1,7 @@
 package engine.world;
 
 import application.Vec2d;
+import engine.world.serialization.XMLSerializable;
 import javafx.geometry.Point2D;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
@@ -11,8 +12,10 @@ import javafx.scene.transform.NonInvertibleTransformException;
  * 
  * @author jdemanch
  */
-public abstract class Viewport {
-
+public abstract class Viewport implements XMLSerializable {
+	
+	private static final long serialVersionUID = -827468599778090378L;
+	
 	private double initialScale;
 	private double scale;
 
@@ -41,6 +44,10 @@ public abstract class Viewport {
 		this.centerPosX = 0;
 		this.centerPosY = 0;
 		this.zoomSpeed = zoomSpeed;
+	}
+	
+	public Vec2d getScreenSize() {
+		return this.screenSize;
 	}
 	
 	public void onResize(Vec2d newSize) {

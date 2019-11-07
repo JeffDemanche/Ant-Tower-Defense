@@ -1,5 +1,10 @@
 package engine.world.gameobject.gui;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.gameobject.Component;
 import engine.world.gameobject.GameObject;
@@ -25,11 +30,11 @@ public class ComponentGUITextRenderer extends Component {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
 	public void setScreenPos(Vec2d screenPos) {
 		this.screenPos = screenPos;
 	}
-	
+
 	@Override
 	public void onDraw(GraphicsContext g) {
 		g.setFont(this.font);
@@ -43,6 +48,14 @@ public class ComponentGUITextRenderer extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+
+		Element componentGUITextRenderer = doc
+				.createElement("ComponentGUITextRenderer");
+		return componentGUITextRenderer;
 	}
 
 }

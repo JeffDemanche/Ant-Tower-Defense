@@ -1,5 +1,6 @@
 package engine.world.gameobject;
 
+import engine.world.serialization.XMLSerializable;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -8,7 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
  * 
  * @author jdemanch
  */
-public abstract class Component {
+public abstract class Component implements XMLSerializable {
 
 	private String tag;
 	private GameObject object;

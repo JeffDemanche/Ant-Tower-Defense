@@ -1,5 +1,10 @@
 package engine.world.gameobject;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -73,6 +78,12 @@ public class ComponentNavigable extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentNavigable = doc.createElement("ComponentNavigable");
+		return componentNavigable;
 	}
 
 }

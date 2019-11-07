@@ -1,7 +1,13 @@
 package engine.world.gameobject;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.WorldError;
+import engine.world.serialization.XMLEngine;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -13,10 +19,7 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 
 	private Vec2d position;
 	private Vec2d size;
-
-	private Vec2d impulse;
-	private double impulseSpeed;
-
+	
 	/**
 	 * Legacy constructor
 	 */
@@ -30,9 +33,11 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 		super("AABB", object);
 		this.setPosition(initialPos);
 		this.setSize(initialSize);
+	}
 
-		this.impulse = new Vec2d(0, 0);
-		this.impulseSpeed = 0;
+	public ComponentAABB(GameObject object, Element element) {
+		this(object, XMLEngine.readVec2d(element.getAttribute("position")),
+				XMLEngine.readVec2d(element.getAttribute("size")));
 	}
 
 	public void setPosition(Vec2d newPosition) {
@@ -48,8 +53,7 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 	}
 
 	public void impulse(Vec2d vector, double speed) {
-		this.impulse = vector;
-		this.impulseSpeed = speed;
+
 	}
 
 	public Vec2d getGamePosition() {
@@ -113,20 +117,6 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		if (impulse.mag() > 0) {
-			double componentX = impulse.x - (impulse.x / (1
-					+ impulseSpeed * (nanosSincePreviousTick / 1000000000D)));
-			double componentY = impulse.y - (impulse.y / (1
-					+ impulseSpeed * (nanosSincePreviousTick / 1000000000D)));
-
-			if (Math.abs(impulse.x) < 10E-4 && Math.abs(impulse.y) < 10E-4) {
-				this.adjustPosition(impulse);
-				impulse = new Vec2d(0);
-			} else {
-				this.adjustPosition(new Vec2d(componentX, componentY));
-				impulse = impulse.minus(new Vec2d(componentX, componentY));
-			}
-		}
 	}
 
 	@Override
@@ -179,7 +169,7 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 		ComponentCircle circleCollider = (ComponentCircle) collider;
 		return Collisions.mtvAABBtoCircle(this, circleCollider);
 	}
-	
+
 	@Override
 	public boolean collidesPolygon(Collidable collider) {
 		return collidesPolygonMTV(collider) != null;
@@ -202,6 +192,14 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 	@Override
 	public Vec2d getPosition() {
 		return this.position;
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentAABB = doc.createElement("ComponentAABB");
+		componentAABB.setAttribute("position", XMLEngine.writeVec2d(this.position));
+		componentAABB.setAttribute("size", XMLEngine.writeVec2d(this.size));
+		return componentAABB;
 	}
 
 }

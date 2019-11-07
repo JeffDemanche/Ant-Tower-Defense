@@ -1,7 +1,13 @@
 package engine.world.gameobject;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.WorldError;
+import engine.world.serialization.XMLEngine;
 import javafx.scene.canvas.GraphicsContext;
 
 public class ComponentPolygon extends Component
@@ -16,6 +22,14 @@ public class ComponentPolygon extends Component
 		super("Polygon", object);
 
 		this.setPosition(initialPos);
+		setPoints(points);
+	}
+
+	public ComponentPolygon(GameObject object, Element element,
+			Vec2d... points) {
+		super("Polygon", object);
+
+		this.setPosition(XMLEngine.readVec2d(element.getAttribute("position")));
 		setPoints(points);
 	}
 
@@ -132,7 +146,8 @@ public class ComponentPolygon extends Component
 
 	@Override
 	public boolean collidesAABB(Collidable collider) {
-		return collidesAABBMTV(collider) != null;
+		Vec2d c = collidesAABBMTV(collider);
+		return c != null;
 	}
 
 	@Override
@@ -185,6 +200,14 @@ public class ComponentPolygon extends Component
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentPolygon = doc.createElement("ComponentPolygon");
+		componentPolygon.setAttribute("position",
+				XMLEngine.writeVec2d(position));
+		return componentPolygon;
 	}
 
 }

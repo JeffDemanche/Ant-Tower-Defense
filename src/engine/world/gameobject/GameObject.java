@@ -5,6 +5,7 @@ import java.util.Set;
 
 import application.Vec2d;
 import engine.world.GameSystem;
+import engine.world.serialization.XMLSerializable;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -13,8 +14,9 @@ import javafx.scene.canvas.GraphicsContext;
  * 
  * @author jdemanch
  */
-public abstract class GameObject {
-
+public abstract class GameObject implements XMLSerializable {
+	private static final long serialVersionUID = 1251709126205968971L;
+	
 	private String name;
 	private ArrayList<Component> components;
 	private GameSystem system;

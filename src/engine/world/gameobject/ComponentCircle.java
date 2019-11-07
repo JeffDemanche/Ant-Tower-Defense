@@ -1,7 +1,13 @@
 package engine.world.gameobject;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.WorldError;
+import engine.world.serialization.XMLEngine;
 import javafx.scene.canvas.GraphicsContext;
 
 public class ComponentCircle extends Component implements Collidable, Drawable {
@@ -11,11 +17,17 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 
 	public ComponentCircle(String tag, GameObject object, Vec2d initialPos,
 			double initialRadius) {
-		super(tag, object);
+		super("Cicle", object);
 		this.position = initialPos;
 		this.radius = initialRadius;
 	}
 
+	public ComponentCircle(GameObject object, Element element) {
+		super("Circle", object);
+		this.position = XMLEngine.readVec2d(element.getAttribute("position"));
+		this.radius = Double.parseDouble(element.getAttribute("radius"));
+	}
+	
 	@Override
 	public void onDraw(GraphicsContext g) {
 	}
@@ -144,6 +156,14 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 	@Override
 	public Vec2d getSize() {
 		return new Vec2d(this.radius);
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentCircle = doc.createElement("ComponentCircle");
+		componentCircle.setAttribute("position", XMLEngine.writeVec2d(this.position));
+		componentCircle.setAttribute("radius", new Double(this.radius).toString());
+		return componentCircle;
 	}
 	
 }

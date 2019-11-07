@@ -15,7 +15,7 @@ public class UIScreen extends UIElement {
 	@Override
 	public void onMouseMoved(MouseEvent e) {
 		super.onMouseMoved(e);
-
+		
 		this.getAllChildren().forEach(child -> {
 			if (inBox(child.getAbsoutePosition(), child.getSize(),
 					new Vec2d(e.getSceneX(), e.getSceneY()))) {

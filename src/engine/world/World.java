@@ -5,19 +5,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 import application.Vec2d;
+import engine.world.gameobject.ComponentAABB;
 import engine.world.gameobject.ComponentActiveCollider;
+import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.ComponentPhysics;
 import engine.world.gameobject.ComponentPhysicsCollider;
+import engine.world.gameobject.ComponentPolygon;
 import engine.world.gameobject.Drawable;
 import engine.world.gameobject.EventHandler;
 import engine.world.gameobject.GameObject;
+import engine.world.gameobject.Ray;
+import engine.world.gameobject.Raycast;
+import engine.world.serialization.XMLSerializable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
-public abstract class World {
+public abstract class World implements XMLSerializable {
 
 	private Viewport worldViewport;
 	private ArrayList<GameSystem> systems;
@@ -131,6 +137,51 @@ public abstract class World {
 		return this.coordinateSystem;
 	}
 
+	public class RaycastCollision {
+		public final Vec2d collisionPoint;
+		public final GameObject collidedWith;
+
+		public RaycastCollision(Vec2d collisionPoint, GameObject collidedWith) {
+			this.collisionPoint = collisionPoint;
+			this.collidedWith = collidedWith;
+		}
+	}
+
+	public RaycastCollision raycast(Ray ray) {
+		double minT = Double.MAX_VALUE;
+		GameObject collidedWith = null;
+		for (GameObject physicsCollider : this.getPhysicsColliders(null)) {
+			ComponentAABB aabb = (ComponentAABB) physicsCollider
+					.getComponent("AABB");
+			ComponentCircle circle = (ComponentCircle) physicsCollider
+					.getComponent("Circle");
+			ComponentPolygon polygon = (ComponentPolygon) physicsCollider
+					.getComponent("Polygon");
+
+			if (aabb != null) {
+				double t = Raycast.raycast(aabb, ray);
+				if (t < minT && t > 0) {
+					minT = t;
+					collidedWith = aabb.getObject();
+				}
+			} else if (circle != null) {
+				double t = Raycast.raycast(circle, ray);
+				if (t < minT && t > 0) {
+					minT = t;
+					collidedWith = circle.getObject();
+				}
+			} else if (polygon != null) {
+				double t = Raycast.raycast(polygon, ray);
+				if (t < minT && t > 0) {
+					minT = t;
+					collidedWith = polygon.getObject();
+				}
+			}
+		}
+		return new RaycastCollision(
+				ray.src.plus(ray.dir.normalize().smult(minT)), collidedWith);
+	}
+
 	public void onTick(long nanosSincePreviousTick) {
 		// Active and passive collisions with layers are handled centrally.
 		for (GameObject activeCollider : this.getActiveColliders()) {
@@ -161,17 +212,13 @@ public abstract class World {
 
 				Vec2d mtvPhysics = physicsCollider.getCollider()
 						.collidesMTV(otherCollider.getCollider());
-				Vec2d mtvOther = mtvPhysics == null ? null : mtvPhysics.reflect();//otherCollider.getCollider()
-						//.collidesMTV(physicsCollider.getCollider());
 
-				((ComponentPhysicsCollider) physicsCollider
-						.getComponent("Physics Collider")).onCollide(mtvPhysics,
-								(ComponentPhysics) otherCollider
-										.getComponent("Physics"));
-				((ComponentPhysicsCollider) otherCollider
-						.getComponent("Physics Collider")).onCollide(mtvOther,
-								(ComponentPhysics) physicsCollider
-										.getComponent("Physics"));
+				if (mtvPhysics != null && mtvPhysics.mag() != 0) {
+					((ComponentPhysicsCollider) physicsCollider
+							.getComponent("Physics Collider")).onCollide(
+									mtvPhysics, (ComponentPhysics) otherCollider
+											.getComponent("Physics"));
+				}
 			}
 		}
 
@@ -269,5 +316,9 @@ public abstract class World {
 
 	public void onStartup() {
 		this.systems.forEach(system -> system.onStartup());
+	}
+
+	public void onWorldLoaded() {
+		this.systems.forEach(system -> system.onWorldLoaded());
 	}
 }

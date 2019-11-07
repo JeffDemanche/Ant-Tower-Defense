@@ -1,7 +1,5 @@
 package engine.world.gameobject;
 
-import com.sun.javafx.geom.Vec2f;
-
 import application.Vec2d;
 
 /**
@@ -225,9 +223,9 @@ public final class Collisions {
 				* circle.getRadius();
 	}
 
-	public static Vec2d mtvPointToCircle(ComponentCircle s1, Vec2f s2) {
-		Vec2d centerToPoint = new Vec2d(s2.x - s1.getPosition().x,
-				s2.y - s1.getPosition().y);
+	public static Vec2d mtvPointToCircle(ComponentCircle s1, Vec2d s2) {
+		Vec2d centerToPoint = new Vec2d(s2.x - s1.getGamePosition().x,
+				s2.y - s1.getGamePosition().y);
 		double cLength = centerToPoint.mag();
 		double toEdge = s1.getRadius() - cLength;
 		Vec2d pointToEdge = centerToPoint.normalize().smult(toEdge);

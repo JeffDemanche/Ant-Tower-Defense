@@ -1,6 +1,7 @@
 package engine.ui;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import application.Vec2d;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,11 +18,11 @@ import javafx.scene.input.ScrollEvent;
 public abstract class UIElement {
 
 	private UIElement parent;
-	private ArrayList<UIElement> children;
+	private CopyOnWriteArrayList<UIElement> children;
 
 	private Vec2d position;
 	private Vec2d size;
-	
+
 	private boolean mouseOver;
 
 	public UIElement() {
@@ -29,7 +30,7 @@ public abstract class UIElement {
 	}
 
 	public UIElement(Vec2d position, Vec2d size) {
-		this.children = new ArrayList<UIElement>();
+		this.children = new CopyOnWriteArrayList<UIElement>();
 		this.position = position;
 		this.size = size;
 		this.mouseOver = false;
@@ -54,7 +55,7 @@ public abstract class UIElement {
 				&& location.y >= boxPosition.y
 				&& location.y <= boxPosition.y + boxSize.y;
 	}
-	
+
 	protected void setMouseOver(boolean mouseOver) {
 		this.mouseOver = mouseOver;
 	}
@@ -73,12 +74,17 @@ public abstract class UIElement {
 		this.children.add(child);
 	}
 
+	public void remove(UIElement child) {
+		child.setParent(null);
+		this.children.remove(child);
+	}
+
 	/**
 	 * Gets the immediate descendants of this parent element.
 	 * 
 	 * @return An array list of children (empty if there are none).
 	 */
-	public ArrayList<UIElement> getChildren() {
+	public CopyOnWriteArrayList<UIElement> getChildren() {
 		return children;
 	}
 
@@ -154,7 +160,7 @@ public abstract class UIElement {
 	public void setParent(UIElement parent) {
 		this.parent = parent;
 	}
-	
+
 	public boolean isMouseOver() {
 		return this.mouseOver;
 	}

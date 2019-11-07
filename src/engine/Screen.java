@@ -36,6 +36,10 @@ public abstract class Screen {
 			e.printStackTrace();
 		}
 	}
+	
+	public void remove(UIElement element) {
+		this.uiScreen.remove(element);
+	}
 
 	public Vec2d getCurrentSize() {
 		return this.currentSize;

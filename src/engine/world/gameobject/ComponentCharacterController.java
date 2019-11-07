@@ -2,6 +2,11 @@ package engine.world.gameobject;
 
 import java.util.HashSet;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.gameobject.EventHandler.KeyListener;
 import javafx.scene.canvas.GraphicsContext;
@@ -188,6 +193,13 @@ public class ComponentCharacterController extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentCharacterController = doc
+				.createElement("ComponentCharacterController");
+		return componentCharacterController;
 	}
 
 }

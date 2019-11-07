@@ -1,5 +1,10 @@
 package engine.world.gameobject;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import engine.world.gameobject.behavior.BehaviorNode;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -10,12 +15,18 @@ import javafx.scene.canvas.GraphicsContext;
  * @author jdemanch
  */
 public class ComponentAIBehaviorTree extends Component {
-	
+
 	private BehaviorNode rootBehavior;
 
-	public ComponentAIBehaviorTree(GameObject object, BehaviorNode rootBehavior) {
+	public ComponentAIBehaviorTree(GameObject object,
+			BehaviorNode rootBehavior) {
 		super("AI", object);
 		this.rootBehavior = rootBehavior;
+	}
+
+	public ComponentAIBehaviorTree(GameObject object, BehaviorNode rootBehavior,
+			Element element) {
+		this(object, rootBehavior);
 	}
 
 	@Override
@@ -29,6 +40,13 @@ public class ComponentAIBehaviorTree extends Component {
 
 	@Override
 	public void onGameObjectRemoved() {
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element componentAIBehavior = doc
+				.createElement("ComponentAIBehaviorTree");
+		return componentAIBehavior;
 	}
 
 }

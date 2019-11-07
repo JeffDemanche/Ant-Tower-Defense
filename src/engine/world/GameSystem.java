@@ -5,9 +5,15 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import engine.world.gameobject.EventHandler;
 import engine.world.gameobject.GameObject;
+import engine.world.serialization.XMLSerializable;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -15,7 +21,7 @@ import javafx.scene.canvas.GraphicsContext;
  * 
  * @author jdemanch
  */
-public abstract class GameSystem {
+public abstract class GameSystem implements XMLSerializable {
 
 	private World world;
 	private static final int MAX_Z = 1000;
@@ -72,7 +78,25 @@ public abstract class GameSystem {
 		}
 		return false;
 	}
-
+	
+	public ArrayList<Element> writeGameObjectsXML(Document doc) {
+		ArrayList<Element> elements = new ArrayList<>();
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				try {
+					Element objectXml = next.writeXML(doc);
+					objectXml.setAttribute("layer", new Integer(key).toString());
+					elements.add(next.writeXML(doc));
+				} catch (ParserConfigurationException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return elements;
+	}
+	
 	public EventHandler getEventHandler() {
 		return this.world.getEventHandler();
 	}
@@ -100,6 +124,8 @@ public abstract class GameSystem {
 	public abstract void onStartup();
 
 	public abstract void onShutdown();
+	
+	public abstract void onWorldLoaded();
 
 	/**
 	 * Gives screen space coords corresponding to a given pair of game space

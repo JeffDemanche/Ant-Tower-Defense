@@ -113,22 +113,22 @@ public class UIViewport extends UIElement {
 		g.setFill(Color.BLACK);
 
 		// Bottom right
-		g.fillRect(this.getSize().x, this.getSize().y, largeNumber,
+		g.clearRect(this.getSize().x, this.getSize().y, largeNumber,
 				largeNumber);
 		// Top left
-		g.fillRect(0, 0, -largeNumber, -largeNumber);
+		g.clearRect(0, 0, -largeNumber, -largeNumber);
 		// Bottom left
-		g.fillRect(0, this.getSize().y, -largeNumber, largeNumber);
+		g.clearRect(0, this.getSize().y, -largeNumber, largeNumber);
 		// Top right
-		g.fillRect(this.getSize().x, 0, largeNumber, -largeNumber);
+		g.clearRect(this.getSize().x, 0, largeNumber, -largeNumber);
 		// Bottom
-		g.fillRect(0, this.getSize().y, this.getSize().x, largeNumber);
+		g.clearRect(0, this.getSize().y, this.getSize().x, largeNumber);
 		// Right
-		g.fillRect(this.getSize().x, 0, largeNumber, this.getSize().y);
+		g.clearRect(this.getSize().x, 0, largeNumber, this.getSize().y);
 		// Top
-		g.fillRect(0, 0, this.getSize().x, -largeNumber);
+		g.clearRect(0, 0, this.getSize().x, -largeNumber);
 		// Bottom
-		g.fillRect(0, this.getSize().y, this.getSize().x, largeNumber);
+		g.clearRect(0, this.getSize().y, this.getSize().x, largeNumber);
 
 		super.onDraw(g);
 	}
