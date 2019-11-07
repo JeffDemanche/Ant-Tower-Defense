@@ -14,8 +14,6 @@ import javafx.scene.transform.NonInvertibleTransformException;
  */
 public abstract class Viewport implements XMLSerializable {
 	
-	private static final long serialVersionUID = -827468599778090378L;
-	
 	private double initialScale;
 	private double scale;
 
@@ -44,6 +42,23 @@ public abstract class Viewport implements XMLSerializable {
 		this.centerPosX = 0;
 		this.centerPosY = 0;
 		this.zoomSpeed = zoomSpeed;
+	}
+	
+	public void setViewportCenter(Vec2d centerPos) {
+		this.centerPosX = centerPos.x;
+		this.centerPosY = centerPos.y;
+	}
+	
+	public Vec2d getViewportCenter() {
+		return new Vec2d(centerPosX, centerPosY);
+	}
+	
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
+	
+	public double getScale() {
+		return this.scale;
 	}
 	
 	public Vec2d getScreenSize() {
