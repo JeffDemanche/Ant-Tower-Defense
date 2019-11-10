@@ -14,12 +14,14 @@ public class ATDWorldScreen extends Screen {
 	public ATDWorldScreen(Vec2d initialSize) {
 		super(Color.BLACK, initialSize);
 		
-		ATDWorld world = new ATDWorld(new ATDViewport(initialSize));
+		ATDWorld world = new ATDWorld(new ATDViewport(initialSize), "New World");
 		
 		this.viewport = new UIViewport(new Vec2d(0), initialSize, world);
 		this.viewport.setDrawGrid(false);
 		
 		this.add(viewport);
+		
+		world.onStartup();
 	}
 	
 	@Override
