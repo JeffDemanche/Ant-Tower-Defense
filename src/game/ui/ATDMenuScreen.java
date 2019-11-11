@@ -1,8 +1,13 @@
 package game.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import application.Vec2d;
 import engine.Screen;
+import engine.ui.UIElement;
 import engine.ui.UIImage;
+import engine.ui.UISpline;
 import game.ATDApp;
 import game.ui.element.LoadGameButton;
 import game.ui.element.NewGameButton;
@@ -27,6 +32,7 @@ public class ATDMenuScreen extends Screen {
 	private NewGameButton newGameButton;
 	private LoadGameButton loadGameButton;
 	private SettingsButton settingsButton;
+	private UISpline spline;
 
 	public ATDMenuScreen(Vec2d initialSize, ATDApp app) {
 		super(Color.WHITE, initialSize);
@@ -43,12 +49,26 @@ public class ATDMenuScreen extends Screen {
 		this.settingsButton = new SettingsButton(app,
 				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, SETTINGS_TOP),
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT));
-
+		
+		List<Vec2d> controlPoints = new ArrayList<Vec2d>();
+		controlPoints.add(new Vec2d(0,50));
+		controlPoints.add(new Vec2d(85,85));
+		controlPoints.add(new Vec2d(103,45));
+		controlPoints.add(new Vec2d(70,25));
+		
+		this.spline  =  new UISpline(controlPoints);
 		this.add(logo);
 
 		this.add(newGameButton);
 		this.add(loadGameButton);
 		this.add(settingsButton);
+		
+		for(UIElement controlPoint:this.spline.getControlPoints())
+		{
+			this.add(controlPoint);	
+		}
+		this.add(spline);
+		
 	}
 
 	@Override
