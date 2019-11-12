@@ -1,8 +1,9 @@
 package game.world.gameobject.tile;
 
-import engine.world.ComponentMaskedSprite;
+import engine.world.ComponentRegisteredSprite;
 import engine.world.GameSystem;
 import engine.world.gameobject.ComponentPolygon;
+import game.world.gameobject.SpriteRegistry;
 import game.world.system.HexCoordinates;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -13,9 +14,8 @@ public class TileWater extends Tile {
 				offsetCoordinates);
 
 		ComponentPolygon bound = offsetCoordinates.createPolygon(this);
-		ComponentMaskedSprite sprite = new ComponentMaskedSprite(this,
-				"img/tile/water.png", "img/tile/hex_mask.png", bound, 6, 200, 3,
-				16);
+		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
+				SpriteRegistry.WATER_MASKED, bound, 200, 3);
 
 		this.addComponent(bound);
 		this.addComponent(sprite);

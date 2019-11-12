@@ -265,7 +265,8 @@ public abstract class World implements XMLSerializable {
 	public void onMouseWheelMoved(ScrollEvent e) {
 		double verticalDelta = e.getDeltaY();
 		if (!e.isConsumed()) {
-			getViewport().zoomViewport(verticalDelta);
+			getViewport().zoomViewport(verticalDelta,
+					new Vec2d(e.getSceneX(), e.getSceneY()));
 		}
 	}
 

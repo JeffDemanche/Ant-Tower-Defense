@@ -13,14 +13,15 @@ import javafx.scene.transform.NonInvertibleTransformException;
  * @author jdemanch
  */
 public abstract class Viewport implements XMLSerializable {
-	
+
 	private double initialScale;
 	private double scale;
 
 	private double zoomSpeed;
+	private boolean mouseBasedScrolling;
 
 	private Vec2d screenSize;
-	
+
 	/**
 	 * This is necessary to get the origin at the center of the screen when the
 	 * viewport's initialized.
@@ -42,29 +43,35 @@ public abstract class Viewport implements XMLSerializable {
 		this.centerPosX = 0;
 		this.centerPosY = 0;
 		this.zoomSpeed = zoomSpeed;
+
+		this.mouseBasedScrolling = false;
 	}
-	
+
+	public void setMouseBasedScrolling(boolean mouseBased) {
+		this.mouseBasedScrolling = mouseBased;
+	}
+
 	public void setViewportCenter(Vec2d centerPos) {
 		this.centerPosX = centerPos.x;
 		this.centerPosY = centerPos.y;
 	}
-	
+
 	public Vec2d getViewportCenter() {
 		return new Vec2d(centerPosX, centerPosY);
 	}
-	
+
 	public void setScale(double scale) {
 		this.scale = scale;
 	}
-	
+
 	public double getScale() {
 		return this.scale;
 	}
-	
+
 	public Vec2d getScreenSize() {
 		return this.screenSize;
 	}
-	
+
 	public void onResize(Vec2d newSize) {
 		this.screenSize = newSize;
 	}
@@ -73,7 +80,7 @@ public abstract class Viewport implements XMLSerializable {
 		centerPosX += x;
 		centerPosY += y;
 	}
-	
+
 	public void tickTrackedViewport(double x, double y) {
 		Vec2d newCoords = toScreenSpace(new Vec2d(x, y), false);
 		centerPosX += newCoords.x - screenSize.x / 2;
@@ -84,7 +91,13 @@ public abstract class Viewport implements XMLSerializable {
 		this.scale *= scale;
 	}
 
-	public void zoomViewport(double mouseDelta) {
+	public void zoomViewport(double mouseDelta, Vec2d mousePosition) {
+		Vec2d gsMousePos = toGameSpace(mousePosition, false);
+
+		double mouseOffsetX = mouseBasedScrolling ? gsMousePos.x - centerPosX
+				: 0;
+		double mouseOffsetY = mouseBasedScrolling ? gsMousePos.y : 0;
+
 		if (mouseDelta == 0) {
 			return;
 		} else if (mouseDelta > 0) {

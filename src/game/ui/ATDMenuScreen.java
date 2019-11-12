@@ -19,6 +19,7 @@ import game.ATDApp;
 import game.ui.element.LoadGameButton;
 import game.ui.element.NewGameButton;
 import game.ui.element.SettingsButton;
+import game.world.gameobject.SpriteRegistry;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -35,7 +36,7 @@ public class ATDMenuScreen extends Screen {
 	private final double LOAD_GAME_TOP = 300;
 	private final double SETTINGS_TOP = 390;
 	private final double HIGH_SCORES_TOP = 460;
-	
+
 	private UIImage logo;
 
 	private NewGameButton newGameButton;
@@ -43,7 +44,7 @@ public class ATDMenuScreen extends Screen {
 	private SettingsButton settingsButton;
 	private UISpline spline;
 	private ArrayList<UITextLabel> scoreLabels;
-	
+
 	public ATDMenuScreen(Vec2d initialSize, ATDApp app) {
 		super(Color.WHITE, initialSize);
 
@@ -61,49 +62,48 @@ public class ATDMenuScreen extends Screen {
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT));
 		this.scoreLabels = new ArrayList<UITextLabel>();
 		this.scoreLabels.add(new UITextLabel(
-				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP), 
+				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP),
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
-				VerticalAlign.TOP, 
-				"High Scores:", 
-				new Font("Segoe Script", 16), 
+				VerticalAlign.TOP, "High Scores:", new Font("Segoe Script", 16),
 				Color.BLACK));
-		
+
 		// Read in high scores
 		HighScores hs = new HighScores("scores.txt");
 		ArrayList<Score> scores = new ArrayList<Score>();
 		try {
 			hs.getScores(scores);
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			this.scoreLabels.get(0).setText("Error getting high scores.");
 		}
-		
-		// Technically should not be necessary (unless user directly modifies the score file)
+
+		// Technically should not be necessary (unless user directly modifies
+		// the score file)
 		Collections.sort(scores);
-		
+
 		// Adding all the labels for the scores
 		double top = HIGH_SCORES_TOP;
 		int ind = 1;
 		for (Score s : scores) {
 			this.scoreLabels.add(new UITextLabel(
-					new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP), 
-					new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
-					VerticalAlign.TOP, 
-					Integer.toString(ind) + ". " + s.getName() + " " + Integer.toString(s.getScore()), 
-					new Font("Segoe Script", 16), 
-					Color.BLACK));
+					new Vec2d((initialSize.x - BUTTON_WIDTH) / 2,
+							HIGH_SCORES_TOP),
+					new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT),
+					HorizontalAlign.CENTER, VerticalAlign.TOP,
+					Integer.toString(ind) + ". " + s.getName() + " "
+							+ Integer.toString(s.getScore()),
+					new Font("Segoe Script", 16), Color.BLACK));
 			ind++;
-			top+=20;
+			top += 20;
 		}
-		
-		
+
 		List<Vec2d> controlPoints = new ArrayList<Vec2d>();
-		controlPoints.add(new Vec2d(0,50));
-		controlPoints.add(new Vec2d(85,85));
-		controlPoints.add(new Vec2d(103,45));
-		controlPoints.add(new Vec2d(70,25));
-		
-		this.spline  =  new UISpline(controlPoints);
+		controlPoints.add(new Vec2d(0, 50));
+		controlPoints.add(new Vec2d(85, 85));
+		controlPoints.add(new Vec2d(103, 45));
+		controlPoints.add(new Vec2d(70, 25));
+
+		this.spline = new UISpline(controlPoints);
 		this.add(logo);
 
 		this.add(newGameButton);
@@ -111,13 +111,21 @@ public class ATDMenuScreen extends Screen {
 		this.add(settingsButton);
 		for (UITextLabel l : this.scoreLabels)
 			this.add(l);
-		
-		for(UIElement controlPoint:this.spline.getControlPoints())
-		{
-			this.add(controlPoint);	
+
+		for (UIElement controlPoint : this.spline.getControlPoints()) {
+			this.add(controlPoint);
 		}
 		this.add(spline);
+
+	}
+	
+	@Override
+	public void onStartup() {
+		super.onStartup();
 		
+		if (!SpriteRegistry.isInitialized()) {
+			new SpriteRegistry();
+		}
 	}
 
 	@Override
@@ -135,9 +143,8 @@ public class ATDMenuScreen extends Screen {
 		// Updating the position for all the high score labels
 		double top = HIGH_SCORES_TOP;
 		for (UITextLabel l : this.scoreLabels) {
-			l.setPosition(
-				new Vec2d((newSize.x - BUTTON_WIDTH) / 2, top));
-			top+=20;
+			l.setPosition(new Vec2d((newSize.x - BUTTON_WIDTH) / 2, top));
+			top += 20;
 		}
 	}
 

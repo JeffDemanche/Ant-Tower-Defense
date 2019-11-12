@@ -13,6 +13,7 @@ public class ATDViewport extends Viewport {
 
 	public ATDViewport(Vec2d initialScreenSize) {
 		super(initialScreenSize);
+		this.setMouseBasedScrolling(true);
 	}
 
 	/**
@@ -22,6 +23,7 @@ public class ATDViewport extends Viewport {
 		super(initialScreenSize);
 		this.setViewportCenter(XMLEngine.readVec2d(element.getAttribute("center")));
 		this.setScale(Double.parseDouble(element.getAttribute("scale")));
+		this.setMouseBasedScrolling(true);
 	}
 	
 	@Override
