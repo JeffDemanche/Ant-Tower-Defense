@@ -1,13 +1,13 @@
 package game.world.system;
 
 import java.util.HashMap;
-import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import application.Vec2i;
 import engine.world.GameSystem;
 import game.world.ATDWorld;
 import game.world.gameobject.tile.Tile;
@@ -19,6 +19,8 @@ public class SystemLevel extends GameSystem {
 
 	private ATDWorld atdWorld;
 	private LevelGenerator levelGenerator;
+	
+	private Vec2i size;
 
 	/**
 	 * Note that tiles are stored in this hash map as well as in the system game
@@ -30,7 +32,8 @@ public class SystemLevel extends GameSystem {
 		super(world);
 		this.atdWorld = world;
 		this.tiles = new HashMap<>();
-		this.levelGenerator = new LevelGenerator(this);
+		this.size = new Vec2i(64, 64);
+		this.levelGenerator = new LevelGenerator(this, size);
 	}
 
 	/**
@@ -80,7 +83,7 @@ public class SystemLevel extends GameSystem {
 
 	@Override
 	public void onStartup() {
-		levelGenerator.generateTestLevel(atdWorld.getRandom());
+		levelGenerator.generateHeightIsland(atdWorld.getRandom());
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class HexCoordinates {
 	public Vec2d toGameSpace() {
 		double rowOffsetMult = (this.offsetCoordinates.y & 1) == 0 ? 1 : 0.5;
 
-		// X in offset space, accounting for odd rows 0.5 offset.F
+		// X in offset space, accounting for odd rows 0.5 offset.
 		double xWithOffset = offsetCoordinates.x + rowOffsetMult;
 
 		double x = xWithOffset - (xWithOffset * HEX_MIN_X * 2);
