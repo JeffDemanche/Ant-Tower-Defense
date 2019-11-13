@@ -120,7 +120,11 @@ public class ATDMenuScreen extends Screen {
 		controlPoints.add(new Vec2d(0,50));
 		controlPoints.add(new Vec2d(85,85));
 		controlPoints.add(new Vec2d(103,45));
-		controlPoints.add(new Vec2d(70,25));
+		controlPoints.add(new Vec2d(130,85));
+		controlPoints.add(new Vec2d(150,130));
+		controlPoints.add(new Vec2d(200,200));
+		controlPoints.add(new Vec2d(350,150));
+		controlPoints.add(new Vec2d(410,250));
 		
 		this.spline  =  new UISpline(controlPoints);
 		this.add(logo);
