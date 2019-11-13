@@ -65,6 +65,8 @@ public class UISpline extends UIElement{
     	p3 = p2 + 1;
     	p0 = p1 - 1;
     	
+    	t = t - (int)t;
+    	
     	double tt = t * t;
     	double ttt = tt * t;
     	
@@ -73,26 +75,44 @@ public class UISpline extends UIElement{
     	double q3 = -3.0 * ttt +4.0 *tt +t;
     	double q4 = ttt - tt;
     	
-    	Vec2d controlP0 = ((UIElement)myControlPoints.get(p0)).getAbsoutePosition();
-    	Vec2d controlP1 = ((UIElement)myControlPoints.get(p1)).getAbsoutePosition();
-    	Vec2d controlP2 = ((UIElement)myControlPoints.get(p2)).getAbsoutePosition();
-    	Vec2d controlP3 = ((UIElement)myControlPoints.get(p3)).getAbsoutePosition();
+    	if(p1 < myControlPoints.size()  &&
+    	   p2 < myControlPoints.size()  &&	
+    	   p3 < myControlPoints.size()  &&
+    	   p0 < myControlPoints.size() )
+    	{
+    		Vec2d controlP0 = ((UIElement)myControlPoints.get(p0)).getAbsoutePosition();
+        	Vec2d controlP1 = ((UIElement)myControlPoints.get(p1)).getAbsoutePosition();
+        	Vec2d controlP2 = ((UIElement)myControlPoints.get(p2)).getAbsoutePosition();
+        	Vec2d controlP3 = ((UIElement)myControlPoints.get(p3)).getAbsoutePosition();
+        	
+        	double x = 0.5 *( controlP0.x * q1 + controlP1.x * q2 + controlP2.x * q3 + controlP3.x * q4);
+        	double y = 0.5 * (controlP0.y * q1 + controlP1.y * q2 + controlP2.y * q3 + controlP3.y * q4);
+        	
+        	return new Vec2d(x,y);	
+    	}
     	
-    	double x = 0.5 *( controlP0.x * q1 + controlP1.x * q2 + controlP2.x * q3 + controlP3.x * q4);
-    	double y = 0.5 * (controlP0.y * q1 + controlP1.y * q2 + controlP2.y * q3 + controlP3.y * q4);
+    	return null;
     	
-    	return new Vec2d(x,y);
     	
     }
 
     private void drawLines(GraphicsContext graphicsCx)
     {
-      double delta =  0.05;
-      for(double t = 0; t < 1-delta ; t += delta)
+      double delta =  0.005;
+      for(double t = 0; t < (double) myControlPoints.size() -3.0 ; t += delta)
       {
+    	  
     	  Vec2d start = getSplinePoint(t);
     	  Vec2d end = getSplinePoint(t + delta);
-    	  graphicsCx.strokeLine(start.x,start.y,end.x,end.y);
+    	 
+    	  if( start ==  null || end == null)
+    	  {
+    		  continue;  
+    	  }
+    	  else
+    	  {
+    		  graphicsCx.strokeLine(start.x,start.y,end.x,end.y);	  
+    	  }
 
       }
     }
