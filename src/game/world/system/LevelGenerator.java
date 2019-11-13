@@ -73,6 +73,8 @@ public class LevelGenerator {
 				}
 			}
 		}
+		HexCoordinates coords = new HexCoordinates(new Vec2i(0, 0));
+		level.setTile(coords, new TileWater(level, coords));
 	}
 
 	public void generateTestLevel(Random random) {

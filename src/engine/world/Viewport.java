@@ -30,6 +30,8 @@ public abstract class Viewport implements XMLSerializable {
 	private double centerPosX;
 	private double centerPosY;
 
+	private double borderLeft, borderRight, borderTop, borderBottom;
+
 	public Viewport(Vec2d initialScreenSize) {
 		this(initialScreenSize, 0.05);
 	}
@@ -45,6 +47,19 @@ public abstract class Viewport implements XMLSerializable {
 		this.zoomSpeed = zoomSpeed;
 
 		this.mouseBasedScrolling = false;
+		
+		this.borderBottom = Double.MAX_VALUE;
+		this.borderTop = -Double.MAX_VALUE;
+		this.borderLeft = -Double.MAX_VALUE;
+		this.borderRight = Double.MAX_VALUE;
+	}
+
+	public void setBorder(double left, double right, double top,
+			double bottom) {
+		this.borderLeft = left;
+		this.borderRight = right;
+		this.borderTop = top;
+		this.borderBottom = bottom;
 	}
 
 	public void setMouseBasedScrolling(boolean mouseBased) {
@@ -77,8 +92,20 @@ public abstract class Viewport implements XMLSerializable {
 	}
 
 	public void translateViewport(double x, double y) {
-		centerPosX += x;
-		centerPosY += y;
+		
+		double edgeLeft = centerPosX - (screenSize.x / 2) + x;
+		double edgeRight = centerPosX + (screenSize.x / 2) + x;
+		double edgeTop = centerPosY - (screenSize.y / 2) + x;
+		double edgeBottom = centerPosY + (screenSize.y / 2) + x;
+		
+		if (edgeLeft > borderLeft && edgeRight < borderRight) {
+			centerPosX += x;
+		}
+		
+		if (edgeTop > borderTop && edgeBottom < borderBottom) {
+			centerPosY += y;
+		}
+		
 	}
 
 	public void tickTrackedViewport(double x, double y) {
@@ -92,24 +119,25 @@ public abstract class Viewport implements XMLSerializable {
 	}
 
 	public void zoomViewport(double mouseDelta, Vec2d mousePosition) {
-		Vec2d gsMousePos = toGameSpace(mousePosition, false);
-
-		double mouseOffsetX = mouseBasedScrolling ? gsMousePos.x - centerPosX
+		double mouseOffsetX = mouseBasedScrolling
+				? centerPosX - (screenSize.x / 2) + mousePosition.x
 				: 0;
-		double mouseOffsetY = mouseBasedScrolling ? gsMousePos.y : 0;
+		double mouseOffsetY = mouseBasedScrolling
+				? centerPosY - (screenSize.y / 2) + mousePosition.y
+				: 0;
 
 		if (mouseDelta == 0) {
 			return;
 		} else if (mouseDelta > 0) {
 			double delta = 1 - zoomSpeed;
 			this.scale *= delta;
-			this.centerPosX += this.centerPosX * zoomSpeed;
-			this.centerPosY += this.centerPosY * zoomSpeed;
+			this.centerPosX += (mouseOffsetX) * zoomSpeed;
+			this.centerPosY += (mouseOffsetY) * zoomSpeed;
 		} else {
 			double delta = 1 + zoomSpeed;
 			this.scale *= delta;
-			this.centerPosX -= this.centerPosX * zoomSpeed;
-			this.centerPosY -= this.centerPosY * zoomSpeed;
+			this.centerPosX -= (mouseOffsetX) * zoomSpeed;
+			this.centerPosY -= (mouseOffsetY) * zoomSpeed;
 		}
 	}
 

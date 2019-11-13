@@ -10,7 +10,9 @@ import org.w3c.dom.Element;
 import application.Vec2d;
 import engine.world.World;
 import game.viewport.ATDViewport;
+import game.world.system.HexCoordinates;
 import game.world.system.SystemLevel;
+import javafx.scene.input.MouseEvent;
 
 public class ATDWorld extends World {
 
@@ -37,6 +39,14 @@ public class ATDWorld extends World {
 
 	public Random getRandom() {
 		return this.worldRandom;
+	}
+
+	@Override
+	public void onMouseClicked(MouseEvent e) {
+		super.onMouseClicked(e);
+
+		HexCoordinates.fromGameSpace(viewport
+				.toGameSpace(new Vec2d(e.getSceneX(), e.getSceneY()), false));
 	}
 
 	/**

@@ -4,6 +4,7 @@ import application.Vec2d;
 import application.Vec2i;
 import engine.world.gameobject.ComponentPolygon;
 import engine.world.gameobject.GameObject;
+import sun.net.www.content.audio.x_wav;
 
 /**
  * This is a class for managing tile coordinates (in hex form).
@@ -44,6 +45,56 @@ public class HexCoordinates {
 		double y = offsetCoordinates.y - (offsetCoordinates.y * 0.25);
 
 		return new Vec2d(x, y);
+	}
+
+	public static HexCoordinates fromGameSpace(Vec2d point) {
+		double xNoOffset = (point.x / (1D - HEX_MIN_X * 2));
+
+		boolean withinZigZag;
+		if (point.y > 0) {
+			withinZigZag = ((int) (point.y / 0.25)) % 3 == 0;
+		} else {
+			withinZigZag = ((int) (-(point.y - 0.25) / 0.25)) % 3 == 0;
+		}
+
+		int x, y;
+
+		// The case where the point is within the y-bands of the zig-zag.
+		if (withinZigZag) {
+			double yDec = (point.y * (4.0 / 3)) - 0.125;// (point.y * 1.25) -
+														// 0.125;
+
+			int division = ((int) (point.y / 0.25)) / 3;
+			double offset = (division & 1) == 0 ? 0 : 0.5;
+			
+			if (point.y < 0)
+				division--;
+
+			double phase = Math.abs(((xNoOffset - (int) xNoOffset) - 0.5) / 2)
+					- 0.125;
+
+			boolean flipPhase = (division & 1) != 0;
+
+			if (flipPhase) {
+				yDec -= -phase;
+			}else {
+				yDec -= phase;
+			}
+			y = (int) Math.floor(yDec);
+
+			System.out.println(y);
+		} else {
+			int division = ((int) (point.y / 0.25)) / 3;
+			y = point.y > 0 ? division : division - 1;
+
+			double offset = (division & 1) == 0 ? 0 : 0.5;
+
+			x = ((int) Math.ceil(xNoOffset + offset)) - 2;
+
+			System.out.println(x + " " + y);
+		}
+		return null;
+		// return new HexCoordinates(new Vec2i(x, y));
 	}
 
 	/**
