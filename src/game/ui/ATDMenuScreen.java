@@ -8,6 +8,7 @@ import java.util.List;
 import application.Vec2d;
 import engine.Screen;
 import engine.scores.HighScores;
+import engine.scores.ModifyException;
 import engine.scores.Score;
 import engine.ui.UIElement;
 import engine.ui.UIImage;
@@ -70,9 +71,25 @@ public class ATDMenuScreen extends Screen {
 		
 		// Read in high scores
 		HighScores hs = new HighScores("scores.txt");
+		// ^ Try modifying the scores/names in the file above, and you will be prompted with
+		// a message calling you a cheater. Note that this is only basic security, so some modifications
+		// may go undetected (or even throw a noncheating error)
 		ArrayList<Score> scores = new ArrayList<Score>();
 		try {
-			hs.getScores(scores);
+			try {
+				// Change the second argument to false if you want to not handle cheat detection
+				// (useful for making your own scores file)
+				hs.getScores(scores, true);
+			} catch(ModifyException e) {
+				e.printStackTrace();
+				this.scoreLabels.get(0).setText("Cheater detected.");
+				scores.clear();
+			}
+			// Uncomment this line if you want to rewrite to the scores file.
+			//hs.writeScores(scores, true);
+			
+			// In the event that scores are completely lost, please copy scores_backup.txt into scores.txt
+			
 		} catch(IOException e) {
 			e.printStackTrace();
 			this.scoreLabels.get(0).setText("Error getting high scores.");
@@ -89,12 +106,14 @@ public class ATDMenuScreen extends Screen {
 					new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP), 
 					new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
 					VerticalAlign.TOP, 
-					Integer.toString(ind) + ". " + s.getName() + " " + Integer.toString(s.getScore()), 
+					Integer.toString(ind) + ". " + s.toString(), 
 					new Font("Segoe Script", 16), 
 					Color.BLACK));
 			ind++;
 			top+=20;
 		}
+		
+		
 		
 		
 		List<Vec2d> controlPoints = new ArrayList<Vec2d>();

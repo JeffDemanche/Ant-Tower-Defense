@@ -78,6 +78,11 @@ public class Score implements Comparable<Score>{
 		this.name = name;
 	}
 	
+	@Override
+	public String toString() {
+		return this.name + " " + Integer.toString(this.getScore());
+	}
+	
 	
 	
 }
