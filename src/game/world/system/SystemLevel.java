@@ -9,7 +9,9 @@ import org.w3c.dom.Element;
 
 import application.Vec2i;
 import engine.world.GameSystem;
+import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
+import game.world.gameobject.EmitterGameObject;
 import game.world.gameobject.tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -19,7 +21,7 @@ public class SystemLevel extends GameSystem {
 
 	private ATDWorld atdWorld;
 	private LevelGenerator levelGenerator;
-	
+	private GameObject emptyGameObject;
 	private Vec2i size;
 
 	/**
@@ -83,6 +85,8 @@ public class SystemLevel extends GameSystem {
 
 	@Override
 	public void onStartup() {
+		emptyGameObject = new EmitterGameObject(this, "emittergo");
+		this.addGameObject(1, emptyGameObject);
 		levelGenerator.generateHeightIsland(atdWorld.getRandom());
 	}
 
