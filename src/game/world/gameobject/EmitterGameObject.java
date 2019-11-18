@@ -20,7 +20,7 @@ public class EmitterGameObject extends GameObject {
 		
 		ComponentAABB aabComponent = new ComponentAABB(this, new Vec2d(0,0), new Vec2d(1,1));
 		ComponentEmitter particleEmitter = new ComponentEmitter("Emitter", this, "img/particle/particle.png",
-		10, 2, aabComponent.getPosition(), new Vec2d(1,0), 0.5);
+		10, 2, aabComponent.getPosition(), new Vec2d(0,-1), 0.05);
 		
 		this.addComponent(particleEmitter);
 	}
