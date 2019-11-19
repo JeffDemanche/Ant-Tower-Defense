@@ -1,10 +1,19 @@
 package game.world.system;
 
+import java.util.HashSet;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import application.Vec2d;
 import application.Vec2i;
+import engine.world.PathfindableCoordinates;
 import engine.world.gameobject.ComponentPolygon;
 import engine.world.gameobject.GameObject;
-import sun.net.www.content.audio.x_wav;
+import engine.world.serialization.XMLEngine;
+import engine.world.serialization.XMLSerializable;
 
 /**
  * This is a class for managing tile coordinates (in hex form).
@@ -12,11 +21,14 @@ import sun.net.www.content.audio.x_wav;
  * There's two coordinate systems we can use for hex tiles (read here
  * https://math.stackexchange.com/questions/2254655/hexagon-grid-coordinate-system).
  */
-public class HexCoordinates {
+public class HexCoordinates
+		implements XMLSerializable, PathfindableCoordinates {
 
 	// Side length of equilateral triangle in hex space = 1.
 	private static final double HEX_MAX_X = ((Math.sqrt(3) / 2) + 1) / 2;
 	private static final double HEX_MIN_X = ((-(Math.sqrt(3) / 2)) + 1) / 2;
+
+	private static final double HEX_WIDTH = Math.sqrt(3) / 2;
 
 	private Vec2i offsetCoordinates;
 
@@ -28,8 +40,43 @@ public class HexCoordinates {
 		this.offsetCoordinates = offsetCoordinates;
 	}
 
+	public HexCoordinates(Element element) {
+		this.offsetCoordinates = XMLEngine
+				.readVec2i(element.getAttribute("offsetCoordinates"));
+	}
+
 	public Vec2i getOffsetCoordinates() {
 		return offsetCoordinates;
+	}
+
+	public int offsetX() {
+		return this.offsetCoordinates.x;
+	}
+
+	public int offsetY() {
+		return this.offsetCoordinates.y;
+	}
+
+	public HashSet<HexCoordinates> getNeighbors() {
+		HashSet<HexCoordinates> neighbors = new HashSet<>();
+		neighbors.add(new HexCoordinates(new Vec2i(offsetX() + 1, offsetY())));
+		neighbors.add(new HexCoordinates(new Vec2i(offsetX() - 1, offsetY())));
+		neighbors.add(new HexCoordinates(new Vec2i(offsetX(), offsetY() - 1)));
+		neighbors.add(new HexCoordinates(new Vec2i(offsetX(), offsetY() + 1)));
+		if ((offsetY() & 1) != 0) {
+			// If odd y
+			neighbors.add(new HexCoordinates(
+					new Vec2i(offsetX() - 1, offsetY() - 1)));
+			neighbors.add(new HexCoordinates(
+					new Vec2i(offsetX() - 1, offsetY() + 1)));
+		} else {
+			// If even y
+			neighbors.add(new HexCoordinates(
+					new Vec2i(offsetX() + 1, offsetY() - 1)));
+			neighbors.add(new HexCoordinates(
+					new Vec2i(offsetX() + 1, offsetY() + 1)));
+		}
+		return neighbors;
 	}
 
 	/**
@@ -47,6 +94,19 @@ public class HexCoordinates {
 		return new Vec2d(x, y);
 	}
 
+	@Override
+	public Vec2d getPathfindingGameSpace() {
+		return this.toGameSpace().plus(new Vec2d(HEX_WIDTH / 2, 0.5));
+	}
+
+	/**
+	 * Given a point in game-space, gets the hex-coordinate.
+	 * 
+	 * @param point
+	 *            The point in game space.
+	 * @return A HexCoordinate (based on offset coordinates) of the hex
+	 *         containing that point.
+	 */
 	public static HexCoordinates fromGameSpace(Vec2d point) {
 		double xNoOffset = (point.x / (1D - HEX_MIN_X * 2));
 
@@ -61,12 +121,10 @@ public class HexCoordinates {
 
 		// The case where the point is within the y-bands of the zig-zag.
 		if (withinZigZag) {
-			double yDec = (point.y * (4.0 / 3)) - 0.125;// (point.y * 1.25) -
-														// 0.125;
+			double yDec = (point.y * (4.0 / 3)) - 0.125;
 
 			int division = ((int) (point.y / 0.25)) / 3;
-			double offset = (division & 1) == 0 ? 0 : 0.5;
-			
+
 			if (point.y < 0)
 				division--;
 
@@ -75,26 +133,42 @@ public class HexCoordinates {
 
 			boolean flipPhase = (division & 1) != 0;
 
-			if (flipPhase) {
-				yDec -= -phase;
-			}else {
+			double yFromPhaseTop = point.y - (0.75 * division);
+			double absPhase = Math.abs((phase + 0.125) - 0.5);
+			double absPhaseInvert = 0.25 - absPhase;
+
+			boolean abovePhase = flipPhase ? yFromPhaseTop < absPhaseInvert
+					: absPhase > yFromPhaseTop;
+
+			if (!abovePhase) {
+				yDec += phase;
+			} else {
 				yDec -= phase;
 			}
 			y = (int) Math.floor(yDec);
 
-			System.out.println(y);
+			if ((flipPhase && abovePhase) || (!flipPhase && !abovePhase)) {
+				// offset x.
+				x = (int) (Math.floor(xNoOffset) - 1);
+			} else {
+				// don't offset
+				x = (int) (Math.round(xNoOffset) - 1);
+			}
 		} else {
 			int division = ((int) (point.y / 0.25)) / 3;
 			y = point.y > 0 ? division : division - 1;
 
 			double offset = (division & 1) == 0 ? 0 : 0.5;
 
-			x = ((int) Math.ceil(xNoOffset + offset)) - 2;
-
-			System.out.println(x + " " + y);
+			if (y < 0) {
+				// Flip if -y is odd idk why.
+				int flip = -y % 2 == 0 ? 2 : 1;
+				x = ((int) Math.round(xNoOffset + offset)) - flip;
+			} else {
+				x = ((int) Math.ceil(xNoOffset + offset)) - 2;
+			}
 		}
-		return null;
-		// return new HexCoordinates(new Vec2i(x, y));
+		return new HexCoordinates(new Vec2i(x, y));
 	}
 
 	/**
@@ -139,6 +213,34 @@ public class HexCoordinates {
 		} else if (!offsetCoordinates.equals(other.offsetCoordinates))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return offsetCoordinates.toString();
+	}
+
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		Element HexCoordinates = doc.createElement("HexCoordinates");
+		HexCoordinates.setAttribute("offsetCoordinates",
+				XMLEngine.writeVec2i(offsetCoordinates));
+		return HexCoordinates;
+	}
+
+	@Override
+	public double dist(PathfindableCoordinates otherCoord) {
+		return otherCoord.getPathfindingGameSpace().dist(this.toGameSpace());
+	}
+
+	@Override
+	public int getX() {
+		return this.offsetX();
+	}
+
+	@Override
+	public int getY() {
+		return this.offsetY();
 	}
 
 }

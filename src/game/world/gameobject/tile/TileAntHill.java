@@ -12,26 +12,27 @@ import game.world.system.HexCoordinates;
 import game.world.system.SystemLevel;
 import javafx.scene.canvas.GraphicsContext;
 
-public class TileSand extends Tile {
+public class TileAntHill extends Tile {
 
 	private ComponentPolygon bound;
-	
-	public TileSand(SystemLevel system, HexCoordinates offsetCoordinates) {
-		super(system, createName("Sand", offsetCoordinates), offsetCoordinates);
+
+	public TileAntHill(SystemLevel system, HexCoordinates offsetCoordinates) {
+		super(system, createName("AntHill", offsetCoordinates),
+				offsetCoordinates);
 
 		bound = offsetCoordinates.createPolygon(this);
 		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.SAND_MASKED, bound);
+				SpriteRegistry.ANTHILL_MASKED, bound);
 
 		this.addComponent(bound);
 		this.addComponent(sprite);
 	}
 
-	public TileSand(Element element, SystemLevel system) {
+	public TileAntHill(Element element, SystemLevel system) {
 		this(system, new HexCoordinates((Element) element
 				.getElementsByTagName("HexCoordinates").item(0)));
 	}
-	
+
 	@Override
 	public void onDraw(GraphicsContext g) {
 		super.onDraw(g);
@@ -39,11 +40,11 @@ public class TileSand extends Tile {
 
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
-		Element TileSand = doc.createElement("TileSand");
-		TileSand.setAttribute("name", this.getName());
-		TileSand.appendChild(bound.writeXML(doc));
-		TileSand.appendChild(this.getCoordinates().writeXML(doc));
-		return TileSand;
+		Element TileAntHill = doc.createElement("TileAntHill");
+		TileAntHill.setAttribute("name", this.getName());
+		TileAntHill.appendChild(bound.writeXML(doc));
+		TileAntHill.appendChild(this.getCoordinates().writeXML(doc));
+		return TileAntHill;
 	}
 
 	@Override

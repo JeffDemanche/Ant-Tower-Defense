@@ -33,6 +33,7 @@ public class ComponentPolygon extends Component
 		setPoints(points);
 	}
 
+	@Override
 	public void setPosition(Vec2d newPosition) {
 		this.position = newPosition;
 		this.setPoints(this.points);
