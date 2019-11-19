@@ -48,7 +48,7 @@ public class AntCarpenter extends Ant {
 		this.ants = system;
 
 		this.bound = new ComponentCircle(this, new Vec2d(0), CARPENTER_RADIUS);
-		this.sprite = new ComponentDynamicSprite(this, "img/ant/carpenter.png",
+		this.sprite = new ComponentDynamicSprite(this, "file:src/img/ant/carpenter.png",
 				bound, 8, 150);
 		this.navigable = new ComponentNavigable(this, CARPENTER_SPEED, bound);
 		this.behaviorTree = new ComponentAIBehaviorTree(this, createBehavior());

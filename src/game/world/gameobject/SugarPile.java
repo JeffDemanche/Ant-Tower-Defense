@@ -22,7 +22,7 @@ public class SugarPile extends GameObject {
 		Vec2d gamePos = centerHex.toGameSpace();
 		
 		ComponentCircle bound = new ComponentCircle(this, gamePos, SPRITE_RADIUS);
-		ComponentDynamicSprite sprite = new ComponentDynamicSprite(this, "img/sugar/sugar_1.png", bound, 8, 0);
+		ComponentDynamicSprite sprite = new ComponentDynamicSprite(this, "file:src/img/sugar/sugar_1.png", bound, 8, 0);
 		sprite.addPhaseToAnimation("Null", 0, 0, 64, 64);
 		sprite.setAnimation("Null");
 		
