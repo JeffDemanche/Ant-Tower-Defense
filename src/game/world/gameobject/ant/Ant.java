@@ -20,6 +20,19 @@ public abstract class Ant extends GameObject {
 	public abstract Drawable getBound();
 
 	public abstract ComponentAIBehaviorTree getBehaviorTree();
+	
+	public abstract int getMaxHealth();
+	
+	public abstract int getCurrentHealth();
+	
+	@Override
+	public void onTick(long nanosSincePreviousTick) {
+		super.onTick(nanosSincePreviousTick);
+		
+		if (getCurrentHealth() <= 0) {
+			kill();
+		}
+	}
 
 	public void onSpawn() {
 		alive = true;

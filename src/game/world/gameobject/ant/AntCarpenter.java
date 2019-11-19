@@ -28,6 +28,8 @@ public class AntCarpenter extends Ant {
 
 	private final double CARPENTER_RADIUS = 0.2;
 	private final double CARPENTER_SPEED = 1.5;
+	
+	private final int CARPENTER_MAX_HEALTH = 20;
 
 	private SystemAnts ants;
 
@@ -36,6 +38,8 @@ public class AntCarpenter extends Ant {
 	private ComponentNavigable navigable;
 	private ComponentAIBehaviorTree behaviorTree;
 
+	private int currentHealth;
+	
 	private Blackboard behaviorBlackboard;
 
 	public AntCarpenter(SystemAnts system, int antId) {
@@ -49,6 +53,8 @@ public class AntCarpenter extends Ant {
 		this.navigable = new ComponentNavigable(this, CARPENTER_SPEED, bound);
 		this.behaviorTree = new ComponentAIBehaviorTree(this, createBehavior());
 
+		this.currentHealth = CARPENTER_MAX_HEALTH;
+		
 		this.createWalkingAnimation();
 		sprite.setAnimation("Walk");
 
@@ -56,6 +62,10 @@ public class AntCarpenter extends Ant {
 		this.addComponent(sprite);
 		this.addComponent(navigable);
 		this.addComponent(behaviorTree);
+	}
+	
+	public AntCarpenter(Element element, SystemAnts system) {
+		this(system, Integer.parseInt(element.getAttribute("id")));
 	}
 
 	private BehaviorNode createBehavior() {
@@ -119,7 +129,7 @@ public class AntCarpenter extends Ant {
 
 		return rootSequence;
 	}
-
+	
 	@Override
 	public void onSpawn() {
 		super.onSpawn();
@@ -144,10 +154,6 @@ public class AntCarpenter extends Ant {
 		this.remove();
 	}
 
-	public AntCarpenter(Element element, SystemAnts system) {
-		this(system, Integer.parseInt(element.getAttribute("id")));
-	}
-
 	private void createWalkingAnimation() {
 		sprite.addPhaseToAnimation("Walk", 0, 0, 16, 16);
 		sprite.addPhaseToAnimation("Walk", 16, 0, 16, 16);
@@ -168,6 +174,16 @@ public class AntCarpenter extends Ant {
 	@Override
 	public ComponentAIBehaviorTree getBehaviorTree() {
 		return this.behaviorTree;
+	}
+
+	@Override
+	public int getMaxHealth() {
+		return CARPENTER_MAX_HEALTH;
+	}
+
+	@Override
+	public int getCurrentHealth() {
+		return this.currentHealth;
 	}
 
 }

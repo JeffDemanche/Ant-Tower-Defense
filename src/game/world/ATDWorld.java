@@ -13,7 +13,9 @@ import engine.world.World;
 import game.viewport.ATDViewport;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
+import game.world.system.SystemGUI;
 import game.world.system.SystemLevel;
+import game.world.system.SystemTowers;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +27,8 @@ public class ATDWorld extends World {
 
 	private SystemLevel level;
 	private SystemAnts ants;
+	private SystemGUI gui;
+	private SystemTowers towers;
 
 	private long worldSeed;
 	private Random worldRandom;
@@ -36,12 +40,16 @@ public class ATDWorld extends World {
 
 		this.level = new SystemLevel(this);
 		this.ants = new SystemAnts(this, level);
+		this.gui = new SystemGUI(this);
+		this.towers = new SystemTowers(this, level);
 
 		this.worldSeed = System.currentTimeMillis();
 		this.worldRandom = new Random(this.worldSeed);
 
 		this.addSystem(level);
 		this.addSystem(ants);
+		this.addSystem(gui);
+		this.addSystem(towers);
 	}
 
 	public Random getRandom() {
