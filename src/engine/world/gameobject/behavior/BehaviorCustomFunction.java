@@ -1,23 +1,22 @@
 package engine.world.gameobject.behavior;
 
-public class BehaviorBlackboardPut implements BehaviorNode {
+public class BehaviorCustomFunction implements BehaviorNode {
 
-	private Blackboard blackboard;
-
-	private String key;
-	private Object value;
-
-	public BehaviorBlackboardPut(Blackboard blackboard, String key,
-			Object value) {
-		this.blackboard = blackboard;
-
-		this.key = key;
-		this.value = value;
+	public interface Callback {
+		public void callback();
 	}
 	
+	private Blackboard blackboard;
+	private Callback callback;
+
+	public BehaviorCustomFunction(Blackboard blackboard, Callback callback) {
+		this.blackboard = blackboard;
+		this.callback = callback;
+	}
+
 	@Override
 	public BehaviorStatus tickBehavior(long nanosSinceLastTick) {
-		this.blackboard.put(key, value);
+		this.callback.callback();
 		return BehaviorStatus.SUCCESS;
 	}
 

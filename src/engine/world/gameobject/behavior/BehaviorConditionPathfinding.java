@@ -3,14 +3,14 @@ package engine.world.gameobject.behavior;
 public class BehaviorConditionPathfinding implements BehaviorNode {
 
 	private Blackboard blackboard;
-	private BehaviorAIPathfind pathfinder;
+	private BehaviorAIPathfind<?> pathfinder;
 
 	public BehaviorConditionPathfinding(Blackboard blackboard,
-			BehaviorAIPathfind pathfinder) {
+			BehaviorAIPathfind<?> pathfinder) {
 		this.blackboard = blackboard;
 		this.pathfinder = pathfinder;
 	}
-
+	
 	@Override
 	public BehaviorStatus tickBehavior(long nanosSinceLastTick) {
 		return pathfinder.isRunning() ? BehaviorStatus.SUCCESS

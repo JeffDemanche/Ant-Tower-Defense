@@ -1,13 +1,11 @@
 package game.world.gameobject.tile;
 
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import engine.world.GameSystem;
 import engine.world.gameobject.GameObject;
 import game.world.system.HexCoordinates;
+import game.world.system.SystemLevel;
 
 /**
  * Tiles are elements of the terrain (i.e. sand/grass) that are rendered below
@@ -17,11 +15,28 @@ public abstract class Tile extends GameObject {
 
 	private HexCoordinates offsetCoordinates;
 
-	public Tile(GameSystem system, String name,
+	private SystemLevel level;
+
+	public Tile(SystemLevel system, String name,
 			HexCoordinates offsetCoordinates) {
 		super(system, name);
-
+		this.level = system;
 		this.offsetCoordinates = offsetCoordinates;
+	}
+
+	public HexCoordinates getCoordinates() {
+		return this.offsetCoordinates;
+	}
+
+	public Set<HexCoordinates> getTraversableNeighborCoords() {
+		HashSet<HexCoordinates> traversableNeighbors = new HashSet<>();
+		for (HexCoordinates h : offsetCoordinates.getNeighbors()) {
+			if (level.tileAt(h) != null
+					&& level.tileAt(h).traversableByDefault()) {
+				traversableNeighbors.add(h);
+			}
+		}
+		return traversableNeighbors;
 	}
 
 	/**
@@ -33,10 +48,6 @@ public abstract class Tile extends GameObject {
 				+ coordinates.getOffsetCoordinates().y;
 	}
 
-	@Override
-	public Element writeXML(Document doc) throws ParserConfigurationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract boolean traversableByDefault();
 
 }

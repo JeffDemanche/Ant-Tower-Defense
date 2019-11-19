@@ -1,0 +1,4 @@
+Run the game through Eclipse. Right now there's only a menu with some high
+scores and splines right there (for testing). Click the first button to generate
+a new world (it should have an island with procedurally generated coastlines).
+Click and drag to pan around, scroll to zoom.

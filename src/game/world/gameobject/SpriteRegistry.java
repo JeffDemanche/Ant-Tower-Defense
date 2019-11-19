@@ -13,12 +13,15 @@ public final class SpriteRegistry {
 
 	public static Image SAND_MASKED;
 	public static Image GRASS_MASKED;
+	public static Image ANTHILL_MASKED;
 	public static Image[] WATER_MASKED;
 
 	public SpriteRegistry() {
 		SAND_MASKED = applyMask("img/tile/sand.png", "img/tile/hex_mask.png", 0,
 				16, HEX_SAMPLE_MULTIPLIER);
 		GRASS_MASKED = applyMask("img/tile/grass.png", "img/tile/hex_mask.png",
+				0, 16, HEX_SAMPLE_MULTIPLIER);
+		ANTHILL_MASKED = applyMask("img/tile/anthill.png", "img/tile/hex_mask.png",
 				0, 16, HEX_SAMPLE_MULTIPLIER);
 		WATER_MASKED = new Image[3];
 		for (int i = 0; i < 3; i++) {

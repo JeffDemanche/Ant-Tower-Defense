@@ -18,10 +18,19 @@ public class LevelGenerator {
 	private Vec2i size;
 	private int radius;
 
-	public LevelGenerator(SystemLevel level, Vec2i size) {
+	private double goalDistance;
+
+	/**
+	 * @param size
+	 *            Width by height.
+	 * @param goalDistance
+	 *            Rough distance between the anthill and the sugar pile.
+	 */
+	public LevelGenerator(SystemLevel level, Vec2i size, double goalDistance) {
 		this.level = level;
 		this.size = size;
 		this.radius = Math.min(size.x, size.y) / 2;
+		this.goalDistance = goalDistance;
 	}
 
 	/**
@@ -32,6 +41,15 @@ public class LevelGenerator {
 		double distToOrigin = Math
 				.sqrt(sample.x * sample.x + sample.y * sample.y);
 		return 1 - (distToOrigin / radius);
+	}
+
+	private HexCoordinates getAntHill() {
+		// TODO this should ensure more things and utilize randomness.
+		return new HexCoordinates(new Vec2i((int) -(goalDistance / 2), 0));
+	}
+
+	private HexCoordinates getSugarPile() {
+		return new HexCoordinates(new Vec2i((int) (goalDistance / 2), 0));
 	}
 
 	public void generateHeightIsland(Random random) {
@@ -73,21 +91,13 @@ public class LevelGenerator {
 				}
 			}
 		}
-		HexCoordinates coords = new HexCoordinates(new Vec2i(0, 0));
+		HexCoordinates coords = new HexCoordinates(new Vec2i(0, -2));
 		level.setTile(coords, new TileWater(level, coords));
-	}
-
-	public void generateTestLevel(Random random) {
-		for (int y = -3; y <= 3; y++) {
-			for (int x = -5; x <= 5; x++) {
-				HexCoordinates coords = new HexCoordinates(new Vec2i(x, y));
-				if (random.nextInt() % 3 == 0) {
-					level.setTile((coords), new TileSand(level, coords));
-				} else {
-					level.setTile((coords), new TileWater(level, coords));
-				}
-			}
+		level.setAntHill(getAntHill());
+		if (!level.tileAt(getSugarPile()).traversableByDefault()) {
+			System.err.println("Sugar pile on non-traversable tile???");
 		}
+		level.setSugarPile(getSugarPile());
 	}
 
 }

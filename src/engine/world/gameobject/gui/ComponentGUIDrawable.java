@@ -76,4 +76,9 @@ public class ComponentGUIDrawable extends Component implements Drawable {
 		return componentGUIDrawable;
 	}
 
+	@Override
+	public void setPosition(Vec2d position) {
+		this.screenPos = position;
+	}
+
 }
