@@ -24,6 +24,12 @@ import java.util.List;
  * since it means that all future hashes depend on the previous ones, which makes it more
  * difficult to modify a single score and get away with it. 
  * 
+ * I also added a footer that is the hash of the whole contents of the file. I realized
+ * I needed this because one could remove scores starting from the bottom and going up,
+ * since the hashing is done in one direction. I might add hashing in the other direction
+ * in addition, which would also allow for better identification of which score is the one
+ * giving the error.
+ * 
  * Besides using a better hash, another thing I might do is encrypt the entire
  * scores file if we are still concerned with security; but I think that it is
  * nice to be able to view the scores outside the program so I am not sure if
@@ -101,11 +107,21 @@ public class HighScores {
 		String line = null;
 		line = br.readLine();
 		String salt = this.salt;
+		String total = "";
 		if (useHashes)
 			while(line != null) {
 				String[] data = line.trim().split("\\s+");
-				// TODO: Rather than skipping, should add exception handling here
-				if (data.length >= 3) {
+				// Handles the footer of the file (which is just the hash of the previous contents)
+				if (data.length == 1) {
+					if (!HighScores.makeHash(total).equals(data[0])) {
+						System.out.println(HighScores.makeHash(total));
+						System.out.println(data[0]);
+						System.out.print(total);
+						br.close();
+						fr.close();
+						throw new ModifyException();
+					}
+				} else if (data.length == 3) {
 					Score s = new Score(data[0], Integer.parseInt(data[1]));
 					target.add(s);
 					salt = HighScores.makeHash(s.toString() + salt);
@@ -114,7 +130,12 @@ public class HighScores {
 						fr.close();
 						throw new ModifyException();
 					}
+				} else {
+					br.close();
+					fr.close();
+					throw new ModifyException();
 				}
+				total = total + line + "\n";
 				line = br.readLine();
 			}
 		else
@@ -146,10 +167,16 @@ public class HighScores {
 		BufferedWriter bw = new BufferedWriter(fw);
 		if (useHashing) {
 			String salt = this.salt;
+			String total = "";
+			String tmp;
 			for (Score s : scores) {
 				salt = HighScores.makeHash(s.toString() + salt);
-				bw.write(s.toString() + " " + salt  + "\n"); 
+				tmp = s.toString() + " " + salt  + "\n";
+				total = total + tmp;
+				bw.write(tmp); 
 			}
+			// Added a footer, so that the scores cannot be removed
+			bw.write(HighScores.makeHash(total));
 		} else {
 			for (Score s : scores) {
 				bw.write(s.toString() + "\n"); 
