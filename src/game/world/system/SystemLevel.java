@@ -11,10 +11,16 @@ import org.w3c.dom.Element;
 
 import application.Vec2i;
 import engine.world.GameSystem;
-import engine.world.TileCoordinates;
+
 import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
+import game.world.gameobject.EmitterGameObject1;
+import game.world.gameobject.EmitterGameObject2;
+import game.world.gameobject.EmitterGameObject3;
+
+import engine.world.TileCoordinates;
 import game.world.gameobject.SugarPile;
+
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tile.TileAntHill;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,6 +33,10 @@ public class SystemLevel extends GameSystem
 	private ATDWorld atdWorld;
 	private LevelGenerator levelGenerator;
 
+	private GameObject emptyGameObject;
+	private GameObject emptyGameObject2;
+	private GameObject emptyGameObject3;
+	
 	private Vec2i size;
 
 	private HexCoordinates antHill;
@@ -122,6 +132,14 @@ public class SystemLevel extends GameSystem
 
 	@Override
 	public void onStartup() {
+		emptyGameObject = new EmitterGameObject1(this, "emittergo1");
+		emptyGameObject2 = new EmitterGameObject2(this, "emittergo2");
+		emptyGameObject3 = new EmitterGameObject3(this, "emittergo3");
+		
+		this.addGameObject(1, emptyGameObject);
+		this.addGameObject(1, emptyGameObject2);
+		this.addGameObject(1, emptyGameObject3);
+		
 		levelGenerator.generateHeightIsland(atdWorld.getRandom());
 
 		this.sugarPileGameObject = new SugarPile(this, sugarPile);
