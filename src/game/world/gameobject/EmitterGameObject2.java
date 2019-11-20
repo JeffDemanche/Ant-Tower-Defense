@@ -11,21 +11,19 @@ import engine.world.gameobject.ComponentAABB;
 import engine.world.gameobject.ComponentEmitter;
 import engine.world.gameobject.GameObject;
 
-public class EmitterGameObject extends GameObject {
+public class EmitterGameObject2 extends GameObject {
 
-	public EmitterGameObject(GameSystem system, String name) {
+	public EmitterGameObject2(GameSystem system, String name) {
 		super(system, name);
 		// TODO Auto-generated constructor stub
 		
 		
-		ComponentAABB aabComponent = new ComponentAABB(this, new Vec2d(0,0), new Vec2d(1,1));
-		ComponentEmitter particleEmitter = new ComponentEmitter("Emitter", this, "img/particle/particle.png",
-		10, 2, aabComponent.getPosition(), new Vec2d(0,-1), 0.05);
+		ComponentAABB aabComponent = new ComponentAABB(this, new Vec2d(-5,5), new Vec2d(1,1));
+		ComponentEmitter particleEmitter = new ComponentEmitter(ComponentEmitter.PATTERTYPE.FIRE , "Emitter", this,
+		10, 2, aabComponent.getPosition(), new Vec2d(0.5,0.5),new Vec2d(0,-1), 0.05,true,3.0f,0);
 		
 		this.addComponent(particleEmitter);
 	}
-
-	
 	
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {

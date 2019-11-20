@@ -11,7 +11,9 @@ import application.Vec2i;
 import engine.world.GameSystem;
 import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
-import game.world.gameobject.EmitterGameObject;
+import game.world.gameobject.EmitterGameObject1;
+import game.world.gameobject.EmitterGameObject2;
+import game.world.gameobject.EmitterGameObject3;
 import game.world.gameobject.tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -22,6 +24,9 @@ public class SystemLevel extends GameSystem {
 	private ATDWorld atdWorld;
 	private LevelGenerator levelGenerator;
 	private GameObject emptyGameObject;
+	private GameObject emptyGameObject2;
+	private GameObject emptyGameObject3;
+	
 	private Vec2i size;
 
 	/**
@@ -85,8 +90,14 @@ public class SystemLevel extends GameSystem {
 
 	@Override
 	public void onStartup() {
-		emptyGameObject = new EmitterGameObject(this, "emittergo");
+		emptyGameObject = new EmitterGameObject1(this, "emittergo1");
+		emptyGameObject2 = new EmitterGameObject2(this, "emittergo2");
+		emptyGameObject3 = new EmitterGameObject3(this, "emittergo3");
+		
 		this.addGameObject(1, emptyGameObject);
+		this.addGameObject(1, emptyGameObject2);
+		this.addGameObject(1, emptyGameObject3);
+		
 		levelGenerator.generateHeightIsland(atdWorld.getRandom());
 	}
 

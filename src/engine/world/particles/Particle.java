@@ -20,23 +20,27 @@ public class Particle extends GameObject{
 	private long currentTimeLife = 0;
 	private Vec2d direction;
 	private double speed;
-	private Vec2d initialPosition;
+	private Vec2d myPosition;
 	private boolean initialized = false;
 	private boolean firstUpdate = true;
+	private Vec2d mySize;
+	private boolean myDirectionParticle = true;
 	
 	public Particle(GameSystem system, String name, String texturePath, 
-			Vec2d initialPosition, int timeTolive,
+			Vec2d initialPosition, Vec2d initialSize, int timeTolive,
 			Vec2d direction, double speed) {
 		super(system, name);
 		// TODO Auto-generated constructor stub
 		this.direction = direction;
 	    this.timeToLive = timeTolive;
-	    this.initialPosition = initialPosition;
+	    this.myPosition = initialPosition;
 	    this.myTexturePath = texturePath;
+	    this.mySize = initialSize;
 	    this.speed =speed;
 	    
+	    
 	    ComponentAABB aabComponent = new ComponentAABB(this,initialPosition,
-			new Vec2d(1,1));
+			this.mySize);
 	    Image texture = new Image(this.myTexturePath);
 	    ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
 	    		texture, aabComponent);
@@ -45,7 +49,7 @@ public class Particle extends GameObject{
 		this.addComponent(sprite);
 	}
 
-	@Override
+	
 	public void onTick(long nanosSincePreviousTick) {
 		
 		if(firstUpdate)
@@ -66,12 +70,22 @@ public class Particle extends GameObject{
 		{
 			if(!this.initialized)
 			{
-				((ComponentAABB)this.getComponent("AABB")).setPosition(this.initialPosition);
+				((ComponentAABB)this.getComponent("AABB")).setPosition(this.myPosition);
 				this.initialized = true;
 			}
-			Vec2d position = ((ComponentAABB)this.getComponent("AABB")).getPosition();
-			position = position.plus(this.direction).smult(this.speed);//.smult(nanosSincePreviousTick);
-			((ComponentAABB)this.getComponent("AABB")).setPosition(position);
+			
+			
+			
+			((ComponentAABB) this.getComponent("AABB")).adjustPosition(this.direction.smult(this.speed));	
+			
+			
+			
+//			Vec2d position = ((ComponentAABB)this.getComponent("AABB")).getPosition();
+//			position = position.plus(this.direction).smult(this.speed);//.smult(nanosSincePreviousTick);
+//			((ComponentAABB)this.getComponent("AABB")).setPosition(position);
+//			
+//			System.out.println(position);
+			
 			
 			//this.position.x += this.velocity.x * dt;
 			//this.position.y += this.velocity.y * dt;
@@ -93,6 +107,26 @@ public class Particle extends GameObject{
 
 	public void setTimeToLive(int timeToLive) {
 		this.timeToLive = timeToLive;
+	}
+
+
+	public Vec2d getDirection() {
+		return direction;
+	}
+
+
+	public void setDirection(Vec2d direction) {
+		this.direction = direction;
+	}
+
+
+	public Vec2d getPosition() {
+		return myPosition;
+	}
+
+
+	public void setPosition(Vec2d position) {
+		this.myPosition = position;
 	}
 
 	
