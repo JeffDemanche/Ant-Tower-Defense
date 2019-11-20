@@ -15,6 +15,8 @@ public final class SpriteRegistry {
 	public static Image GRASS_MASKED;
 	public static Image ANTHILL_MASKED;
 	public static Image[] WATER_MASKED;
+	
+	public static Image CINNAMON;
 
 	public SpriteRegistry() {
 		System.out.println("Working Directory = " +
@@ -30,6 +32,8 @@ public final class SpriteRegistry {
 			WATER_MASKED[i] = applyMask("file:src/img/tile/water.png",
 					"file:src/img/tile/hex_mask.png", i, 16, HEX_SAMPLE_MULTIPLIER);
 		}
+		
+		CINNAMON = new Image("file:src/image/tower/cinnamon.png");
 
 		initialized = true;
 	}

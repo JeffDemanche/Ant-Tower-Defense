@@ -65,7 +65,7 @@ public class ATDWorld extends World {
 		Set<HexCoordinates> neighbs = level.getTraversableNeighbors(
 				click.getOffsetCoordinates().x, click.getOffsetCoordinates().y);
 	}
-
+	
 	@Override
 	public void onKeyPressed(KeyEvent e) {
 		super.onKeyPressed(e);

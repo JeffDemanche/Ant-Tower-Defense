@@ -80,5 +80,9 @@ public class ComponentGUIDrawable extends Component implements Drawable {
 	public void setPosition(Vec2d position) {
 		this.screenPos = position;
 	}
+	
+	public void setSize(Vec2d size) {
+		this.screenSize = size;
+	}
 
 }

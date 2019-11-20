@@ -240,6 +240,8 @@ public abstract class World implements XMLSerializable {
 
 	public void onResize(Vec2d newSize) {
 		this.getViewport().onResize(newSize);
+
+		this.systems.forEach(system -> system.onResize(newSize));
 	}
 
 	public void onKeyTyped(KeyEvent e) {
@@ -273,6 +275,8 @@ public abstract class World implements XMLSerializable {
 	public void onMousePressed(MouseEvent e) {
 		eventHandler.dispatchMouseEvent("MousePress", e);
 
+		this.systems.forEach(system -> system.onMousePressed(e));
+		
 		if (!e.isConsumed()) {
 			if (e.getButton() == MouseButton.PRIMARY) {
 				this.dragPosition = new Vec2d(e.getSceneX(), e.getSceneY());
@@ -282,7 +286,9 @@ public abstract class World implements XMLSerializable {
 
 	public void onMouseDragged(MouseEvent e) {
 		eventHandler.dispatchMouseEvent("MouseDrag", e);
-
+		
+		this.systems.forEach(system -> system.onMouseDragged(e));
+		
 		if (!e.isConsumed()) {
 			if (e.getButton() == MouseButton.PRIMARY) {
 				Vec2d newPosition = new Vec2d(e.getSceneX(), e.getSceneY());
@@ -300,6 +306,8 @@ public abstract class World implements XMLSerializable {
 
 	public void onMouseReleased(MouseEvent e) {
 		eventHandler.dispatchMouseEvent("MouseRelease", e);
+
+		this.systems.forEach(system -> system.onMouseReleased(e));
 
 		if (!e.isConsumed()) {
 			if (e.getButton() == MouseButton.PRIMARY) {

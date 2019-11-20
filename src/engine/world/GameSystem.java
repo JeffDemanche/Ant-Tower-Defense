@@ -15,6 +15,7 @@ import engine.world.gameobject.EventHandler;
 import engine.world.gameobject.GameObject;
 import engine.world.serialization.XMLSerializable;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Systems organize GameObjects and act using them.
@@ -65,7 +66,7 @@ public abstract class GameSystem implements XMLSerializable {
 			}
 		}
 	}
-	
+
 	public boolean doesGameObjectExist(GameObject obj) {
 		for (int key : gameObjects.keySet()) {
 			Iterator<GameObject> iter = gameObjects.get(key).iterator();
@@ -78,7 +79,7 @@ public abstract class GameSystem implements XMLSerializable {
 		}
 		return false;
 	}
-	
+
 	public ArrayList<Element> writeGameObjectsXML(Document doc) {
 		ArrayList<Element> elements = new ArrayList<>();
 		for (int key : gameObjects.keySet()) {
@@ -87,7 +88,8 @@ public abstract class GameSystem implements XMLSerializable {
 				GameObject next = iter.next();
 				try {
 					Element objectXml = next.writeXML(doc);
-					objectXml.setAttribute("layer", new Integer(key).toString());
+					objectXml.setAttribute("layer",
+							new Integer(key).toString());
 					elements.add(next.writeXML(doc));
 				} catch (ParserConfigurationException e) {
 					e.printStackTrace();
@@ -96,7 +98,7 @@ public abstract class GameSystem implements XMLSerializable {
 		}
 		return elements;
 	}
-	
+
 	public EventHandler getEventHandler() {
 		return this.world.getEventHandler();
 	}
@@ -124,8 +126,48 @@ public abstract class GameSystem implements XMLSerializable {
 	public abstract void onStartup();
 
 	public abstract void onShutdown();
-	
+
 	public abstract void onWorldLoaded();
+
+	public void onResize(Vec2d newSize) {
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				next.onResize(newSize);
+			}
+		}
+	}
+
+	public void onMousePressed(MouseEvent e) {
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				next.onMousePressed(e);
+			}
+		}
+	}
+
+	public void onMouseDragged(MouseEvent e) {
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				next.onMouseDragged(e);
+			}
+		}
+	}
+
+	public void onMouseReleased(MouseEvent e) {
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				next.onMouseReleased(e);
+			}
+		}
+	}
 
 	/**
 	 * Gives screen space coords corresponding to a given pair of game space

@@ -18,7 +18,7 @@ public interface Drawable {
 	public Vec2d getSize();
 	
 	public void setPosition(Vec2d position);
-	
+
 	public void adjustPosition(Vec2d adjustment);
 	
 	/**
