@@ -1,4 +1,8 @@
-Run the game through Eclipse. Right now there's only a menu with some high
+Run the game through Eclipse. The main menu has some high
 scores and splines right there (for testing). Click the first button to generate
 a new world (it should have an island with procedurally generated coastlines).
 Click and drag to pan around, scroll to zoom.
+You can see various particles being drawn on the screen.
+You can click on the buttons in the top right to add to/save the current high
+score (right now saves with a name of "Default").
+You can press the spacebar to spawn the first wave of ants.
