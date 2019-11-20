@@ -5,20 +5,17 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Wrapper class for interacting with high scores
  * 
- * NOTE: currently I am just using hashcodes for basic security. 
- * This is technically not very secure, since hashcodes are NOT the
- * same as cryptographic hashes. For next week, I am planning on actually
- * implementing a cryptographic hashing algorithm, but for now I am using
- * hashcodes (the goal for this week was to just get high scores working,
- * which seems to be fine). The hashcode implementation should give an idea
- * of how I plan to make sure the scores file does not change. 
+ * I have updated this to use SHA-512 hashing. 
  * 
  * I am actually implementing something slightly similar to a blockchain. Basically, 
  * the next score's hash is the hash for the concatenation of the current score's content (i.e. name
@@ -27,12 +24,16 @@ import java.util.List;
  * since it means that all future hashes depend on the previous ones, which makes it more
  * difficult to modify a single score and get away with it. 
  * 
- * Please note that while hashcodes are not necessarily deterministic for objects in general,
- * they ARE deterministic for Strings.
+ * I also added a footer that is the hash of the whole contents of the file. I realized
+ * I needed this because one could remove scores starting from the bottom and going up,
+ * since the hashing is done in one direction. I might add hashing in the other direction
+ * in addition, which would also allow for better identification of which score is the one
+ * giving the error.
  * 
- * Besides using a better hash, the next steps I plan on taking for security would probably be 
- * encrypting the whole file so that it would be difficult for users to edit it outside of the program
- * (not sure if this level of security is necessary though).
+ * Besides using a better hash, another thing I might do is encrypt the entire
+ * scores file if we are still concerned with security; but I think that it is
+ * nice to be able to view the scores outside the program so I am not sure if
+ * we will do this. 
  */
 public class HighScores {
 
@@ -62,6 +63,35 @@ public class HighScores {
 		this.salt = salt;
 	}
 	
+
+	/**
+	 * Static method for hashing. 
+	 * @param toHash - the String to be hashed.
+	 * @return a Base64 encoded string of the hash (this is so that non-ASCII
+	 * 		   characters won't be printed).
+	 */
+	private static String makeHash(String toHash) {
+		MessageDigest md;
+		try {
+			// Can change this to a different hashing algorithm.
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return "";
+		}
+		byte[] bytes;
+		try {
+			// Apply the selected hashing algorithm to bytes of the string
+			bytes = md.digest(toHash.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return "";
+		}
+		// Encode the bytes as a String and return it
+		return Base64.getEncoder().encodeToString(bytes);
+	}
+	
+	
 	/**
 	 * Gets the scores by adding them to the specified List.
 	 * @param target - a list to add the scores to (will be cleared beforehand)
@@ -77,21 +107,35 @@ public class HighScores {
 		String line = null;
 		line = br.readLine();
 		String salt = this.salt;
+		String total = "";
 		if (useHashes)
 			while(line != null) {
 				String[] data = line.trim().split("\\s+");
-				// TODO: Rather than skipping, should add exception handling here
-				if (data.length >= 3) {
+				// Handles the footer of the file (which is just the hash of the previous contents)
+				if (data.length == 1) {
+					if (!HighScores.makeHash(total).equals(data[0])) {
+						System.out.println(HighScores.makeHash(total));
+						System.out.println(data[0]);
+						System.out.print(total);
+						br.close();
+						fr.close();
+						throw new ModifyException();
+					}
+				} else if (data.length == 3) {
 					Score s = new Score(data[0], Integer.parseInt(data[1]));
 					target.add(s);
-					// Please read what I wrote at the top of this file for more details
-					salt = Integer.toString((s.toString() + salt).hashCode());
+					salt = HighScores.makeHash(s.toString() + salt);
 					if (!salt.equals(data[2])) {
 						br.close();
 						fr.close();
 						throw new ModifyException();
 					}
+				} else {
+					br.close();
+					fr.close();
+					throw new ModifyException();
 				}
+				total = total + line + "\n";
 				line = br.readLine();
 			}
 		else
@@ -123,11 +167,16 @@ public class HighScores {
 		BufferedWriter bw = new BufferedWriter(fw);
 		if (useHashing) {
 			String salt = this.salt;
+			String total = "";
+			String tmp;
 			for (Score s : scores) {
-				// Please read what I wrote at the top of this file for more details
-				salt = Integer.toString((s.toString() + salt).hashCode());	
-				bw.write(s.toString() + " " + salt  + "\n"); 
+				salt = HighScores.makeHash(s.toString() + salt);
+				tmp = s.toString() + " " + salt  + "\n";
+				total = total + tmp;
+				bw.write(tmp); 
 			}
+			// Added a footer, so that the scores cannot be removed
+			bw.write(HighScores.makeHash(total));
 		} else {
 			for (Score s : scores) {
 				bw.write(s.toString() + "\n"); 

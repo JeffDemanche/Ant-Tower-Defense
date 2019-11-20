@@ -1,12 +1,14 @@
 package engine.world.gameobject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 import application.Vec2d;
 import engine.world.GameSystem;
 import engine.world.serialization.XMLSerializable;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 
 /**
  * A GameObject is some kind of element in the game (sound, character, wall,
@@ -15,7 +17,7 @@ import javafx.scene.canvas.GraphicsContext;
  * @author jdemanch
  */
 public abstract class GameObject implements XMLSerializable {
-	
+
 	private String name;
 	private ArrayList<Component> components;
 	private GameSystem system;
@@ -189,6 +191,18 @@ public abstract class GameObject implements XMLSerializable {
 
 	public void onDraw(GraphicsContext g) {
 		components.forEach(component -> component.onDraw(g));
+	}
+
+	public void onResize(Vec2d newSize) {
+	}
+
+	public void onMousePressed(MouseEvent e) {
+	}
+
+	public void onMouseDragged(MouseEvent e) {
+	}
+
+	public void onMouseReleased(MouseEvent e) {
 	}
 
 	@Override

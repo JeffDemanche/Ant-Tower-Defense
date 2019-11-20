@@ -14,7 +14,7 @@ public class BehaviorBlackboardPut implements BehaviorNode {
 		this.key = key;
 		this.value = value;
 	}
-
+	
 	@Override
 	public BehaviorStatus tickBehavior(long nanosSinceLastTick) {
 		this.blackboard.put(key, value);

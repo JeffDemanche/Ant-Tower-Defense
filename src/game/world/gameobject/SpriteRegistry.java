@@ -13,18 +13,27 @@ public final class SpriteRegistry {
 
 	public static Image SAND_MASKED;
 	public static Image GRASS_MASKED;
+	public static Image ANTHILL_MASKED;
 	public static Image[] WATER_MASKED;
+	
+	public static Image CINNAMON;
 
 	public SpriteRegistry() {
-		SAND_MASKED = applyMask("img/tile/sand.png", "img/tile/hex_mask.png", 0,
+		System.out.println("Working Directory = " +
+			      System.getProperty("user.dir"));
+		SAND_MASKED = applyMask("file:src/img/tile/sand.png", "file:src/img/tile/hex_mask.png", 0,
 				16, HEX_SAMPLE_MULTIPLIER);
-		GRASS_MASKED = applyMask("img/tile/grass.png", "img/tile/hex_mask.png",
+		GRASS_MASKED = applyMask("file:src/img/tile/grass.png", "file:src/img/tile/hex_mask.png",
+				0, 16, HEX_SAMPLE_MULTIPLIER);
+		ANTHILL_MASKED = applyMask("file:src/img/tile/anthill.png", "file:src/img/tile/hex_mask.png",
 				0, 16, HEX_SAMPLE_MULTIPLIER);
 		WATER_MASKED = new Image[3];
 		for (int i = 0; i < 3; i++) {
-			WATER_MASKED[i] = applyMask("img/tile/water.png",
-					"img/tile/hex_mask.png", i, 16, HEX_SAMPLE_MULTIPLIER);
+			WATER_MASKED[i] = applyMask("file:src/img/tile/water.png",
+					"file:src/img/tile/hex_mask.png", i, 16, HEX_SAMPLE_MULTIPLIER);
 		}
+		
+		CINNAMON = new Image("file:src/image/tower/cinnamon.png");
 
 		initialized = true;
 	}

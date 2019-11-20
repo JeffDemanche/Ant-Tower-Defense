@@ -12,7 +12,7 @@ public class BehaviorDoNothing implements BehaviorNode {
 		this.seconds = seconds;
 		this.secondsRemaining = seconds;
 	}
-
+	
 	@Override
 	public BehaviorStatus tickBehavior(long nanosSinceLastTick) {
 		secondsRemaining -= nanosSinceLastTick / 1000000000D;

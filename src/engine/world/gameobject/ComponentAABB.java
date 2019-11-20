@@ -40,6 +40,7 @@ public class ComponentAABB extends Component implements Collidable, Drawable {
 				XMLEngine.readVec2d(element.getAttribute("size")));
 	}
 
+	@Override
 	public void setPosition(Vec2d newPosition) {
 		this.position = newPosition;
 	}

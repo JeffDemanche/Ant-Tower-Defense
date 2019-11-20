@@ -5,10 +5,18 @@ import java.util.ArrayList;
 import org.w3c.dom.Element;
 
 import application.Vec2d;
+import application.Vec2i;
 
 public final class XMLEngine {
 
 	public static String writeVec2d(Vec2d v) {
+		if (v == null) {
+			return null;
+		}
+		return v.x + ", " + v.y;
+	}
+
+	public static String writeVec2i(Vec2i v) {
 		if (v == null) {
 			return null;
 		}
@@ -22,6 +30,15 @@ public final class XMLEngine {
 		String[] strVals = val.split(", ");
 		return new Vec2d(Double.parseDouble(strVals[0]),
 				Double.parseDouble(strVals[1]));
+	}
+
+	public static Vec2i readVec2i(String val) {
+		if (val.equals("null")) {
+			return null;
+		}
+		String[] strVals = val.split(", ");
+		return new Vec2i(Integer.parseInt(strVals[0]),
+				Integer.parseInt(strVals[1]));
 	}
 
 	public static String writeIterableAsAttribute(Iterable<String> i) {

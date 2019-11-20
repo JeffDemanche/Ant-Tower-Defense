@@ -17,6 +17,11 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 
 	public ComponentCircle(String tag, GameObject object, Vec2d initialPos,
 			double initialRadius) {
+		this(object, initialPos, initialRadius);
+	}
+
+	public ComponentCircle(GameObject object, Vec2d initialPos,
+			double initialRadius) {
 		super("Cicle", object);
 		this.position = initialPos;
 		this.radius = initialRadius;
@@ -26,6 +31,11 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 		super("Circle", object);
 		this.position = XMLEngine.readVec2d(element.getAttribute("position"));
 		this.radius = Double.parseDouble(element.getAttribute("radius"));
+	}
+
+	@Override
+	public void setPosition(Vec2d position) {
+		this.position = position;
 	}
 	
 	@Override
@@ -62,7 +72,7 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 	public Vec2d collidesMTV(Collidable collider) {
 		return collider.collidesCircleMTV(this);
 	}
-	
+
 	@Override
 	public boolean collidesAABB(Collidable collider) {
 		if (!(collider instanceof ComponentAABB)) {
@@ -72,7 +82,7 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 		ComponentAABB aabbCollider = (ComponentAABB) collider;
 		return Collisions.AABBtoCircle(aabbCollider, this);
 	}
-	
+
 	@Override
 	public Vec2d collidesAABBMTV(Collidable collider) {
 		if (!(collider instanceof ComponentAABB)) {
@@ -92,7 +102,7 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 		ComponentCircle circleCollider = (ComponentCircle) collider;
 		return Collisions.circleToCircle(this, circleCollider);
 	}
-	
+
 	@Override
 	public Vec2d collidesCircleMTV(Collidable collider) {
 		if (!(collider instanceof ComponentCircle)) {
@@ -102,7 +112,7 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 		ComponentCircle circleCollider = (ComponentCircle) collider;
 		return Collisions.mtvCircleToCircle(this, circleCollider);
 	}
-	
+
 	@Override
 	public boolean collidesPolygon(Collidable collider) {
 		return collidesPolygonMTV(collider) != null;
@@ -117,7 +127,7 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 		ComponentPolygon polygonCollider = (ComponentPolygon) collider;
 		return CollisionsPolygon.mtvPolygonToCircle(this, polygonCollider);
 	}
-	
+
 	@Override
 	public Vec2d getScreenPosition() {
 		Vec2d adjustedPosition = new Vec2d(this.position.x - this.radius,
@@ -161,9 +171,11 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
 		Element componentCircle = doc.createElement("ComponentCircle");
-		componentCircle.setAttribute("position", XMLEngine.writeVec2d(this.position));
-		componentCircle.setAttribute("radius", new Double(this.radius).toString());
+		componentCircle.setAttribute("position",
+				XMLEngine.writeVec2d(this.position));
+		componentCircle.setAttribute("radius",
+				new Double(this.radius).toString());
 		return componentCircle;
 	}
-	
+
 }

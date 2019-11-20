@@ -21,7 +21,7 @@ public class BehaviorSequence implements BehaviorNode, BehaviorControlFlow {
 	public void addChild(BehaviorNode child) {
 		this.children.add(child);
 	}
-
+	
 	@Override
 	public BehaviorStatus tickBehavior(long nanosSinceLastTick) {
 		for (BehaviorNode child : this.children) {
