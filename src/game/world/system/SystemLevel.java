@@ -132,13 +132,13 @@ public class SystemLevel extends GameSystem
 
 	@Override
 	public void onStartup() {
-		emptyGameObject = new EmitterGameObject1(this, "emittergo1");
-		emptyGameObject2 = new EmitterGameObject2(this, "emittergo2");
-		emptyGameObject3 = new EmitterGameObject3(this, "emittergo3");
+//		emptyGameObject = new EmitterGameObject1(this, "emittergo1");
+//		emptyGameObject2 = new EmitterGameObject2(this, "emittergo2");
+//		emptyGameObject3 = new EmitterGameObject3(this, "emittergo3");
 		
-		this.addGameObject(1, emptyGameObject);
-		this.addGameObject(1, emptyGameObject2);
-		this.addGameObject(1, emptyGameObject3);
+//		this.addGameObject(1, emptyGameObject);
+//		this.addGameObject(1, emptyGameObject2);
+//		this.addGameObject(1, emptyGameObject3);
 		
 		levelGenerator.generateHeightIsland(atdWorld.getRandom());
 
@@ -149,8 +149,6 @@ public class SystemLevel extends GameSystem
 
 	@Override
 	public void onShutdown() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -42,19 +42,27 @@ public class GUITowerIcon extends GameObject {
 				parentGUI.getScreenPosition().plus(pos),
 				new Vec2d(TOWER_ICON_WIDTH, TOWER_ICON_HEIGHT));
 		image = new ComponentGUIImageRenderer(this,
-				parentGUI.getScreenPosition().plus(pos),
-				new Vec2d(32), 6,
+				parentGUI.getScreenPosition().plus(pos), new Vec2d(32), 6,
 				"file:src/img/tower/cinnamon.png");
 
 		this.addComponent(bound);
 		this.addComponent(image);
 	}
 
+	public TowerInfo getTowerInfo() {
+		return this.info;
+	}
+
+	public ComponentGUIDrawable getBound() {
+		return this.bound;
+	}
+	
 	@Override
 	public void onResize(Vec2d newSize) {
 		super.onResize(newSize);
 
-		bound.setPosition(parentGUI.getPosition().plus(pos));
+		bound.setPosition(parentGUI.getScreenPosition().plus(pos));
+		image.setScreenPosition(parentGUI.getScreenPosition().plus(pos));
 	}
 
 	@Override

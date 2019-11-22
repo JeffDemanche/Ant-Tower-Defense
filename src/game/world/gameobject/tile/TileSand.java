@@ -51,4 +51,9 @@ public class TileSand extends Tile {
 		return true;
 	}
 
+	@Override
+	public boolean suitableForTower() {
+		return true;
+	}
+
 }

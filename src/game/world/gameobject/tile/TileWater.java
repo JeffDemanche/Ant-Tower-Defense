@@ -52,4 +52,9 @@ public class TileWater extends Tile {
 		return false;
 	}
 
+	@Override
+	public boolean suitableForTower() {
+		return false;
+	}
+
 }

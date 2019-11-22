@@ -52,4 +52,9 @@ public class TileGrass extends Tile {
 		return true;
 	}
 
+	@Override
+	public boolean suitableForTower() {
+		return true;
+	}
+
 }

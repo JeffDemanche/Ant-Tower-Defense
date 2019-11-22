@@ -49,5 +49,7 @@ public abstract class Tile extends GameObject {
 	}
 
 	public abstract boolean traversableByDefault();
+	
+	public abstract boolean suitableForTower();
 
 }

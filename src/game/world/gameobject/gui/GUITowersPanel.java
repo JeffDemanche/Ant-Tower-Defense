@@ -30,7 +30,7 @@ public class GUITowersPanel extends GameObject {
 		bound = new ComponentGUIDrawable(this,
 				new Vec2d(0, initialScreenSize.y - TOWERS_PANEL_HEIGHT),
 				new Vec2d(initialScreenSize.x, initialScreenSize.y));
-		color = new ComponentSolidColorSprite(this, Color.BLACK, bound);
+		color = new ComponentSolidColorSprite(this, new Color(0, 0, 0, 0.4), bound);
 
 		this.addComponent(bound);
 		this.addComponent(color);

@@ -28,7 +28,8 @@ public class HexCoordinates
 	private static final double HEX_MAX_X = ((Math.sqrt(3) / 2) + 1) / 2;
 	private static final double HEX_MIN_X = ((-(Math.sqrt(3) / 2)) + 1) / 2;
 
-	private static final double HEX_WIDTH = Math.sqrt(3) / 2;
+	public static final double HEX_WIDTH = Math.sqrt(3) / 2;
+	public static final double HEX_HEIGHT = 1;
 
 	private Vec2i offsetCoordinates;
 
@@ -80,7 +81,8 @@ public class HexCoordinates
 	}
 
 	/**
-	 * Converts this hex coordinate to a game space coordinate.
+	 * Converts this hex coordinate to a game space coordinate (placed at
+	 * top-right of hex bounding box).
 	 */
 	public Vec2d toGameSpace() {
 		double rowOffsetMult = (this.offsetCoordinates.y & 1) == 0 ? 1 : 0.5;
@@ -92,6 +94,10 @@ public class HexCoordinates
 		double y = offsetCoordinates.y - (offsetCoordinates.y * 0.25);
 
 		return new Vec2d(x, y);
+	}
+
+	public Vec2d toGameSpaceCentered() {
+		return toGameSpace().plus(new Vec2d(HEX_WIDTH / 2, HEX_HEIGHT / 2));
 	}
 
 	@Override

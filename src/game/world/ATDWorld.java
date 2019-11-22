@@ -22,6 +22,9 @@ import javafx.scene.input.MouseEvent;
 
 public class ATDWorld extends World {
 
+	private static final int STARTING_SUGAR = 30;
+	private static final int STARTING_CASH = 50;
+
 	private ATDViewport viewport;
 	private String name;
 
@@ -33,6 +36,9 @@ public class ATDWorld extends World {
 	private long worldSeed;
 	private Random worldRandom;
 
+	private int remainingSugar;
+	private int cash;
+
 	public ATDWorld(ATDViewport viewport, String name) {
 		super(viewport);
 		this.viewport = viewport;
@@ -40,40 +46,19 @@ public class ATDWorld extends World {
 
 		this.level = new SystemLevel(this);
 		this.ants = new SystemAnts(this, level);
-		this.gui = new SystemGUI(this);
 		this.towers = new SystemTowers(this, level);
+		this.gui = new SystemGUI(this, towers);
 
 		this.worldSeed = System.currentTimeMillis();
 		this.worldRandom = new Random(this.worldSeed);
+
+		this.remainingSugar = STARTING_SUGAR;
+		this.cash = STARTING_CASH;
 
 		this.addSystem(level);
 		this.addSystem(ants);
 		this.addSystem(gui);
 		this.addSystem(towers);
-	}
-
-	public Random getRandom() {
-		return this.worldRandom;
-	}
-
-	@Override
-	public void onMouseClicked(MouseEvent e) {
-		super.onMouseClicked(e);
-
-		HexCoordinates click = (HexCoordinates.fromGameSpace(viewport
-				.toGameSpace(new Vec2d(e.getSceneX(), e.getSceneY()), false)));
-		Set<HexCoordinates> neighbs = level.getTraversableNeighbors(
-				click.getOffsetCoordinates().x, click.getOffsetCoordinates().y);
-	}
-	
-	@Override
-	public void onKeyPressed(KeyEvent e) {
-		super.onKeyPressed(e);
-
-		if (e.getCode() == KeyCode.SPACE) {
-			// TODO temporary until button for next wave.
-			ants.startWave();
-		}
 	}
 
 	/**
@@ -86,6 +71,41 @@ public class ATDWorld extends World {
 		this.name = element.getAttribute("name");
 		this.worldSeed = Long.parseLong(element.getAttribute("seed"));
 		this.worldRandom = new Random(this.worldSeed);
+		this.remainingSugar = Integer
+				.parseInt(element.getAttribute("remainingSugar"));
+		this.cash = Integer.parseInt(element.getAttribute("cash"));
+	}
+
+	public Random getRandom() {
+		return this.worldRandom;
+	}
+
+	public int getRemainingSugar() {
+		return this.remainingSugar;
+	}
+	
+	public int getCash() {
+		return this.cash;
+	}
+	
+	@Override
+	public void onMouseClicked(MouseEvent e) {
+		super.onMouseClicked(e);
+
+		HexCoordinates click = (HexCoordinates.fromGameSpace(viewport
+				.toGameSpace(new Vec2d(e.getSceneX(), e.getSceneY()), false)));
+		Set<HexCoordinates> neighbs = level.getTraversableNeighbors(
+				click.getOffsetCoordinates().x, click.getOffsetCoordinates().y);
+	}
+
+	@Override
+	public void onKeyPressed(KeyEvent e) {
+		super.onKeyPressed(e);
+
+		if (e.getCode() == KeyCode.SPACE) {
+			// TODO temporary until button for next wave.
+			ants.startWave();
+		}
 	}
 
 	@Override
@@ -93,6 +113,9 @@ public class ATDWorld extends World {
 		Element ATDWorld = doc.createElement("ATDWorld");
 		ATDWorld.setAttribute("name", this.name);
 		ATDWorld.setAttribute("seed", new Long(worldSeed).toString());
+		ATDWorld.setAttribute("remainingSugar",
+				new Integer(remainingSugar).toString());
+		ATDWorld.setAttribute("cash", new Integer(remainingSugar).toString());
 		ATDWorld.appendChild(viewport.writeXML(doc));
 		ATDWorld.appendChild(level.writeXML(doc));
 		ATDWorld.appendChild(ants.writeXML(doc));

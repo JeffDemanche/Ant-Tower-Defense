@@ -15,31 +15,39 @@ public final class SpriteRegistry {
 	public static Image GRASS_MASKED;
 	public static Image ANTHILL_MASKED;
 	public static Image[] WATER_MASKED;
-	
+
 	public static Image CINNAMON;
 
 	public SpriteRegistry() {
-		System.out.println("Working Directory = " +
-			      System.getProperty("user.dir"));
-		SAND_MASKED = applyMask("file:src/img/tile/sand.png", "file:src/img/tile/hex_mask.png", 0,
-				16, HEX_SAMPLE_MULTIPLIER);
-		GRASS_MASKED = applyMask("file:src/img/tile/grass.png", "file:src/img/tile/hex_mask.png",
-				0, 16, HEX_SAMPLE_MULTIPLIER);
-		ANTHILL_MASKED = applyMask("file:src/img/tile/anthill.png", "file:src/img/tile/hex_mask.png",
-				0, 16, HEX_SAMPLE_MULTIPLIER);
+		System.out.println(
+				"Working Directory = " + System.getProperty("user.dir"));
+		SAND_MASKED = applyMask("file:src/img/tile/sand.png",
+				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
+		GRASS_MASKED = applyMask("file:src/img/tile/grass.png",
+				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
+		ANTHILL_MASKED = applyMask("file:src/img/tile/anthill.png",
+				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
 		WATER_MASKED = new Image[3];
 		for (int i = 0; i < 3; i++) {
 			WATER_MASKED[i] = applyMask("file:src/img/tile/water.png",
-					"file:src/img/tile/hex_mask.png", i, 16, HEX_SAMPLE_MULTIPLIER);
+					"file:src/img/tile/hex_mask.png", i, 16,
+					HEX_SAMPLE_MULTIPLIER);
 		}
-		
-		CINNAMON = new Image("file:src/image/tower/cinnamon.png");
+
+		CINNAMON = applyUpscale(new Image("file:src/img/tower/cinnamon.png"),
+				"file:src/img/tower/cinnamon.png", 6);
 
 		initialized = true;
 	}
 
 	public static boolean isInitialized() {
 		return initialized;
+	}
+
+	public static Image applyUpscale(Image source, String sourcePath,
+			int sampleMultiplier) {
+		return new Image(sourcePath, source.getWidth() * sampleMultiplier,
+				source.getHeight() * sampleMultiplier, true, false);
 	}
 
 	public static WritableImage applyMask(String spritePath, String maskPath,

@@ -52,4 +52,9 @@ public class TileAntHill extends Tile {
 		return true;
 	}
 
+	@Override
+	public boolean suitableForTower() {
+		return false;
+	}
+
 }

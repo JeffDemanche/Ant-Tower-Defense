@@ -235,7 +235,9 @@ public abstract class World implements XMLSerializable {
 	}
 
 	public void onDraw(GraphicsContext g) {
-		this.systems.forEach(system -> system.onDraw(g));
+		this.systems.forEach(system -> {
+			system.onDraw(g);
+		});
 	}
 
 	public void onResize(Vec2d newSize) {
