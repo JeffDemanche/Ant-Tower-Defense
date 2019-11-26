@@ -205,6 +205,9 @@ public abstract class GameObject implements XMLSerializable {
 	public void onMouseReleased(MouseEvent e) {
 	}
 
+	public void onMouseMoved(MouseEvent e) {
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

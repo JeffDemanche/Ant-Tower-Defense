@@ -26,12 +26,13 @@ public class ComponentGUIImageRenderer extends Component {
 
 	public ComponentGUIImageRenderer(GameObject object, Vec2d screenPos,
 			Vec2d screenSize, double sampleMultiplier, String imagePath) {
-		super("GUI Element", object);
+		super("GUI Image Renderer", object);
 		this.screenPos = screenPos;
 		this.screenSize = screenSize;
 
 		Image lowRes = new Image(imagePath);
-		this.image = new Image(imagePath, lowRes.getWidth() * sampleMultiplier,
+		this.image = new Image(imagePath,
+				lowRes.getWidth() * sampleMultiplier,
 				lowRes.getHeight() * sampleMultiplier, true, false);
 
 		this.cropX = this.image.getWidth();
@@ -40,7 +41,7 @@ public class ComponentGUIImageRenderer extends Component {
 
 	public ComponentGUIImageRenderer(GameObject object, Drawable drawable,
 			double sampleMultiplier, String imagePath) {
-		super("GUI Element", object);
+		super("GUI Image Renderer", object);
 		this.drawable = drawable;
 
 		Image lowRes = new Image(imagePath);
@@ -48,14 +49,25 @@ public class ComponentGUIImageRenderer extends Component {
 				lowRes.getHeight() * sampleMultiplier, true, false);
 	}
 
+	public ComponentGUIImageRenderer(GameObject object, Drawable drawable,
+			Image image) {
+		super("GUI Image Renderer", object);
+		this.drawable = drawable;
+		this.image = image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+	
 	public void setScreenPosition(Vec2d pos) {
 		this.screenPos = pos;
 	}
-	
+
 	public void setScreenSize(Vec2d size) {
 		this.screenSize = size;
 	}
-	
+
 	public void setCropPixels(double cropX, double cropY) {
 		this.cropX = cropX;
 		this.cropY = cropY;

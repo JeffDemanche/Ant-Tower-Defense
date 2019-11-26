@@ -15,8 +15,6 @@ import javafx.scene.paint.Color;
 
 public class GUITowersPanel extends GameObject {
 
-	private static final double TOWERS_PANEL_HEIGHT = 150;
-
 	private SystemGUI gui;
 
 	private ComponentGUIDrawable bound;
@@ -28,27 +26,29 @@ public class GUITowersPanel extends GameObject {
 		this.gui = system;
 
 		bound = new ComponentGUIDrawable(this,
-				new Vec2d(0, initialScreenSize.y - TOWERS_PANEL_HEIGHT),
+				new Vec2d(0,
+						initialScreenSize.y - SystemGUI.TOWERS_PANEL_HEIGHT),
 				new Vec2d(initialScreenSize.x, initialScreenSize.y));
-		color = new ComponentSolidColorSprite(this, new Color(0, 0, 0, 0.4), bound);
+		color = new ComponentSolidColorSprite(this, new Color(0, 0, 0, 0.4),
+				bound);
 
 		this.addComponent(bound);
 		this.addComponent(color);
 	}
-	
+
 	@Override
 	public void onMousePressed(MouseEvent e) {
 		super.onMousePressed(e);
-		
+
 		if (bound.insideBB(new Vec2d(e.getSceneX(), e.getSceneY()))) {
 			e.consume();
 		}
 	}
-	
+
 	@Override
 	public void onMouseReleased(MouseEvent e) {
 		super.onMouseReleased(e);
-		
+
 		if (bound.insideBB(new Vec2d(e.getSceneX(), e.getSceneY()))) {
 			e.consume();
 		}
@@ -67,7 +67,8 @@ public class GUITowersPanel extends GameObject {
 	public void onResize(Vec2d newSize) {
 		super.onResize(newSize);
 
-		bound.setPosition(new Vec2d(0, newSize.y - TOWERS_PANEL_HEIGHT));
+		bound.setPosition(
+				new Vec2d(0, newSize.y - SystemGUI.TOWERS_PANEL_HEIGHT));
 		bound.setSize(new Vec2d(newSize.x, newSize.y));
 	}
 

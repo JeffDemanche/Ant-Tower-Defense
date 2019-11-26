@@ -6,13 +6,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import application.Vec2d;
-import engine.world.gameobject.ComponentSolidColorSprite;
 import engine.world.gameobject.GameObject;
 import engine.world.gameobject.gui.ComponentGUIDrawable;
 import engine.world.gameobject.gui.ComponentGUIImageRenderer;
 import game.world.gameobject.tower.TowerInfo;
 import game.world.system.SystemGUI;
-import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
 
 public class GUITowerIcon extends GameObject {
 
@@ -43,10 +42,14 @@ public class GUITowerIcon extends GameObject {
 				new Vec2d(TOWER_ICON_WIDTH, TOWER_ICON_HEIGHT));
 		image = new ComponentGUIImageRenderer(this,
 				parentGUI.getScreenPosition().plus(pos), new Vec2d(32), 6,
-				"file:src/img/tower/cinnamon.png");
+				info.spritePath);
 
 		this.addComponent(bound);
 		this.addComponent(image);
+	}
+	
+	public void setTowerInfo(TowerInfo info) {
+		this.setTowerInfo(info);
 	}
 
 	public TowerInfo getTowerInfo() {
@@ -55,6 +58,15 @@ public class GUITowerIcon extends GameObject {
 
 	public ComponentGUIDrawable getBound() {
 		return this.bound;
+	}
+	
+	@Override
+	public void onMouseMoved(MouseEvent e) {
+		super.onMouseMoved(e);
+		
+		if (bound.insideBB(new Vec2d(e.getSceneX(), e.getSceneY()))) {
+			this.gui.setInfoDisplay(info);
+		}
 	}
 	
 	@Override
