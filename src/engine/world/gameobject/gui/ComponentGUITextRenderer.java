@@ -18,6 +18,11 @@ public class ComponentGUITextRenderer extends Component {
 	private Vec2d screenPos;
 	private Font font;
 
+	public ComponentGUITextRenderer(GameObject object, String text,
+			Vec2d screenPos, Font font) {
+		this("GUI Text Renderer", object, text, screenPos, font);
+	}
+	
 	public ComponentGUITextRenderer(String tag, GameObject object, String text,
 			Vec2d screenPos, Font font) {
 		super(tag, object);

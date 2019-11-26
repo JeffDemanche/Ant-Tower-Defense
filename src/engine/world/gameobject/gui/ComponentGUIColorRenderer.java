@@ -21,16 +21,11 @@ public class ComponentGUIColorRenderer extends Component {
 
 	private Image image;
 
-	public ComponentGUIColorRenderer(GameObject object, Vec2d screenPos,
-			Vec2d screenSize, double sampleMultiplier, String imagePath) {
+	public ComponentGUIColorRenderer(GameObject object, ComponentGUIDrawable drawable, String imagePath) {
 		super("GUI Element", object);
-		this.screenPos = screenPos;
-		this.screenSize = screenSize;
-
-		Image lowRes = new Image(imagePath);
-		this.image = new Image(imagePath, lowRes.getWidth() * sampleMultiplier,
-				lowRes.getHeight() * sampleMultiplier, true, false);
-
+		this.screenPos = drawable.getScreenPosition();
+		this.screenSize = drawable.getSize();
+		
 		this.cropX = this.image.getWidth();
 		this.cropY = this.image.getHeight();
 	}

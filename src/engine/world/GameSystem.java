@@ -169,6 +169,16 @@ public abstract class GameSystem implements XMLSerializable {
 		}
 	}
 
+	public void onMouseMoved(MouseEvent e) {
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				next.onMouseMoved(e);
+			}
+		}
+	}
+	
 	/**
 	 * Gives screen space coords corresponding to a given pair of game space
 	 * coords.

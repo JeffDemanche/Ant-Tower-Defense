@@ -13,7 +13,9 @@ import engine.world.gameobject.gui.ComponentGUIDrawable;
 import game.world.ATDWorld;
 import game.world.gameobject.gui.GUITowerIcon;
 import game.world.gameobject.gui.GUITowerIconDragged;
+import game.world.gameobject.gui.GUITowerInfoPanel;
 import game.world.gameobject.gui.GUITowersPanel;
+import game.world.gameobject.gui.GUIWorldInfo;
 import game.world.gameobject.tower.TowerInfo;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -22,11 +24,18 @@ public class SystemGUI extends GameSystem {
 
 	private static final int GUI_Z = 10;
 
-	private static final double DRAGGED_ICON_SIZE = 25;
+	public static final double TOWERS_PANEL_HEIGHT = 170;
+	public static final double DRAGGED_ICON_SIZE = 25;
+	public static final double INFO_PANEL_WIDTH = 200;
+	public static final double WORLD_INFO_TOP = 150;
+	public static final double WORLD_INFO_WIDTH = 200;
+	public static final double WORLD_INFO_HEIGHT = 300;
 
 	private ATDWorld atdWorld;
 
 	private GUITowersPanel towersPanel;
+	private GUITowerInfoPanel infoPanel;
+	private GUIWorldInfo worldInfo;
 
 	private TowerInfo towerBeingDragged;
 	private GUITowerIconDragged draggedTower;
@@ -43,12 +52,17 @@ public class SystemGUI extends GameSystem {
 		this.towerBeingDragged = null;
 		this.draggedTower = null;
 
-		this.towersPanel = new GUITowersPanel(this,
-				world.getViewport().getScreenSize());
+		Vec2d screenSize = world.getViewport().getScreenSize();
+
+		this.towersPanel = new GUITowersPanel(this, screenSize);
+		this.infoPanel = new GUITowerInfoPanel(this);
+		this.worldInfo = new GUIWorldInfo(this, screenSize);
 
 		initializeTowerIcons();
 
 		this.addGameObject(GUI_Z, towersPanel);
+		this.addGameObject(GUI_Z, infoPanel);
+		this.addGameObject(GUI_Z, worldInfo);
 	}
 
 	private void initializeTowerIcons() {
@@ -64,6 +78,10 @@ public class SystemGUI extends GameSystem {
 
 		this.addGameObject(GUI_Z + 1, towerIcons.get("cinnamon"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("honey"));
+	}
+
+	public void setInfoDisplay(TowerInfo info) {
+		infoPanel.setTower(info);
 	}
 
 	public void setTowerBeingDragged(TowerInfo tower) {
@@ -112,14 +130,15 @@ public class SystemGUI extends GameSystem {
 
 		Vec2d point = new Vec2d(e.getSceneX(), e.getSceneY());
 
-		if (towerBeingDragged != null) {
+		if (towerBeingDragged != null
+				&& !towersPanel.getDrawable().insideBB(point)) {
 			towers.addTowerToWorld(
 					atdWorld.getViewport().toGameSpace(point, false),
 					towerBeingDragged);
-			draggedTower.remove();
-			towerBeingDragged = null;
-		} else {
 		}
+		if (draggedTower != null)
+			draggedTower.remove();
+		setTowerBeingDragged(null);
 	}
 
 	@Override
@@ -135,6 +154,9 @@ public class SystemGUI extends GameSystem {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		this.tickGameObjects(nanosSincePreviousTick);
+
+		worldInfo.setSugarRemaining(atdWorld.getRemainingSugar());
+		worldInfo.setCash(atdWorld.getCash());
 	}
 
 	@Override
@@ -147,6 +169,25 @@ public class SystemGUI extends GameSystem {
 
 	@Override
 	public void onWorldLoaded() {
+	}
+
+	public static String wordWrap(String text, int charsPerLine) {
+		StringBuilder builder = new StringBuilder();
+		String[] words = text.split(" ");
+
+		int currLineLength = 0;
+		for (String word : words) {
+			if (currLineLength + word.length() > charsPerLine) {
+				builder.append("\n");
+				builder.append(word + " ");
+				currLineLength = word.length() + 1;
+			} else {
+				builder.append(word + " ");
+				currLineLength += word.length() + 1;
+			}
+		}
+
+		return builder.toString();
 	}
 
 }

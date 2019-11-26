@@ -12,6 +12,8 @@ public final class SpriteRegistry {
 
 	private static final int HEX_SAMPLE_MULTIPLIER = 8;
 
+	public static Image EMPTY;
+
 	public static Image SAND_MASKED;
 	public static Image GRASS_MASKED;
 	public static Image ANTHILL_MASKED;
@@ -24,6 +26,9 @@ public final class SpriteRegistry {
 	public SpriteRegistry() {
 		System.out.println(
 				"Working Directory = " + System.getProperty("user.dir"));
+
+		EMPTY = new WritableImage(16, 16);
+
 		SAND_MASKED = applyMask("file:src/img/tile/sand.png",
 				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
 		GRASS_MASKED = applyMask("file:src/img/tile/grass.png",

@@ -28,10 +28,10 @@ public class TowerInfo {
 	public final Image guiSprite;
 	public final String spritePath;
 
-	public TowerInfo(String name, String descrprtion, int cost, Image guiSprite,
+	public TowerInfo(String name, String description, int cost, Image guiSprite,
 			String spritePath) {
 		this.name = name;
-		this.description = descrprtion;
+		this.description = description;
 		this.cost = cost;
 		this.guiSprite = guiSprite;
 		this.spritePath = spritePath;
