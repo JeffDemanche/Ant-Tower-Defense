@@ -17,6 +17,10 @@ public class TowerInfo {
 	public static TowerInfo CINNAMON = new TowerInfo("Cinnamon",
 			"Hurts ants mildly as they walk over it.", 5,
 			SpriteRegistry.CINNAMON, "file:src/img/tower/cinnamon.png");
+	
+	public static TowerInfo HONEY = new TowerInfo("Honey",
+			"Stops ants momentarily as they walk over it. It expans over time", 10,
+			SpriteRegistry.HONEY, "file:src/img/tower/cinnamon.png");
 
 	public final String name;
 	public final String description;
@@ -38,6 +42,8 @@ public class TowerInfo {
 		switch (info.name) {
 		case "Cinnamon":
 			return new TowerCinnamon(system, hex);
+		case "Honey":
+			return new HoneyTower(system, hex);
 		default:
 			return null;
 		}

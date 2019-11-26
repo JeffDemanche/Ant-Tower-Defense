@@ -15,6 +15,7 @@ import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 import game.world.system.SystemGUI;
 import game.world.system.SystemLevel;
+import game.world.system.SystemProjectiles;
 import game.world.system.SystemTowers;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -32,6 +33,7 @@ public class ATDWorld extends World {
 	private SystemAnts ants;
 	private SystemGUI gui;
 	private SystemTowers towers;
+	private SystemProjectiles projectiles;
 
 	private long worldSeed;
 	private Random worldRandom;
@@ -48,7 +50,9 @@ public class ATDWorld extends World {
 		this.ants = new SystemAnts(this, level);
 		this.towers = new SystemTowers(this, level);
 		this.gui = new SystemGUI(this, towers);
+		this.projectiles = new SystemProjectiles(this,level);
 
+		
 		this.worldSeed = System.currentTimeMillis();
 		this.worldRandom = new Random(this.worldSeed);
 

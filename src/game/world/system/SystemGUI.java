@@ -56,8 +56,14 @@ public class SystemGUI extends GameSystem {
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
 				new Vec2d(5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.CINNAMON));
+		
+		towerIcons.put("honey", new GUITowerIcon(this,
+				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
+				new Vec2d(50,5), atdWorld.getViewport().getScreenSize(),
+				TowerInfo.HONEY));
 
 		this.addGameObject(GUI_Z + 1, towerIcons.get("cinnamon"));
+		this.addGameObject(GUI_Z + 1, towerIcons.get("honey"));
 	}
 
 	public void setTowerBeingDragged(TowerInfo tower) {

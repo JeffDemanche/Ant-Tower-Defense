@@ -91,6 +91,8 @@ public class SystemTowers extends GameSystem {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		this.tickGameObjects(nanosSincePreviousTick);
+		
+		
 	}
 
 	@Override
