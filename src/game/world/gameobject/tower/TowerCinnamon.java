@@ -48,4 +48,10 @@ public class TowerCinnamon extends Tower {
 		return TowerInfo.CINNAMON.cost;
 	}
 
+	@Override
+	protected void shot() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

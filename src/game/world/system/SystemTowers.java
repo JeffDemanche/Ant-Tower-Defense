@@ -17,12 +17,13 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class SystemTowers extends GameSystem {
 
-	private final int TOWERS_Z = 4;
+	public static final int TOWERS_Z = 4;
 
 	private ATDWorld atdWorld;
 	private SystemLevel level;
 
 	private int towerCounter;
+	private int projectileCounter; 
 
 	private HashMap<HexCoordinates, Tower> towers;
 
@@ -44,6 +45,12 @@ public class SystemTowers extends GameSystem {
 		return id;
 	}
 
+	public int nextProjectileId() {
+		int id = projectileCounter;
+		projectileCounter++;
+		return id;
+	}
+	
 	/**
 	 * This is called before any checks or updates to world state, so all that
 	 * should be handled within it.

@@ -5,18 +5,21 @@ import engine.world.gameobject.GameObject;
 
 public abstract class Tower extends GameObject {
 	
-	private boolean canAttack;
+	private boolean canAttack ;
 	
 	private long attackTimer = 0;
 	
 	private double attackTimerMilliSeconds;
 	
-	private double attackTime;
+	protected double attackTime;
 	
-	private boolean enabled;
+	protected boolean enabled;
+	
+	
 	
 	public Tower(GameSystem system, String towerType, int towerId) {
 		super(system, createName(towerType, towerId));
+		canAttack = false;
 	}
 	
 	public abstract int getCost();
@@ -56,10 +59,7 @@ public abstract class Tower extends GameObject {
 		super.onTick(nanosSincePreviousTick);
 	}
 
-	private void shot() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected abstract void shot(); 
 
 	public boolean isCanAttack() {
 		return canAttack;
