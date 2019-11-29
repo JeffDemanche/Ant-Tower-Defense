@@ -16,6 +16,7 @@ public abstract class Projectile extends GameObject
     protected Vec2d direction;
     protected double speed;
     protected Vec2d target;
+    protected boolean hit ;
 	
 	public Projectile(SystemTowers towerSystem, HexCoordinates hex,
 			ProjectileInfo projectileInfo) {
@@ -31,6 +32,8 @@ public abstract class Projectile extends GameObject
 				SpriteRegistry.HONEY_PROJECTILE, bound);
 
 		this.target = projectileInfo.target;
+		this.hit = false;
+		
 		
 		this.addComponent(bound);
 		this.addComponent(sprite);
@@ -46,7 +49,7 @@ public abstract class Projectile extends GameObject
 		
 		if(bound.getPosition().minus(this.target).mag() < 0.001)
 		{
-			this.remove();
+			this.hit = true;
 		}
 			
 		bound.adjustPosition(this.direction.smult(this.speed));

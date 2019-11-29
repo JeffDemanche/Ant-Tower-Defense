@@ -18,7 +18,7 @@ public class TileWater extends Tile {
 
 	public TileWater(SystemLevel system, HexCoordinates offsetCoordinates) {
 		super(system, createName("Water", offsetCoordinates),
-				offsetCoordinates);
+				offsetCoordinates, Type.Water);
 
 		bound = offsetCoordinates.createPolygon(this);
 		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,

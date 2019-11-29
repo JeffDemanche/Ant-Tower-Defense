@@ -17,6 +17,7 @@ public final class SpriteRegistry {
 	public static Image SAND_MASKED;
 	public static Image GRASS_MASKED;
 	public static Image ANTHILL_MASKED;
+	public static Image HONEY_MASKED;
 	public static Image[] WATER_MASKED;
 
 	public static Image CINNAMON;
@@ -35,6 +36,9 @@ public final class SpriteRegistry {
 				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
 		ANTHILL_MASKED = applyMask("file:src/img/tile/anthill.png",
 				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
+		HONEY_MASKED = applyMask("file:src/img/tile/honeyTile.png",
+				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
+		
 		WATER_MASKED = new Image[3];
 		for (int i = 0; i < 3; i++) {
 			WATER_MASKED[i] = applyMask("file:src/img/tile/water.png",

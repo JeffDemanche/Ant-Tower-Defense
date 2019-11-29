@@ -12,49 +12,43 @@ import game.world.system.HexCoordinates;
 import game.world.system.SystemLevel;
 import javafx.scene.canvas.GraphicsContext;
 
-public class TileGrass extends Tile {
+public class TileHoney extends Tile{
 
 	private ComponentPolygon bound;
-
-	public TileGrass(SystemLevel system, HexCoordinates offsetCoordinates) {
-		super(system, createName("Grass", offsetCoordinates),
-				offsetCoordinates, Type.Grass);
+	
+	public TileHoney(SystemLevel system, HexCoordinates offsetCoordinates) {
+		super(system, createName("Honey", offsetCoordinates),
+				offsetCoordinates, Type.Honey);
 
 		bound = offsetCoordinates.createPolygon(this);
 		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.GRASS_MASKED, bound);
+				SpriteRegistry.HONEY_MASKED, bound);
 
 		this.addComponent(bound);
 		this.addComponent(sprite);
 	}
 
-	public TileGrass(Element element, SystemLevel system) {
-		this(system, new HexCoordinates((Element) element
-				.getElementsByTagName("HexCoordinates").item(0)));
+	@Override
+	public Element writeXML(Document doc) throws ParserConfigurationException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
+	
 	@Override
 	public void onDraw(GraphicsContext g) {
 		super.onDraw(g);
 	}
 
 	@Override
-	public Element writeXML(Document doc) throws ParserConfigurationException {
-		Element TileGrass = doc.createElement("TileGrass");
-		TileGrass.setAttribute("name", this.getName());
-		TileGrass.appendChild(bound.writeXML(doc));
-		TileGrass.appendChild(this.getCoordinates().writeXML(doc));
-		return TileGrass;
-	}
-
-	@Override
 	public boolean traversableByDefault() {
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public boolean suitableForTower() {
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -33,7 +33,7 @@ public class HoneyTower extends Tower {
 		this.towers = system;
 		
 		//this.direction = new Vec2d(0,-1);
-        this.projectileSpeed = 0.01;
+        this.projectileSpeed = 0.05;
 		
     	this.sprite = new ComponentRegisteredSprite(this,
 				SpriteRegistry.HONEY, bound);

@@ -18,7 +18,7 @@ public class TileAntHill extends Tile {
 
 	public TileAntHill(SystemLevel system, HexCoordinates offsetCoordinates) {
 		super(system, createName("AntHill", offsetCoordinates),
-				offsetCoordinates);
+				offsetCoordinates,Type.AntHill);
 
 		bound = offsetCoordinates.createPolygon(this);
 		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,

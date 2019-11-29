@@ -92,7 +92,7 @@ public abstract class Tower extends GameObject {
 	public void onMousePressed(MouseEvent e) 
 	{
 		System.out.println("CLICK on TOWER");
-		super.onMousePressed(e);
+		//super.onMousePressed(e);
 	}
 
 	@Override
