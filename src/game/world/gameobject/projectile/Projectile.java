@@ -15,8 +15,10 @@ public abstract class Projectile extends GameObject
     protected ComponentRegisteredSprite sprite;
     protected Vec2d direction;
     protected double speed;
+    protected Vec2d target;
 	
-	public Projectile(SystemTowers towerSystem, HexCoordinates hex, ProjectileInfo projectileInfo) {
+	public Projectile(SystemTowers towerSystem, HexCoordinates hex,
+			ProjectileInfo projectileInfo) {
 		
 		super(towerSystem, createName(projectileInfo.parentTower,towerSystem.nextProjectileId()));
 		
@@ -28,6 +30,8 @@ public abstract class Projectile extends GameObject
 		this.sprite = new ComponentRegisteredSprite(this,
 				SpriteRegistry.HONEY_PROJECTILE, bound);
 
+		this.target = projectileInfo.target;
+		
 		this.addComponent(bound);
 		this.addComponent(sprite);
 	}
@@ -40,6 +44,11 @@ public abstract class Projectile extends GameObject
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		
+		if(bound.getPosition().minus(this.target).mag() < 0.001)
+		{
+			this.remove();
+		}
+			
 		bound.adjustPosition(this.direction.smult(this.speed));
 		super.onTick(nanosSincePreviousTick);
 	}

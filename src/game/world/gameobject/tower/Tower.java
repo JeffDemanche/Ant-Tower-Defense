@@ -31,7 +31,8 @@ public abstract class Tower extends GameObject {
 	
 	protected HexCoordinates hex;
 	
-	public Tower(GameSystem system, String towerType, int towerId,HexCoordinates hexCoordinates, double range) {
+	public Tower(GameSystem system, String towerType, int towerId,HexCoordinates hexCoordinates,
+			double range) {
 		super(system, createName(towerType, towerId));
 		
 
@@ -42,9 +43,11 @@ public abstract class Tower extends GameObject {
 
 		this.addComponent(bound);
 		
-		
+		this.direction = new Vec2d(0,-1);
 		canAttack = false;
-		lineOfSight = new LineOfSight(system, "lineOfSight"+towerId, hex.toGameSpaceCentered(),range);
+		lineOfSight = new LineOfSight(system, "lineOfSight"+towerId, hex.toGameSpaceCentered(),
+				this.direction,range);
+		
 		system.addGameObject(SystemTowers.TOWERS_Z+3, lineOfSight);
 	}
 	

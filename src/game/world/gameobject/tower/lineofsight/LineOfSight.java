@@ -11,12 +11,12 @@ import engine.world.gameobject.GameObject;
 
 public class LineOfSight extends GameObject{
 
-	public LineOfSight(GameSystem system, String name, Vec2d initPosition, double range) {
+	public LineOfSight(GameSystem system, String name, Vec2d initPosition,Vec2d direction, double range) {
 		super(system, name);
 		// TODO Auto-generated constructor stub
 		
 		LineOfSightComponent lineOfSightComponent =
-				new LineOfSightComponent("LineOfSight", this, initPosition,range);
+				new LineOfSightComponent("LineOfSight", this, initPosition,direction, range);
 		
 		this.addComponent(lineOfSightComponent);
 	}
@@ -27,4 +27,15 @@ public class LineOfSight extends GameObject{
 		return null;
 	}
 
+	public Vec2d getDirection()
+	{
+		return ((LineOfSightComponent)this.getComponent("LineOfSight")).getDirection();
+	}
+	
+	public Vec2d getEndPoint()
+	{
+		return ((LineOfSightComponent)this.getComponent("LineOfSight")).getEndPoint();
+	}
+
+	
 }

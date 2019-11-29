@@ -14,6 +14,7 @@ import game.world.gameobject.projectile.Projectile;
 import game.world.gameobject.projectile.ProjectileConstants;
 import game.world.gameobject.projectile.ProjectileFactory;
 import game.world.gameobject.projectile.ProjectileInfo;
+import game.world.gameobject.tower.lineofsight.LineOfSightComponent;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 
@@ -31,7 +32,7 @@ public class HoneyTower extends Tower {
 
 		this.towers = system;
 		
-		this.direction = new Vec2d(1,0);
+		//this.direction = new Vec2d(0,-1);
         this.projectileSpeed = 0.01;
 		
     	this.sprite = new ComponentRegisteredSprite(this,
@@ -58,9 +59,15 @@ public class HoneyTower extends Tower {
 
 	@Override
 	protected void shot() {
+		
+		Vec2d target = lineOfSight.getEndPoint();
 		// TODO Auto-generated method stub
-		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY,this.direction,this.projectileSpeed);
-		Projectile hProjectile = ProjectileFactory.getInstance().createProjectile((SystemTowers)getSystem(), hex, pjInfo);
+		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY,
+				this.direction,this.projectileSpeed,target);
+		
+		Projectile hProjectile = ProjectileFactory.getInstance().
+				createProjectile((SystemTowers)getSystem(), hex, pjInfo);
+		
 		getSystem().addGameObject(SystemTowers.PROJECTILE_Z,hProjectile);
 	}
 

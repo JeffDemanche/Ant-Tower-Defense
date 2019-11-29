@@ -5,6 +5,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import application.Vec2d;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 

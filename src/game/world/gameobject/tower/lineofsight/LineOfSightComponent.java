@@ -16,28 +16,26 @@ public class LineOfSightComponent extends Component implements Drawable{
 
 	private Vec2d position;
 	private Vec2d endPosition;
-	private double radius;
-	private double currentAngle;
+	private double range;
 	
-	public LineOfSightComponent(String tag, GameObject object, Vec2d initPosition, double range) {
+	
+	public LineOfSightComponent(String tag, GameObject object, Vec2d initPosition,Vec2d direction, double range) {
 		super(tag, object);
 		
 		// TODO Auto-generated constructor stub
-		this.currentAngle = 0;
-		this.position = initPosition;
-		this.radius = range;
 		
-		updateEndPoint();
+		this.position = initPosition;
+		this.range = range;
+		
+		updateEndPoint(direction);
 		
 		
 	}
 
-	private void updateEndPoint() {
+	public void updateEndPoint(Vec2d direction) {
 		// TODO Auto-generated method stub
-		double endX = this.position.x + this.radius * Math.cos(this.currentAngle);
-		double endY = this.position.y + this.radius * Math.sin(this.currentAngle);
+		this.endPosition = this.position.plus(direction.smult(this.range));
 		
-		this.endPosition = new Vec2d(endX,endY);
 	}
 
 	@Override
@@ -113,12 +111,17 @@ public class LineOfSightComponent extends Component implements Drawable{
 		
 	}
 
-	public Vec2d getEndPosition() {
+	public Vec2d getEndPoint() {
 		return endPosition;
 	}
 
 	public void setEndPosition(Vec2d endPosition) {
 		this.endPosition = endPosition;
+	}
+	
+	public Vec2d getDirection()
+	{
+		return endPosition.minus(position).normalize();
 	}
 
 }
