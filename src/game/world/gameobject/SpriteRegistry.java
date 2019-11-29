@@ -46,10 +46,10 @@ public final class SpriteRegistry {
 				"file:src/img/tower/cinnamon.png", 6);
 
 		HONEY = applyUpscale(new Image("file:src/img/tower/honey.png"),
-				"file:src/img/tower/cinnamon.png", 6);
+				"file:src/img/tower/honey.png", 6);
 		
 		
-		HONEY_PROJECTILE = applyUpscale(new Image("file:src/img/tower/cinnamon.png"),
+		HONEY_PROJECTILE = applyUpscale(new Image("file:src/img/tower/honeyProjectile.png"),
 				"file:src/img/tower/honeyProjectile.png", 6);
 		
 		initialized = true;

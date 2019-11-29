@@ -20,7 +20,7 @@ public class TowerInfo {
 	
 	public static TowerInfo HONEY = new TowerInfo("Honey",
 			"Stops ants momentarily as they walk over it. It expans over time", 10,
-			SpriteRegistry.HONEY, "file:src/img/tower/cinnamon.png");
+			SpriteRegistry.HONEY, "file:src/img/tower/honey.png");
 
 	public final String name;
 	public final String description;
