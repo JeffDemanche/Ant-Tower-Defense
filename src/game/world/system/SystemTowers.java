@@ -18,6 +18,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class SystemTowers extends GameSystem {
 
 	public static final int TOWERS_Z = 4;
+	public static final int PROJECTILE_Z = 5;
 
 	private ATDWorld atdWorld;
 	private SystemLevel level;

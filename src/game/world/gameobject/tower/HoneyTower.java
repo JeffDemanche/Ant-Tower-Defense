@@ -20,32 +20,25 @@ import game.world.system.SystemTowers;
 public class HoneyTower extends Tower {
 
 	private SystemTowers towers;
-	private HexCoordinates hex;
-    
 	
-	private ComponentCircle bound;
-	private ComponentRegisteredSprite sprite;
+    
 	
 	private double projectileSpeed;
 	
 	public HoneyTower(SystemTowers system, HexCoordinates hexCoordinates) {
-		super(system, TowerInfo.HONEY.name, system.nextTowerId());
+		super(system, TowerInfo.HONEY.name, system.nextTowerId(), hexCoordinates,3);
 		// TODO Auto-generated constructor stub
 
 		this.towers = system;
-		this.hex = hexCoordinates;
+		
 		this.direction = new Vec2d(1,0);
         this.projectileSpeed = 0.01;
 		
-		this.bound = new ComponentCircle(this, hex.toGameSpaceCentered(),
-				HexCoordinates.HEX_WIDTH / 2);
-		this.sprite = new ComponentRegisteredSprite(this,
+    	this.sprite = new ComponentRegisteredSprite(this,
 				SpriteRegistry.HONEY, bound);
-
-		this.addComponent(bound);
-		this.addComponent(sprite);
 		
-		
+    	this.addComponent(sprite);
+    	
 		attackTime = 3000;
 		enabled = true;
 		
@@ -68,7 +61,7 @@ public class HoneyTower extends Tower {
 		// TODO Auto-generated method stub
 		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY,this.direction,this.projectileSpeed);
 		Projectile hProjectile = ProjectileFactory.getInstance().createProjectile((SystemTowers)getSystem(), hex, pjInfo);
-		getSystem().addGameObject(SystemTowers.TOWERS_Z,hProjectile);
+		getSystem().addGameObject(SystemTowers.PROJECTILE_Z,hProjectile);
 	}
 
 	public double getProjectileSpeed() {

@@ -1,8 +1,13 @@
 package game.world.gameobject.tower;
 
 import application.Vec2d;
+import engine.world.ComponentRegisteredSprite;
 import engine.world.GameSystem;
+import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.GameObject;
+import game.world.gameobject.tower.lineofsight.LineOfSight;
+import game.world.system.HexCoordinates;
+import game.world.system.SystemTowers;
 import javafx.scene.input.MouseEvent;
 
 public abstract class Tower extends GameObject {
@@ -19,9 +24,28 @@ public abstract class Tower extends GameObject {
 	
 	protected Vec2d direction;
 	
-	public Tower(GameSystem system, String towerType, int towerId) {
+	protected LineOfSight lineOfSight;
+	
+	protected ComponentCircle bound;
+	protected ComponentRegisteredSprite sprite;
+	
+	protected HexCoordinates hex;
+	
+	public Tower(GameSystem system, String towerType, int towerId,HexCoordinates hexCoordinates, double range) {
 		super(system, createName(towerType, towerId));
+		
+
+		this.hex = hexCoordinates;
+		this.bound = new ComponentCircle(this, hex.toGameSpaceCentered(),
+				HexCoordinates.HEX_WIDTH / 2);
+	
+
+		this.addComponent(bound);
+		
+		
 		canAttack = false;
+		lineOfSight = new LineOfSight(system, "lineOfSight"+towerId, hex.toGameSpaceCentered(),range);
+		system.addGameObject(SystemTowers.TOWERS_Z+3, lineOfSight);
 	}
 	
 	public abstract int getCost();
@@ -77,7 +101,6 @@ public abstract class Tower extends GameObject {
 	@Override
 	public void onMouseReleased(MouseEvent e) 
 	{
-		
 	}
 
 	protected abstract void shot(); 
