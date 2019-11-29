@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import application.Vec2d;
 import engine.world.particles.Particle;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 public class ComponentEmitter extends Component {
 
@@ -30,7 +31,7 @@ public class ComponentEmitter extends Component {
 	private static final  String rainTexture = "img/particle/rainDrop.png";
 	
 	List<Particle> myParticles;
-	Queue<Integer> myParticlesToRemove;
+	Queue<Particle> myParticlesToRemove;
 	
 	private float myDuration;
 	private long currentTimer;
@@ -40,7 +41,7 @@ public class ComponentEmitter extends Component {
 	private int myInitParticles;
 	private String parentName;
 	
-	private String myParticleTexture;
+	private Image myParticleTexture;
 	private float myParticlesMass;
 	private float myParticlesRestitution;
 	private int myParticlesTimeToLive;
@@ -52,29 +53,20 @@ public class ComponentEmitter extends Component {
 	private boolean initParticles = false;
 	private boolean firstUpdate = true;
 	private PATTERTYPE myPatternType;
+	private boolean finished = false;
+	
 	
 	public ComponentEmitter(PATTERTYPE pattern, String tag, GameObject object,
 			int initParticles,int particlesTimeToLive,
 			Vec2d initialPosition,Vec2d initialSize,
-			Vec2d initialDirection,
+			Vec2d initialDirection, Image texture,
 			double speed, boolean isLooping, float duration, float delayToCreateParticles) {
+		
 		super("Emitter", object);
+		
 		myParticles = new ArrayList<Particle>();
-		myParticlesToRemove = new LinkedList<Integer>();
-		
-		
-		switch(pattern)
-		{
-		 case EXPLOSION:
-			 this.myParticleTexture = starTexture;
-			 break;
-		 case FIRE:
-		   this.myParticleTexture = fireTexture;
-		   break;
-		 case RAIN:
-			   this.myParticleTexture = rainTexture;
-			   break;
-		}
+		myParticlesToRemove = new LinkedList<Particle>();
+		this.myParticleTexture = texture;
 		
 		
 		
@@ -84,21 +76,22 @@ public class ComponentEmitter extends Component {
 		this.myParticlesSpeed = speed;
 		this.myInitParticles = initParticles;
 		this.myParticlesSize = initialSize;
-		//this.myLooping = isLooping;
+		this.myLooping = isLooping;
 		
 		this.myDelayToCreateParticles = delayToCreateParticles;
 		this.myDuration = duration;
 		this.myPatternType = pattern;
 		
 		
-		this.myLooping = true;
+		//this.myLooping = true;
 		
 		switch(pattern)
 		{
 		 case EXPLOSION:
 		 {
 		      	 
-			 this.initializeExplosionParticles();
+			 //this.initializeExplosionParticles();
+			 //this.initParticles = true;
 			 break;
 		 }
 		 case FIRE:
@@ -145,6 +138,11 @@ public class ComponentEmitter extends Component {
 			return;
 		}
 		
+		if(myParticles.isEmpty() && !this.myLooping && initParticles)
+		{
+			finished = true;
+			return;
+		}
 		
 		switch(this.myPatternType)
 		{
@@ -159,55 +157,24 @@ public class ComponentEmitter extends Component {
 			 break;
 		}
 		
-		/*if(myLooping)
-		{
-			currentTimer+=nanosSincePreviousTick;
-			float toSeconds = (float)currentTimer/1000000000.0f;
-			if(toSeconds > 0.2)
-			{
-				//initializeParticles();
-				//this.initializeSingleParticle();
-				this.initializeRainParticle();
-				currentTimer = 0;
-			}
-		}
-		else
-		{
-			if(!initParticles)
-			{
-				currentTimer+=nanosSincePreviousTick;
-				float toSeconds = (float)currentTimer/1000000000.0f;
-				if(toSeconds > 0)
-				{
-					//initializeParticles();
-					//this.initializeSingleParticle();
-					
-					currentTimer = 0;
-					initParticles = true;	
-				}
-				
-			}
-			
-		}*/
 		
 		while(!myParticlesToRemove.isEmpty())
 		{
-			Integer index = myParticlesToRemove.remove();
+			Particle p = myParticlesToRemove.remove();
 			
-			Particle p = this.myParticles.get(index);
-			p.remove();
 			
-			if(myParticles.remove(index))
+			if(this.myParticles.remove(p))
 			{
-				System.out.println(index + " deleted");
+				System.out.println( " deleted");
 			}
+			p.remove();
 		}
 		
 		for(int i = 0 ; i < this.myParticles.size(); i++)
 		{
 			if(this.myParticles.get(i).getTimeToLive() <=0)
 			{
-				myParticlesToRemove.add(i);
+				myParticlesToRemove.add(this.myParticles.get(i));
 				 
 			}
 		}
@@ -351,6 +318,14 @@ public class ComponentEmitter extends Component {
 
 		this.getObject().getSystem().addGameObject(5, p);
 		
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 	
 

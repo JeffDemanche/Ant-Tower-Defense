@@ -23,7 +23,11 @@ public final class SpriteRegistry {
 	public static Image CINNAMON;
 	public static Image HONEY;
 	public static Image HONEY_PROJECTILE;
+	public static Image HONEY_PARTICLE;
 
+	public static Image STAR_PARTICLE;
+	public static Image FIRE_PARTICLE;
+	
 	public SpriteRegistry() {
 		System.out.println(
 				"Working Directory = " + System.getProperty("user.dir"));
@@ -56,6 +60,15 @@ public final class SpriteRegistry {
 		HONEY_PROJECTILE = applyUpscale(new Image("file:src/img/tower/honeyProjectile.png"),
 				"file:src/img/tower/honeyProjectile.png", 6);
 		
+		HONEY_PARTICLE = applyUpscale(new Image("file:src/img/particle/honeyParticle.png"),
+				"file:src/img/particle/honeyParticle.png", 6);
+		
+		STAR_PARTICLE = applyUpscale(new Image("file:src/img/particle/star.png"),
+				"file:src/img/particle/star.png", 6);
+		
+		FIRE_PARTICLE = applyUpscale(new Image("file:src/img/particle/fire.png"),
+				"file:src/img/particle/fire.png", 6);
+				
 		initialized = true;
 	}
 

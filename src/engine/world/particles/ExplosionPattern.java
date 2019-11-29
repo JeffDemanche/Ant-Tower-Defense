@@ -6,6 +6,7 @@ import java.util.Random;
 
 import application.Vec2d;
 import engine.world.GameSystem;
+import game.world.gameobject.SpriteRegistry;
 
 public class ExplosionPattern extends ParticlesUpdater{
 
@@ -35,7 +36,7 @@ public class ExplosionPattern extends ParticlesUpdater{
 			double y = Math.sin(currentAngle) * this.initialDirection.x + Math.cos(currentAngle)  * this.initialDirection.y;
 			Vec2d rotatedDirection = new Vec2d(x,y);
 			Particle p =  new Particle(system, parentName+"_particle"+rand_int1,
-					this.texture,this.initialPosition,this.particleSize,
+					SpriteRegistry.FIRE_PARTICLE,this.initialPosition,this.particleSize,
 					this.particleTimeToLive,rotatedDirection,
 					this.speed);
 			

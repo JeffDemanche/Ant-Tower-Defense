@@ -20,7 +20,8 @@ public class EmitterGameObject3 extends GameObject {
 		
 		ComponentAABB aabComponent = new ComponentAABB(this, new Vec2d(5,-5), new Vec2d(1,1));
 		ComponentEmitter particleEmitter = new ComponentEmitter(ComponentEmitter.PATTERTYPE.RAIN , "Emitter", this,
-		10, 2, aabComponent.getPosition(), new Vec2d(0.5,0.5),new Vec2d(0,-1), 0.05,true,3.0f,0);
+		10, 2, aabComponent.getPosition(), new Vec2d(0.2,0.2),new Vec2d(0,-1),
+		SpriteRegistry.STAR_PARTICLE,0.05,true,3.0f,0);
 		
 		this.addComponent(particleEmitter);
 	}

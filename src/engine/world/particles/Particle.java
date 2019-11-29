@@ -15,7 +15,7 @@ import engine.world.gameobject.ComponentAABB;
 
 public class Particle extends GameObject{
 
-	private String myTexturePath;
+	private Image myTexture;
 	private int timeToLive;
 	private long currentTimeLife = 0;
 	private Vec2d direction;
@@ -26,7 +26,7 @@ public class Particle extends GameObject{
 	private Vec2d mySize;
 	private boolean myDirectionParticle = true;
 	
-	public Particle(GameSystem system, String name, String texturePath, 
+	public Particle(GameSystem system, String name, Image texture, 
 			Vec2d initialPosition, Vec2d initialSize, int timeTolive,
 			Vec2d direction, double speed) {
 		super(system, name);
@@ -34,16 +34,16 @@ public class Particle extends GameObject{
 		this.direction = direction;
 	    this.timeToLive = timeTolive;
 	    this.myPosition = initialPosition;
-	    this.myTexturePath = texturePath;
+	    this.myTexture = texture;
 	    this.mySize = initialSize;
 	    this.speed =speed;
 	    
 	    
 	    ComponentAABB aabComponent = new ComponentAABB(this,initialPosition,
 			this.mySize);
-	    Image texture = new Image(this.myTexturePath);
+	    
 	    ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-	    		texture, aabComponent);
+	    		this.myTexture, aabComponent);
 	    
 	    this.addComponent(aabComponent);
 		this.addComponent(sprite);
