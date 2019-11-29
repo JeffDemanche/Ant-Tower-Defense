@@ -79,16 +79,6 @@ public class Particle extends GameObject{
 			((ComponentAABB) this.getComponent("AABB")).adjustPosition(this.direction.smult(this.speed));	
 			
 			
-			
-//			Vec2d position = ((ComponentAABB)this.getComponent("AABB")).getPosition();
-//			position = position.plus(this.direction).smult(this.speed);//.smult(nanosSincePreviousTick);
-//			((ComponentAABB)this.getComponent("AABB")).setPosition(position);
-//			
-//			System.out.println(position);
-			
-			
-			//this.position.x += this.velocity.x * dt;
-			//this.position.y += this.velocity.y * dt;
 	    	
 		}
 		//tick components

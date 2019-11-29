@@ -1,7 +1,9 @@
 package game.world.gameobject.tower;
 
+import application.Vec2d;
 import engine.world.GameSystem;
 import engine.world.gameobject.GameObject;
+import javafx.scene.input.MouseEvent;
 
 public abstract class Tower extends GameObject {
 	
@@ -15,7 +17,7 @@ public abstract class Tower extends GameObject {
 	
 	protected boolean enabled;
 	
-	
+	protected Vec2d direction;
 	
 	public Tower(GameSystem system, String towerType, int towerId) {
 		super(system, createName(towerType, towerId));
@@ -57,6 +59,25 @@ public abstract class Tower extends GameObject {
 		}
 		
 		super.onTick(nanosSincePreviousTick);
+	}
+	
+	@Override
+	public void onMousePressed(MouseEvent e) 
+	{
+		System.out.println("CLICK on TOWER");
+		super.onMousePressed(e);
+	}
+
+	@Override
+	public void onMouseDragged(MouseEvent e) 
+	{
+		
+	}
+
+	@Override
+	public void onMouseReleased(MouseEvent e) 
+	{
+		
 	}
 
 	protected abstract void shot(); 

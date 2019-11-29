@@ -20,5 +20,13 @@ public class HoneyProjectile extends Projectile{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void onTick(long nanosSincePreviousTick) {
+		
+		
+		
+		super.onTick(nanosSincePreviousTick);
+	}
 
 }

@@ -5,6 +5,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import application.Vec2d;
 import engine.world.ComponentRegisteredSprite;
 import engine.world.gameobject.ComponentCircle;
 import game.world.gameobject.SpriteRegistry;
@@ -20,10 +21,12 @@ public class HoneyTower extends Tower {
 
 	private SystemTowers towers;
 	private HexCoordinates hex;
-     
+    
 	
 	private ComponentCircle bound;
 	private ComponentRegisteredSprite sprite;
+	
+	private double projectileSpeed;
 	
 	public HoneyTower(SystemTowers system, HexCoordinates hexCoordinates) {
 		super(system, TowerInfo.HONEY.name, system.nextTowerId());
@@ -31,9 +34,9 @@ public class HoneyTower extends Tower {
 
 		this.towers = system;
 		this.hex = hexCoordinates;
-
-		// this.bound = new ComponentAABB(this, hex.toGameSpace(), new
-		// Vec2d(1));
+		this.direction = new Vec2d(1,0);
+        this.projectileSpeed = 0.01;
+		
 		this.bound = new ComponentCircle(this, hex.toGameSpaceCentered(),
 				HexCoordinates.HEX_WIDTH / 2);
 		this.sprite = new ComponentRegisteredSprite(this,
@@ -63,9 +66,17 @@ public class HoneyTower extends Tower {
 	@Override
 	protected void shot() {
 		// TODO Auto-generated method stub
-		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY);
+		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY,this.direction,this.projectileSpeed);
 		Projectile hProjectile = ProjectileFactory.getInstance().createProjectile((SystemTowers)getSystem(), hex, pjInfo);
 		getSystem().addGameObject(SystemTowers.TOWERS_Z,hProjectile);
+	}
+
+	public double getProjectileSpeed() {
+		return projectileSpeed;
+	}
+
+	public void setProjectileSpeed(double projectileSpeed) {
+		this.projectileSpeed = projectileSpeed;
 	}
 
 	
