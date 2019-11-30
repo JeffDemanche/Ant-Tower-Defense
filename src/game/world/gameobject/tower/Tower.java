@@ -35,6 +35,8 @@ public abstract class Tower extends GameObject {
 	
 	private boolean selected;
 	
+	private static double FortyFivedegreesToRadians = 45 * Math.PI/180;
+	
 	public Tower(GameSystem system, String towerType, int towerId,HexCoordinates hexCoordinates,
 			double range) {
 		super(system, createName(towerType, towerId));
@@ -109,13 +111,13 @@ public abstract class Tower extends GameObject {
 	@Override
 	public void onMouseDragged(MouseEvent e) 
 	{
-		Vec2d currentMousePos = new Vec2d(e.getX(),e.getY());
+		/*Vec2d currentMousePos = new Vec2d(e.getX(),e.getY());
 		if(this.selected)
 		{
-			Vec2d delta = currentMousePos.minus(this.mousePos);
-			System.out.println(delta);
+			//Vec2d delta = currentMousePos.minus(this.mousePos);
+			
 			this.mousePos = currentMousePos;
-		}
+		}*/
 	}
 
 	@Override
@@ -123,6 +125,11 @@ public abstract class Tower extends GameObject {
 	{
 		if(this.selected)
 		{
+			//double rX = Math.cos(FortyFivedegreesToRadians)*direction.x - Math.sin(FortyFivedegreesToRadians)*direction.y;
+			//double rY = Math.sin(FortyFivedegreesToRadians)*direction.x + Math.cos(FortyFivedegreesToRadians)*direction.y;
+			
+			this.direction = this.direction.rotate(FortyFivedegreesToRadians);	
+			lineOfSight.updateEndPoint(this.direction);
 			this.selected = false;
 		}
 	}

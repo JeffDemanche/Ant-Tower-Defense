@@ -37,5 +37,9 @@ public class LineOfSight extends GameObject{
 		return ((LineOfSightComponent)this.getComponent("LineOfSight")).getEndPoint();
 	}
 
+	public void updateEndPoint(Vec2d direction)
+	{
+		((LineOfSightComponent)this.getComponent("LineOfSight")).updateEndPoint(direction);
+	}
 	
 }
