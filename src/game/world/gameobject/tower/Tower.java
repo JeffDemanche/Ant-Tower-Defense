@@ -31,6 +31,10 @@ public abstract class Tower extends GameObject {
 	
 	protected HexCoordinates hex;
 	
+	private Vec2d mousePos;
+	
+	private boolean selected;
+	
 	public Tower(GameSystem system, String towerType, int towerId,HexCoordinates hexCoordinates,
 			double range) {
 		super(system, createName(towerType, towerId));
@@ -91,19 +95,36 @@ public abstract class Tower extends GameObject {
 	@Override
 	public void onMousePressed(MouseEvent e) 
 	{
-		System.out.println("CLICK on TOWER");
+		Vec2d clickPos = new Vec2d(e.getX(),e.getY());
+		if(getDrawable().insideBB(clickPos))
+		{
+			//System.out.println("CLICK on TOWER");
+			this.selected = true;
+			this.mousePos = clickPos;
+		}
+		
 		//super.onMousePressed(e);
 	}
 
 	@Override
 	public void onMouseDragged(MouseEvent e) 
 	{
-		
+		Vec2d currentMousePos = new Vec2d(e.getX(),e.getY());
+		if(this.selected)
+		{
+			Vec2d delta = currentMousePos.minus(this.mousePos);
+			System.out.println(delta);
+			this.mousePos = currentMousePos;
+		}
 	}
 
 	@Override
 	public void onMouseReleased(MouseEvent e) 
 	{
+		if(this.selected)
+		{
+			this.selected = false;
+		}
 	}
 
 	protected abstract void shot(); 
