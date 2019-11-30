@@ -161,12 +161,8 @@ public class ComponentEmitter extends Component {
 		while(!myParticlesToRemove.isEmpty())
 		{
 			Particle p = myParticlesToRemove.remove();
+			this.myParticles.remove(p);
 			
-			
-			if(this.myParticles.remove(p))
-			{
-				System.out.println( " deleted");
-			}
 			p.remove();
 		}
 		

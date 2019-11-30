@@ -21,7 +21,7 @@ public class EmitterGameObject1 extends GameObject {
 		ComponentAABB aabComponent = new ComponentAABB(this, position, new Vec2d(1,1));
 		ComponentEmitter particleEmitter = 
 				new ComponentEmitter(ComponentEmitter.PATTERTYPE.EXPLOSION , "Emitter", this,
-		                    10, 2, aabComponent.getPosition(), new Vec2d(0.2,0.2),new Vec2d(0,-1),
+		                    10, 1, aabComponent.getPosition(), new Vec2d(0.2,0.2),new Vec2d(0,-1),
 		                    SpriteRegistry.HONEY_PARTICLE, 0.05,false,3.0f,0);
 		
 		this.addComponent(particleEmitter);
