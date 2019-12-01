@@ -16,6 +16,10 @@ public class TileHoney extends Tile{
 
 	private ComponentPolygon bound;
 	
+	private double coolDownInMilliSeconds = 3000;
+	private long timer = 0;
+	
+	
 	public TileHoney(SystemLevel system, HexCoordinates offsetCoordinates) {
 		super(system, createName("Honey", offsetCoordinates),
 				offsetCoordinates, Type.Honey);
@@ -37,6 +41,23 @@ public class TileHoney extends Tile{
 	@Override
 	public void onDraw(GraphicsContext g) {
 		super.onDraw(g);
+	}
+	
+	@Override
+	public void onTick(long nanosSincePreviousTick) {
+		
+		this.timer+=nanosSincePreviousTick;
+		
+		double toMilliseconds = this.timer/1000000;
+		if(toMilliseconds > coolDownInMilliSeconds)
+		{
+			//retrieve the saved tile
+			Tile savedTileAtPos = ((SystemLevel) this.getSystem()).retrieveTile(getCoordinates());
+			
+			this.remove();
+			((SystemLevel) this.getSystem()).setTile(getCoordinates(), savedTileAtPos);
+		}
+		
 	}
 
 	@Override

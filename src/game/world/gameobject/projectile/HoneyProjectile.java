@@ -32,17 +32,24 @@ public class HoneyProjectile extends Projectile{
 		
 		if (this.hit) {
 			HexCoordinates hexTarget = HexCoordinates.fromGameSpace(this.target);
-			Tile tile = (Tile) ((SystemTowers) this.getSystem()).getLevel().getTileAt(hexTarget.getX(),
+			Tile targetTile = (Tile) ((SystemTowers) this.getSystem()).getLevel().getTileAt(hexTarget.getX(),
 					hexTarget.getY());
 
-			if (tile.getType() != Tile.Type.Honey) {
-				tile.remove();
+			if (targetTile.getType() != Tile.Type.Honey) {
+				
+				//save hit tile
+				
+				((SystemTowers) this.getSystem()).getLevel().saveTile(hexTarget, targetTile);
+				
+				targetTile.remove();
 
 				((SystemTowers) this.getSystem()).getLevel().setTile((hexTarget),
 						new TileHoney(((SystemTowers) this.getSystem()).getLevel(), hexTarget));
+				
 
 			}
 
+			//remove projectile
 			this.remove();
 			
 			GameObject emptyGameObject = new EmitterGameObject1(((SystemTowers) this.getSystem())
