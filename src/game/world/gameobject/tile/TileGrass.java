@@ -18,7 +18,7 @@ public class TileGrass extends Tile {
 
 	public TileGrass(SystemLevel system, HexCoordinates offsetCoordinates) {
 		super(system, createName("Grass", offsetCoordinates),
-				offsetCoordinates);
+				offsetCoordinates, Type.Grass);
 
 		bound = offsetCoordinates.createPolygon(this);
 		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,

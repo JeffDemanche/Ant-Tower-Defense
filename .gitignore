@@ -1,2 +1,5 @@
 /bin/
 javafx-sdk-12.0.2/
+lib/
+src/engine/graphics/
+src/img/dragonballzsuper.png

@@ -1,22 +1,60 @@
 package game.world.gameobject.tower;
 
+import application.Vec2d;
+import engine.world.ComponentRegisteredSprite;
 import engine.world.GameSystem;
+import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.GameObject;
+import game.world.gameobject.tower.lineofsight.LineOfSight;
+import game.world.system.HexCoordinates;
+import game.world.system.SystemTowers;
+import javafx.scene.input.MouseEvent;
 
 public abstract class Tower extends GameObject {
 	
-	private boolean canAttack;
+	private boolean canAttack ;
 	
 	private long attackTimer = 0;
 	
 	private double attackTimerMilliSeconds;
 	
-	private double attackTime;
+	protected double attackTime;
 	
-	private boolean enabled;
+	protected boolean enabled;
 	
-	public Tower(GameSystem system, String towerType, int towerId) {
+	protected Vec2d direction;
+	
+	protected LineOfSight lineOfSight;
+	
+	protected ComponentCircle bound;
+	protected ComponentRegisteredSprite sprite;
+	
+	protected HexCoordinates hex;
+	
+	private Vec2d mousePos;
+	
+	private boolean selected;
+	
+	private static double FortyFivedegreesToRadians = 45 * Math.PI/180;
+	
+	public Tower(GameSystem system, String towerType, int towerId,HexCoordinates hexCoordinates,
+			double range) {
 		super(system, createName(towerType, towerId));
+		
+
+		this.hex = hexCoordinates;
+		this.bound = new ComponentCircle(this, hex.toGameSpaceCentered(),
+				HexCoordinates.HEX_WIDTH / 2);
+	
+
+		this.addComponent(bound);
+		
+		this.direction = new Vec2d(0,-1);
+		canAttack = false;
+		lineOfSight = new LineOfSight(system, "lineOfSight"+towerId, hex.toGameSpaceCentered(),
+				this.direction,range);
+		
+		system.addGameObject(SystemTowers.TOWERS_Z+3, lineOfSight);
 	}
 	
 	public abstract int getCost();
@@ -55,11 +93,48 @@ public abstract class Tower extends GameObject {
 		
 		super.onTick(nanosSincePreviousTick);
 	}
-
-	private void shot() {
-		// TODO Auto-generated method stub
+	
+	@Override
+	public void onMousePressed(MouseEvent e) 
+	{
+		Vec2d clickPos = new Vec2d(e.getX(),e.getY());
+		if(getDrawable().insideBB(clickPos))
+		{
+			//System.out.println("CLICK on TOWER");
+			this.selected = true;
+			this.mousePos = clickPos;
+		}
 		
+		//super.onMousePressed(e);
 	}
+
+	@Override
+	public void onMouseDragged(MouseEvent e) 
+	{
+		/*Vec2d currentMousePos = new Vec2d(e.getX(),e.getY());
+		if(this.selected)
+		{
+			//Vec2d delta = currentMousePos.minus(this.mousePos);
+			
+			this.mousePos = currentMousePos;
+		}*/
+	}
+
+	@Override
+	public void onMouseReleased(MouseEvent e) 
+	{
+		if(this.selected)
+		{
+			//double rX = Math.cos(FortyFivedegreesToRadians)*direction.x - Math.sin(FortyFivedegreesToRadians)*direction.y;
+			//double rY = Math.sin(FortyFivedegreesToRadians)*direction.x + Math.cos(FortyFivedegreesToRadians)*direction.y;
+			
+			this.direction = this.direction.rotate(FortyFivedegreesToRadians);	
+			lineOfSight.updateEndPoint(this.direction);
+			this.selected = false;
+		}
+	}
+
+	protected abstract void shot(); 
 
 	public boolean isCanAttack() {
 		return canAttack;

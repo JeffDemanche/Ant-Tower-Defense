@@ -49,6 +49,7 @@ public class SystemLevel extends GameSystem
 	 * object list.
 	 */
 	private HashMap<HexCoordinates, Tile> tiles;
+	private HashMap<HexCoordinates, Tile> repalcedTiles;
 
 	public SystemLevel(ATDWorld world) {
 		super(world);
@@ -56,6 +57,7 @@ public class SystemLevel extends GameSystem
 		this.tiles = new HashMap<>();
 		this.size = new Vec2i(64, 64);
 		this.levelGenerator = new LevelGenerator(this, size, 20);
+		this.repalcedTiles = new HashMap<HexCoordinates, Tile>();
 	}
 
 	/**
@@ -177,5 +179,28 @@ public class SystemLevel extends GameSystem
 		}
 		return neighborsGameSpace;
 	}
+	
+	/**
+	 * save a hit tile into auxiliar map
+	 */
+	public void saveTile( HexCoordinates hex, Tile tile)
+	{
+		if(!this.repalcedTiles.containsKey(hex))
+		{
+			this.repalcedTiles.put(hex, tile);
+		}
+	}
 
+	/**
+	 * retrieve a saved hit tile from auxiliar map
+	 */
+	public Tile retrieveTile( HexCoordinates hex)
+	{
+		if(this.repalcedTiles.containsKey(hex))
+		{
+			return this.repalcedTiles.get(hex);
+		}
+		return null;
+	}
+	
 }

@@ -13,15 +13,27 @@ import game.world.system.SystemLevel;
  */
 public abstract class Tile extends GameObject {
 
+	
+	public enum Type {
+		AntHill,
+		Grass,
+		Honey,
+		Sand,
+		Water
+	}
+	
 	private HexCoordinates offsetCoordinates;
 
 	private SystemLevel level;
+	
+	private Type type;
 
 	public Tile(SystemLevel system, String name,
-			HexCoordinates offsetCoordinates) {
+			HexCoordinates offsetCoordinates, Type type) {
 		super(system, name);
 		this.level = system;
 		this.offsetCoordinates = offsetCoordinates;
+		this.type = type;
 	}
 
 	public HexCoordinates getCoordinates() {
@@ -51,5 +63,13 @@ public abstract class Tile extends GameObject {
 	public abstract boolean traversableByDefault();
 	
 	public abstract boolean suitableForTower();
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
 
 }

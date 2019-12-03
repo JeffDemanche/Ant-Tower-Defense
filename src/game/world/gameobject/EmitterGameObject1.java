@@ -13,16 +13,29 @@ import engine.world.gameobject.GameObject;
 
 public class EmitterGameObject1 extends GameObject {
 
-	public EmitterGameObject1(GameSystem system, String name) {
+	public EmitterGameObject1(GameSystem system, String name, Vec2d position) {
 		super(system, name);
 		// TODO Auto-generated constructor stub
 		
 		
-		ComponentAABB aabComponent = new ComponentAABB(this, new Vec2d(0,0), new Vec2d(1,1));
-		ComponentEmitter particleEmitter = new ComponentEmitter(ComponentEmitter.PATTERTYPE.EXPLOSION , "Emitter", this,
-		10, 2, aabComponent.getPosition(), new Vec2d(0.5,0.5),new Vec2d(0,-1), 0.05,true,3.0f,0);
+		ComponentAABB aabComponent = new ComponentAABB(this, position, new Vec2d(1,1));
+		ComponentEmitter particleEmitter = 
+				new ComponentEmitter(ComponentEmitter.PATTERTYPE.EXPLOSION , "Emitter", this,
+		                    10, 1, aabComponent.getPosition(), new Vec2d(0.2,0.2),new Vec2d(0,-1),
+		                    SpriteRegistry.HONEY_PARTICLE, 0.05,false,3.0f,0);
 		
 		this.addComponent(particleEmitter);
+	}
+	
+	@Override
+	public void onTick(long nanosSincePreviousTick)
+	{
+		if(((ComponentEmitter)this.getComponent("Emitter")).isFinished())
+		{
+			this.remove();
+		}
+		
+		super.onTick(nanosSincePreviousTick);
 	}
 	
 	@Override

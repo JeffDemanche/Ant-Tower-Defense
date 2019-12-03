@@ -17,7 +17,7 @@ public class TileSand extends Tile {
 	private ComponentPolygon bound;
 	
 	public TileSand(SystemLevel system, HexCoordinates offsetCoordinates) {
-		super(system, createName("Sand", offsetCoordinates), offsetCoordinates);
+		super(system, createName("Sand", offsetCoordinates), offsetCoordinates, Type.Sand);
 
 		bound = offsetCoordinates.createPolygon(this);
 		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,

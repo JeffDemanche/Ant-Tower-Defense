@@ -17,12 +17,17 @@ public final class SpriteRegistry {
 	public static Image SAND_MASKED;
 	public static Image GRASS_MASKED;
 	public static Image ANTHILL_MASKED;
+	public static Image HONEY_MASKED;
 	public static Image[] WATER_MASKED;
 
 	public static Image CINNAMON;
 	public static Image HONEY;
 	public static Image HONEY_PROJECTILE;
+	public static Image HONEY_PARTICLE;
 
+	public static Image STAR_PARTICLE;
+	public static Image FIRE_PARTICLE;
+	
 	public SpriteRegistry() {
 		System.out.println(
 				"Working Directory = " + System.getProperty("user.dir"));
@@ -35,6 +40,9 @@ public final class SpriteRegistry {
 				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
 		ANTHILL_MASKED = applyMask("file:src/img/tile/anthill.png",
 				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
+		HONEY_MASKED = applyMask("file:src/img/tile/honeyTile.png",
+				"file:src/img/tile/hex_mask.png", 0, 16, HEX_SAMPLE_MULTIPLIER);
+		
 		WATER_MASKED = new Image[3];
 		for (int i = 0; i < 3; i++) {
 			WATER_MASKED[i] = applyMask("file:src/img/tile/water.png",
@@ -46,12 +54,21 @@ public final class SpriteRegistry {
 				"file:src/img/tower/cinnamon.png", 6);
 
 		HONEY = applyUpscale(new Image("file:src/img/tower/honey.png"),
-				"file:src/img/tower/cinnamon.png", 6);
+				"file:src/img/tower/honey.png", 6);
 		
 		
-		HONEY_PROJECTILE = applyUpscale(new Image("file:src/img/tower/cinnamon.png"),
+		HONEY_PROJECTILE = applyUpscale(new Image("file:src/img/tower/honeyProjectile.png"),
 				"file:src/img/tower/honeyProjectile.png", 6);
 		
+		HONEY_PARTICLE = applyUpscale(new Image("file:src/img/particle/honeyParticle.png"),
+				"file:src/img/particle/honeyParticle.png", 6);
+		
+		STAR_PARTICLE = applyUpscale(new Image("file:src/img/particle/star.png"),
+				"file:src/img/particle/star.png", 6);
+		
+		FIRE_PARTICLE = applyUpscale(new Image("file:src/img/particle/fire.png"),
+				"file:src/img/particle/fire.png", 6);
+				
 		initialized = true;
 	}
 
