@@ -29,7 +29,7 @@ public class AntCarpenter extends Ant {
 	private final double CARPENTER_RADIUS = 0.2;
 	private final double CARPENTER_SPEED = 1.5;
 	
-	private final int CARPENTER_MAX_HEALTH = 20;
+	private static final int CARPENTER_MAX_HEALTH = 20;
 
 	private SystemAnts ants;
 
@@ -37,13 +37,11 @@ public class AntCarpenter extends Ant {
 	private ComponentDynamicSprite sprite;
 	private ComponentNavigable navigable;
 	private ComponentAIBehaviorTree behaviorTree;
-
-	private int currentHealth;
 	
 	private Blackboard behaviorBlackboard;
 
 	public AntCarpenter(SystemAnts system, int antId) {
-		super(system, "Carpenter", antId);
+		super(system, "Carpenter", antId, CARPENTER_MAX_HEALTH);
 
 		this.ants = system;
 
@@ -52,10 +50,9 @@ public class AntCarpenter extends Ant {
 				bound, 8, 150);
 		this.navigable = new ComponentNavigable(this, CARPENTER_SPEED, bound);
 		this.behaviorTree = new ComponentAIBehaviorTree(this, createBehavior());
-
-		this.currentHealth = CARPENTER_MAX_HEALTH;
 		
 		this.createWalkingAnimation();
+		this.createDamageAnimation();
 		sprite.setAnimation("Walk");
 
 		this.addComponent(bound);
@@ -130,6 +127,28 @@ public class AntCarpenter extends Ant {
 		return rootSequence;
 	}
 	
+	private int damageTimer = 0;
+	
+	@Override
+	public void damage(int amount) {
+		super.damage(amount);
+		
+		this.damageTimer = ANT_DAMAGE_ANIMATION_TIMER;
+		this.sprite.setAnimation("Damage");
+	}
+	
+	@Override
+	public void onTick(long nanosSincePreviousTick) {
+		super.onTick(nanosSincePreviousTick);
+		
+		if (damageTimer > 0) {
+			damageTimer -= nanosSincePreviousTick / 1000000;
+		}
+		else {
+			this.sprite.setAnimation("Walk");
+		}
+	}
+	
 	@Override
 	public void onSpawn() {
 		super.onSpawn();
@@ -160,6 +179,13 @@ public class AntCarpenter extends Ant {
 		sprite.addPhaseToAnimation("Walk", 32, 0, 16, 16);
 		sprite.addPhaseToAnimation("Walk", 48, 0, 16, 16);
 	}
+	
+	private void createDamageAnimation() {
+		sprite.addPhaseToAnimation("Damage", 0, 16, 16, 16);
+		sprite.addPhaseToAnimation("Damage", 16, 16, 16, 16);
+		sprite.addPhaseToAnimation("Damage", 32, 16, 16, 16);
+		sprite.addPhaseToAnimation("Damage", 48, 16, 16, 16);
+	}
 
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
@@ -177,13 +203,8 @@ public class AntCarpenter extends Ant {
 	}
 
 	@Override
-	public int getMaxHealth() {
-		return CARPENTER_MAX_HEALTH;
-	}
-
-	@Override
-	public int getCurrentHealth() {
-		return this.currentHealth;
+	public int getSugarCap() {
+		return 1;
 	}
 
 }

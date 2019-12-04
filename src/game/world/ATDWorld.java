@@ -11,6 +11,8 @@ import org.w3c.dom.Element;
 import application.Vec2d;
 import engine.world.World;
 import game.viewport.ATDViewport;
+import game.world.gameobject.ant.Ant;
+import game.world.gameobject.tower.TowerInfo;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 import game.world.system.SystemGUI;
@@ -50,9 +52,8 @@ public class ATDWorld extends World {
 		this.ants = new SystemAnts(this, level);
 		this.towers = new SystemTowers(this, level);
 		this.gui = new SystemGUI(this, towers);
-		this.projectiles = new SystemProjectiles(this,level);
+		this.projectiles = new SystemProjectiles(this, level);
 
-		
 		this.worldSeed = System.currentTimeMillis();
 		this.worldRandom = new Random(this.worldSeed);
 
@@ -60,9 +61,9 @@ public class ATDWorld extends World {
 		this.cash = STARTING_CASH;
 
 		this.addSystem(level);
+		this.addSystem(towers);
 		this.addSystem(ants);
 		this.addSystem(gui);
-		this.addSystem(towers);
 	}
 
 	/**
@@ -87,11 +88,32 @@ public class ATDWorld extends World {
 	public int getRemainingSugar() {
 		return this.remainingSugar;
 	}
-	
+
 	public int getCash() {
 		return this.cash;
 	}
-	
+
+	public SystemAnts getAntsSystem() {
+		return this.ants;
+	}
+
+	public boolean isWaveActive() {
+		return this.ants.isWaveActive();
+	}
+
+	public void onAntReachedAnthill(Ant a) {
+		this.remainingSugar -= a.getSugarCap();
+
+		if (this.remainingSugar <= 0) {
+			// TODO
+			System.out.println("GAME OVER");
+		}
+	}
+
+	public void onTowerPlaced(TowerInfo tower) {
+		this.cash -= tower.cost;
+	}
+
 	@Override
 	public void onMouseClicked(MouseEvent e) {
 		super.onMouseClicked(e);
@@ -107,7 +129,6 @@ public class ATDWorld extends World {
 		super.onKeyPressed(e);
 
 		if (e.getCode() == KeyCode.SPACE) {
-			// TODO temporary until button for next wave.
 			ants.startWave();
 		}
 	}

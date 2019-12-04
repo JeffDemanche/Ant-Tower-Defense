@@ -38,7 +38,7 @@ public class SystemAnts extends GameSystem {
 
 	public ArrayList<Wave> generateWaves() {
 		ArrayList<Wave> w = new ArrayList<>();
-		w.add(new Wave(this, 3000, createCarpenterAnts(5)));
+		w.add(new Wave(this, 3000, createCarpenterAnts(10)));
 		return w;
 	}
 
@@ -70,10 +70,14 @@ public class SystemAnts extends GameSystem {
 		}
 	}
 
+	public boolean isWaveActive() {
+		return !(currentWave == -1 || !waves.get(currentWave).isRunning());
+	}
+
 	public SystemLevel getLevel() {
 		return this.level;
 	}
-	
+
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
 		return null;

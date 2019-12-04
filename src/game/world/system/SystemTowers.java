@@ -24,7 +24,7 @@ public class SystemTowers extends GameSystem {
 	private SystemLevel level;
 
 	private int towerCounter;
-	private int projectileCounter; 
+	private int projectileCounter;
 
 	private HashMap<HexCoordinates, Tower> towers;
 
@@ -51,7 +51,7 @@ public class SystemTowers extends GameSystem {
 		projectileCounter++;
 		return id;
 	}
-	
+
 	/**
 	 * This is called before any checks or updates to world state, so all that
 	 * should be handled within it.
@@ -63,14 +63,16 @@ public class SystemTowers extends GameSystem {
 	 */
 	public void addTowerToWorld(Vec2d gameCoords, TowerInfo tower) {
 		HexCoordinates hex = HexCoordinates.fromGameSpace(gameCoords);
-		
+
 		if (canPlaceTower(hex, tower)) {
 			Tower t = TowerInfo.createTower(this, hex, tower);
 			this.addGameObject(TOWERS_Z, t);
 			towers.put(hex, t);
+
+			atdWorld.onTowerPlaced(tower);
 		} else {
 			// TODO
-			System.out.println("Invalid place for tower.");
+			System.out.println("Can't place tower.");
 		}
 	}
 
@@ -82,8 +84,10 @@ public class SystemTowers extends GameSystem {
 		Tile tile = level.tileAt(hex);
 
 		boolean validTileType = tile.suitableForTower();
-		
-		return validTileType;
+		boolean enoughCash = atdWorld.getCash() >= tower.cost;
+		boolean noCurrentWave = !atdWorld.isWaveActive();
+
+		return validTileType && enoughCash && noCurrentWave;
 	}
 
 	@Override
@@ -99,8 +103,7 @@ public class SystemTowers extends GameSystem {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		this.tickGameObjects(nanosSincePreviousTick);
-		
-		
+
 	}
 
 	@Override

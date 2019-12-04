@@ -20,14 +20,11 @@ import game.world.system.SystemTowers;
 
 public class HoneyTower extends Tower {
 
-	private SystemTowers towers;
-	
-    
-	
+	private SystemTowers towers;	
 	private double projectileSpeed;
 	
 	public HoneyTower(SystemTowers system, HexCoordinates hexCoordinates) {
-		super(system, TowerInfo.HONEY.name, system.nextTowerId(), hexCoordinates,3);
+		super(system, TowerInfo.HONEY, system.nextTowerId(), hexCoordinates,3);
 		// TODO Auto-generated constructor stub
 
 		this.towers = system;
@@ -40,14 +37,13 @@ public class HoneyTower extends Tower {
 		
     	this.addComponent(sprite);
     	
-		attackTime = 3000;
+		cooldownDurationMillis = 3000;
 		enabled = true;
 		
 	}
 
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

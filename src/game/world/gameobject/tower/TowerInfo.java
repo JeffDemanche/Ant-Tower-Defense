@@ -15,24 +15,29 @@ import javafx.scene.image.Image;
 public class TowerInfo {
 
 	public static TowerInfo CINNAMON = new TowerInfo("Cinnamon",
-			"Hurts ants mildly as they walk over it.", 5,
+			"Hurts ants mildly as they walk over it.", 5, 30, 5,
 			SpriteRegistry.CINNAMON, "file:src/img/tower/cinnamon.png");
-	
+
 	public static TowerInfo HONEY = new TowerInfo("Honey",
-			"Stops ants momentarily as they walk over it. It expans over time", 10,
+			"Stops ants momentarily, and expands over time", 10, 60, 15,
 			SpriteRegistry.HONEY, "file:src/img/tower/honey.png");
 
 	public final String name;
 	public final String description;
 	public final int cost;
+	/** Per minute. */
+	public final int rateOfFire;
+	public final int damage;
 	public final Image guiSprite;
 	public final String spritePath;
 
-	public TowerInfo(String name, String description, int cost, Image guiSprite,
-			String spritePath) {
+	public TowerInfo(String name, String description, int cost, int rateOfFire,
+			int damage, Image guiSprite, String spritePath) {
 		this.name = name;
 		this.description = description;
 		this.cost = cost;
+		this.rateOfFire = rateOfFire;
+		this.damage = damage;
 		this.guiSprite = guiSprite;
 		this.spritePath = spritePath;
 	}

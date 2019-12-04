@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import engine.world.GameSystem;
 import engine.world.WorldError;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -20,12 +21,24 @@ public class ComponentCollidable extends Component {
 	private Collidable thisCollider;
 	private CollisionHandler handler;
 
+	private GameSystem colliderSystem;
+
 	public ComponentCollidable(String tag, GameObject object,
 			Collidable thisCollider, CollisionHandler handler) {
 		super(tag, object);
 		this.collisions = new ArrayList<>();
 		this.thisCollider = thisCollider;
 		this.handler = handler;
+		this.colliderSystem = this.getObject().getSystem();
+	}
+
+	public ComponentCollidable(GameObject object, Collidable thisCollider,
+			CollisionHandler handler, GameSystem colliderSystem) {
+		super("Collidable", object);
+		this.collisions = new ArrayList<>();
+		this.thisCollider = thisCollider;
+		this.handler = handler;
+		this.colliderSystem = colliderSystem;
 	}
 
 	public void addCollision(GameObject object) {
@@ -46,8 +59,7 @@ public class ComponentCollidable extends Component {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		for (GameObject obj : this.getObject().getSystem()
-				.getCollidableObjects()) {
+		for (GameObject obj : colliderSystem.getCollidableObjects()) {
 			if (obj != this.getObject()
 					&& thisCollider.collides(obj.getCollider())) {
 				this.handler.onCollide(obj);

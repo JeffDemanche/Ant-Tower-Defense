@@ -61,7 +61,7 @@ public class Wave {
 					break;
 				}
 			}
-			running = !allAntsDead;
+			running = !allAntsSpawned || !allAntsDead;
 		}
 	}
 
