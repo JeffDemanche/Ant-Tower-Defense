@@ -21,6 +21,10 @@ public class TowerInfo {
 	public static TowerInfo HONEY = new TowerInfo("Honey",
 			"Stops ants momentarily, and expands over time", 10, 60, 15,
 			SpriteRegistry.HONEY, "file:src/img/tower/honey.png");
+	
+	public static TowerInfo WATER = new TowerInfo("Water Gun",
+			"Kills ants with a fresh water spray", 10, 60, 15,
+			SpriteRegistry.WATER, "file:src/img/tower/water-gun.png");
 
 	public final String name;
 	public final String description;

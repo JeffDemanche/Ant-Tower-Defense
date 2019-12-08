@@ -36,6 +36,8 @@ public abstract class Tower extends GameObject {
 	private int fireCooldownTimer;
 
 	private static double FortyFivedegreesToRadians = 45 * Math.PI / 180;
+	
+	protected double projectileSpeed;
 
 	public Tower(GameSystem system, TowerInfo towerType, int towerId,
 			HexCoordinates hexCoordinates, double range) {

@@ -20,16 +20,13 @@ import game.world.system.SystemTowers;
 
 public class HoneyTower extends Tower {
 
-	private SystemTowers towers;	
-	private double projectileSpeed;
+		
+	
 	
 	public HoneyTower(SystemTowers system, HexCoordinates hexCoordinates) {
 		super(system, TowerInfo.HONEY, system.nextTowerId(), hexCoordinates,3);
-		// TODO Auto-generated constructor stub
-
-		this.towers = system;
 		
-		//this.direction = new Vec2d(0,-1);
+
         this.projectileSpeed = 0.05;
 		
     	this.sprite = new ComponentRegisteredSprite(this,
