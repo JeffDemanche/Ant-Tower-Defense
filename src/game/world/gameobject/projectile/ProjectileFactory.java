@@ -31,6 +31,10 @@ public class ProjectileFactory {
 		{
 			return new HoneyProjectile(system,hex,projectileInfo);
 		}
+		if(projectileInfo.type == ProjectileConstants.WATER)
+		{
+			return new WaterProjectile(system,hex,projectileInfo);
+		}
 		return null;
 	}
 }

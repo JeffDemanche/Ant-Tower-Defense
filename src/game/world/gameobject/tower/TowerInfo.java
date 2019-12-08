@@ -22,7 +22,7 @@ public class TowerInfo {
 			"Stops ants momentarily, and expands over time", 10, 60, 15,
 			SpriteRegistry.HONEY, "file:src/img/tower/honey.png");
 	
-	public static TowerInfo WATER = new TowerInfo("Water Gun",
+	public static TowerInfo WATER = new TowerInfo("WaterGun",
 			"Kills ants with a fresh water spray", 10, 60, 15,
 			SpriteRegistry.WATER, "file:src/img/tower/water-gun.png");
 
@@ -53,6 +53,8 @@ public class TowerInfo {
 			return new TowerCinnamon(system, hex);
 		case "Honey":
 			return new HoneyTower(system, hex);
+		case "WaterGun":
+			return new WaterTower(system, hex);
 		default:
 			return null;
 		}

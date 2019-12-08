@@ -168,4 +168,12 @@ public abstract class Tower extends GameObject {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
+	public double getProjectileSpeed() {
+		return projectileSpeed;
+	}
+
+	public void setProjectileSpeed(double projectileSpeed) {
+		this.projectileSpeed = projectileSpeed;
+	}
 }
