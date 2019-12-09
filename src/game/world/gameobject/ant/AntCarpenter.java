@@ -147,9 +147,12 @@ public class AntCarpenter extends Ant {
 				currentHex.getY());
 		if (targetTile.getType() == Tile.Type.Honey) 
 		{
-		 
-			System.out.println("on honey TILE");	
-			
+			this.navigable.setSpeed(CARPENTER_SPEED * 0.4);
+			//System.out.println("on honey TILE");	
+		}
+		else
+		{
+			this.navigable.setSpeed(CARPENTER_SPEED);
 		}
 		
 		if (damageTimer > 0) {
