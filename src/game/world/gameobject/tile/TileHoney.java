@@ -63,7 +63,7 @@ public class TileHoney extends Tile{
 	@Override
 	public boolean traversableByDefault() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

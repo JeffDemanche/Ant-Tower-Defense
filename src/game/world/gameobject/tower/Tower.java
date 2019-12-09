@@ -5,6 +5,7 @@ import engine.world.ComponentRegisteredSprite;
 import engine.world.GameSystem;
 import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.GameObject;
+import game.world.ATDWorld;
 import game.world.gameobject.tower.lineofsight.LineOfSight;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
@@ -69,24 +70,28 @@ public abstract class Tower extends GameObject {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 
-		if (enabled) {
-			if (!canAttack) {
+		if(((ATDWorld)getSystem().getWorld()).isWaveActive())
+		{
+			if (enabled) {
+				if (!canAttack) {
 
-				attackTimer += nanosSincePreviousTick;
+					attackTimer += nanosSincePreviousTick;
 
-				attackTimerMilliSeconds = attackTimer / 1000000;
-				
-				if (attackTimerMilliSeconds >= cooldownDurationMillis) {
-					canAttack = true;
+					attackTimerMilliSeconds = attackTimer / 1000000;
+					
+					if (attackTimerMilliSeconds >= cooldownDurationMillis) {
+						canAttack = true;
+					}
+				} else {
+					shot();
+					canAttack = false;
+					attackTimer = 0;
+					attackTimerMilliSeconds = 0;
 				}
-			} else {
-				shot();
-				canAttack = false;
-				attackTimer = 0;
-				attackTimerMilliSeconds = 0;
 			}
-		}
 
+		}
+		
 		super.onTick(nanosSincePreviousTick);
 	}
 

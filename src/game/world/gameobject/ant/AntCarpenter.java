@@ -21,6 +21,7 @@ import engine.world.gameobject.behavior.BehaviorSelector;
 import engine.world.gameobject.behavior.BehaviorSequence;
 import engine.world.gameobject.behavior.BehaviorWrapperNot;
 import engine.world.gameobject.behavior.Blackboard;
+import game.world.gameobject.tile.Tile;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 
@@ -140,6 +141,16 @@ public class AntCarpenter extends Ant {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		super.onTick(nanosSincePreviousTick);
+		
+		HexCoordinates currentHex = HexCoordinates.fromGameSpace(this.bound.getPosition());
+		Tile targetTile = (Tile) ((SystemAnts) this.getSystem()).getLevel().getTileAt(currentHex.getX(),
+				currentHex.getY());
+		if (targetTile.getType() == Tile.Type.Honey) 
+		{
+		 
+			System.out.println("on honey TILE");	
+			
+		}
 		
 		if (damageTimer > 0) {
 			damageTimer -= nanosSincePreviousTick / 1000000;
