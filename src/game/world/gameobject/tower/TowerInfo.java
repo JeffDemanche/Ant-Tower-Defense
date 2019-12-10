@@ -57,6 +57,8 @@ public class TowerInfo {
 			return new TowerCinnamon(system, hex);
 		case "Honey":
 			return new HoneyTower(system, hex);
+		case "WaterGun":
+			return new WaterTower(system, hex);
 		case "SpiderWeb":
 			return new SpiderWebTower(system, hex);
 		default:
