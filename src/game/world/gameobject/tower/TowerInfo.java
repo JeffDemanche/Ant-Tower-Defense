@@ -19,8 +19,16 @@ public class TowerInfo {
 			SpriteRegistry.CINNAMON, "file:src/img/tower/cinnamon.png");
 
 	public static TowerInfo HONEY = new TowerInfo("Honey",
-			"Stops ants momentarily, and expands over time", 10, 60, 15,
+			"Slows down ants 80% of their regular movement speed", 10, 60, 15,
 			SpriteRegistry.HONEY, "file:src/img/tower/honey.png");
+	
+	public static TowerInfo WATER = new TowerInfo("WaterGun",
+			"Kills ants with a fresh water spray", 10, 60, 15,
+			SpriteRegistry.WATER, "file:src/img/tower/water-gun.png");
+	
+	public static TowerInfo SPIDERWEB = new TowerInfo("SpiderWeb",
+			"Spiders main tool to catch its meal ", 10, 60, 15,
+			SpriteRegistry.SPIDERWEB, "file:src/img/tower/spider-web.png");
 
 	public final String name;
 	public final String description;
@@ -49,6 +57,10 @@ public class TowerInfo {
 			return new TowerCinnamon(system, hex);
 		case "Honey":
 			return new HoneyTower(system, hex);
+		case "WaterGun":
+			return new WaterTower(system, hex);
+		case "SpiderWeb":
+			return new SpiderWebTower(system, hex);
 		default:
 			return null;
 		}

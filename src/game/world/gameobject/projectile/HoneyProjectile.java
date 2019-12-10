@@ -7,18 +7,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import application.Vec2d;
+import engine.world.ComponentRegisteredSprite;
 import engine.world.gameobject.GameObject;
-import game.world.gameobject.EmitterGameObject1;
+import game.world.gameobject.HoneyParticlesEmitter;
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tile.TileHoney;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
+import game.world.gameobject.SpriteRegistry;
 
 public class HoneyProjectile extends Projectile{
 
 	public HoneyProjectile(SystemTowers towerSystem, HexCoordinates hex, ProjectileInfo info) {
 		super(towerSystem, hex, info);
 		// TODO Auto-generated constructor stub
+		this.sprite = new ComponentRegisteredSprite(this,
+				SpriteRegistry.HONEY_PROJECTILE, bound);
+		this.addComponent(sprite);
 	}
 
 	@Override
@@ -52,7 +57,7 @@ public class HoneyProjectile extends Projectile{
 			//remove projectile
 			this.remove();
 			
-			GameObject emptyGameObject = new EmitterGameObject1(((SystemTowers) this.getSystem())
+			GameObject emptyGameObject = new HoneyParticlesEmitter(((SystemTowers) this.getSystem())
 					.getLevel(),"emittergo1", this.target);
 			
 			((SystemTowers) this.getSystem()).getLevel().

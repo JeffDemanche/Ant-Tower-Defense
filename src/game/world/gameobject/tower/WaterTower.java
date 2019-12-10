@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 
 import application.Vec2d;
 import engine.world.ComponentRegisteredSprite;
+import engine.world.GameSystem;
 import game.world.gameobject.SpriteRegistry;
 import game.world.gameobject.projectile.Projectile;
 import game.world.gameobject.projectile.ProjectileConstants;
@@ -15,54 +16,46 @@ import game.world.gameobject.projectile.ProjectileInfo;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 
-public class HoneyTower extends Tower {
+public class WaterTower extends Tower {
 
+	public WaterTower(SystemTowers system, HexCoordinates hexCoordinates) {
+		super(system, TowerInfo.WATER, system.nextTowerId(), hexCoordinates,2);
+		// TODO Auto-generated constructor stub
 		
-	
-	
-	public HoneyTower(SystemTowers system, HexCoordinates hexCoordinates) {
-		super(system, TowerInfo.HONEY, system.nextTowerId(), hexCoordinates,3);
-		
+		this.projectileSpeed = 0.1;
 
-        this.projectileSpeed = 0.05;
-		
-    	this.sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.HONEY, bound);
-		
-    	this.addComponent(sprite);
-    	
-		cooldownDurationMillis = 3000;
+		this.sprite = new ComponentRegisteredSprite(this, SpriteRegistry.WATER, bound);
+
+		this.addComponent(sprite);
+
+		cooldownDurationMillis = 6000;
 		enabled = true;
-		
 	}
 
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int getCost() {
 		// TODO Auto-generated method stub
-		return TowerInfo.HONEY.cost;
+		return 0;
 	}
 
 	@Override
 	protected void shot() {
-		
+		// TODO Auto-generated method stub
 		Vec2d target = lineOfSight.getEndPoint();
 		// TODO Auto-generated method stub
-		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY,
+		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.WATER,
 				this.direction,this.projectileSpeed,target);
 		
-		Projectile hProjectile = ProjectileFactory.getInstance().
+		Projectile wProjectile = ProjectileFactory.getInstance().
 				createProjectile((SystemTowers)getSystem(), hex, pjInfo);
 		
-		getSystem().addGameObject(SystemTowers.PROJECTILE_Z,hProjectile);
+		getSystem().addGameObject(SystemTowers.PROJECTILE_Z,wProjectile);
 	}
-
-	
-
-	
-	
+   
 }

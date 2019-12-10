@@ -24,6 +24,7 @@ import engine.world.gameobject.behavior.BehaviorSelector;
 import engine.world.gameobject.behavior.BehaviorSequence;
 import engine.world.gameobject.behavior.BehaviorWrapperNot;
 import engine.world.gameobject.behavior.Blackboard;
+import game.world.gameobject.tile.Tile;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 
@@ -45,10 +46,13 @@ public class AntCarpenter extends Ant {
 	private Stack<HexCoordinates> pathFrom;
 
 	private Blackboard behaviorBlackboard;
+	
+	private boolean caught; 
 
 	public AntCarpenter(SystemAnts system, int antId) {
 		super(system, "Carpenter", antId, CARPENTER_MAX_HEALTH);
 
+		this.caught = false;
 		this.ants = system;
 
 		this.bound = new ComponentCircle(this, new Vec2d(0), CARPENTER_RADIUS);
@@ -146,7 +150,26 @@ public class AntCarpenter extends Ant {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		super.onTick(nanosSincePreviousTick);
-
+		
+		if(this.caught)
+		{
+			this.navigable.setSpeed(0.005);
+			return;
+		}
+		
+		HexCoordinates currentHex = HexCoordinates.fromGameSpace(this.bound.getPosition());
+		Tile targetTile = (Tile) ((SystemAnts) this.getSystem()).getLevel().getTileAt(currentHex.getX(),
+				currentHex.getY());
+		if (targetTile.getType() == Tile.Type.Honey) 
+		{
+			this.navigable.setSpeed(CARPENTER_SPEED * 0.2);
+			//System.out.println("on honey TILE");	
+		}
+		else
+		{
+			this.navigable.setSpeed(CARPENTER_SPEED);
+		}
+		
 		if (damageTimer > 0) {
 			damageTimer -= nanosSincePreviousTick / 1000000;
 		} else {
@@ -214,6 +237,14 @@ public class AntCarpenter extends Ant {
 	@Override
 	public int getSugarCap() {
 		return 1;
+	}
+
+	public boolean isCaught() {
+		return caught;
+	}
+
+	public void setCaught(boolean caught) {
+		this.caught = caught;
 	}
 
 }
