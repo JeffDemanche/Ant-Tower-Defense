@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import engine.world.ComponentRegisteredSprite;
+import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.ComponentCollidable;
 import engine.world.gameobject.ComponentCollidable.CollisionHandler;
 import engine.world.gameobject.GameObject;
@@ -44,6 +45,7 @@ public class TowerCinnamon extends Tower {
 					}
 				}, ((ATDWorld) this.getSystem().getWorld()).getAntsSystem());
 
+		
 		this.addComponent(sprite);
 		this.addComponent(collidable);
 		

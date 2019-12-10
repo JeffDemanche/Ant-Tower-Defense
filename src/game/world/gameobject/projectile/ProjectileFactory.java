@@ -35,6 +35,10 @@ public class ProjectileFactory {
 		{
 			return new WaterProjectile(system,hex,projectileInfo);
 		}
+		if(projectileInfo.type == ProjectileConstants.SPIDER)
+		{
+			return new SpiderProjectile(system,hex,projectileInfo);
+		}
 		return null;
 	}
 }

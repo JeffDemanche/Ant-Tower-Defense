@@ -13,32 +13,24 @@ import game.world.ATDWorld;
 import game.world.gameobject.SpriteRegistry;
 import game.world.gameobject.WaterParticlesEmitter;
 import game.world.gameobject.ant.Ant;
-import game.world.gameobject.tower.TowerInfo;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 
-public class WaterProjectile extends Projectile{
+public class SpiderProjectile extends Projectile{
 
-	private ComponentCollidable collidable;
 	
-	public WaterProjectile(SystemTowers towerSystem, HexCoordinates hex, ProjectileInfo projectileInfo) {
+
+	public SpiderProjectile(SystemTowers towerSystem, HexCoordinates hex, ProjectileInfo projectileInfo) {
 		super(towerSystem, hex, projectileInfo);
 		// TODO Auto-generated constructor stub
-		this.sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.WATER_PROJECTILE, bound);
 		
-		this.collidable = new ComponentCollidable(this, this.bound,
-				new CollisionHandler() {
-					@Override
-					public void onCollide(GameObject obj) {
-						if (obj instanceof Ant ) {
-							((Ant) obj).kill();
-						}
-					}
-				}, ((ATDWorld) this.getSystem().getWorld()).getAntsSystem());
+		this.sprite = new ComponentRegisteredSprite(this,
+				SpriteRegistry.SPIDER_PROJECTILE, bound);
+		
 		
 		this.addComponent(sprite);
-		this.addComponent(collidable);
+	
+		
 	}
 
 	@Override
@@ -50,19 +42,10 @@ public class WaterProjectile extends Projectile{
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		
-		if (this.hit) {
-			
-
-			//remove projectile
-			this.remove();
-			
-			GameObject emptyGameObject = new WaterParticlesEmitter(((SystemTowers) this.getSystem())
-					.getLevel(),"emittergo1", this.target);
-			
-			((SystemTowers) this.getSystem()).getLevel().
-			    addGameObject(SystemTowers.PROJECTILE_Z+1, emptyGameObject);
+		if(this.hit)
+		{
+		   this.remove();
 		}
-
 		super.onTick(nanosSincePreviousTick);
 	}
 }

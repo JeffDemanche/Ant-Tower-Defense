@@ -40,10 +40,13 @@ public class AntCarpenter extends Ant {
 	private ComponentAIBehaviorTree behaviorTree;
 	
 	private Blackboard behaviorBlackboard;
+	
+	private boolean caught; 
 
 	public AntCarpenter(SystemAnts system, int antId) {
 		super(system, "Carpenter", antId, CARPENTER_MAX_HEALTH);
 
+		this.caught = false;
 		this.ants = system;
 
 		this.bound = new ComponentCircle(this, new Vec2d(0), CARPENTER_RADIUS);
@@ -142,12 +145,18 @@ public class AntCarpenter extends Ant {
 	public void onTick(long nanosSincePreviousTick) {
 		super.onTick(nanosSincePreviousTick);
 		
+		if(this.caught)
+		{
+			this.navigable.setSpeed(0.005);
+			return;
+		}
+		
 		HexCoordinates currentHex = HexCoordinates.fromGameSpace(this.bound.getPosition());
 		Tile targetTile = (Tile) ((SystemAnts) this.getSystem()).getLevel().getTileAt(currentHex.getX(),
 				currentHex.getY());
 		if (targetTile.getType() == Tile.Type.Honey) 
 		{
-			this.navigable.setSpeed(CARPENTER_SPEED * 0.4);
+			this.navigable.setSpeed(CARPENTER_SPEED * 0.2);
 			//System.out.println("on honey TILE");	
 		}
 		else
@@ -219,6 +228,14 @@ public class AntCarpenter extends Ant {
 	@Override
 	public int getSugarCap() {
 		return 1;
+	}
+
+	public boolean isCaught() {
+		return caught;
+	}
+
+	public void setCaught(boolean caught) {
+		this.caught = caught;
 	}
 
 }
