@@ -7,16 +7,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.base.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.media.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx.web.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/javafx-sdk-12.0.2/lib/javafx-swt.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/lib/jars/lwjgl.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/lib/jars/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="D:/Ant-Tower-Defense.git/lib/jars/slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
