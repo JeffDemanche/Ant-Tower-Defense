@@ -11,9 +11,9 @@ import engine.world.gameobject.ComponentAABB;
 import engine.world.gameobject.ComponentEmitter;
 import engine.world.gameobject.GameObject;
 
-public class EmitterGameObject1 extends GameObject {
+public class HoneyParticlesEmitter extends GameObject {
 
-	public EmitterGameObject1(GameSystem system, String name, Vec2d position) {
+	public HoneyParticlesEmitter(GameSystem system, String name, Vec2d position) {
 		super(system, name);
 		// TODO Auto-generated constructor stub
 		

@@ -25,6 +25,13 @@ public final class SpriteRegistry {
 	public static Image HONEY_PROJECTILE;
 	public static Image HONEY_PARTICLE;
 
+	public static Image WATER;
+	public static Image WATER_PROJECTILE;
+	public static Image WATER_PARTICLE;
+	
+	public static Image SPIDERWEB;
+	public static Image SPIDER_PROJECTILE;
+	
 	public static Image STAR_PARTICLE;
 	public static Image FIRE_PARTICLE;
 	
@@ -62,6 +69,21 @@ public final class SpriteRegistry {
 		
 		HONEY_PARTICLE = applyUpscale(new Image("file:src/img/particle/honeyParticle.png"),
 				"file:src/img/particle/honeyParticle.png", 6);
+		
+		WATER =  applyUpscale(new Image("file:src/img/tower/water-gun.png"),
+				"file:src/img/tower/water-gun.png", 6);
+		
+		WATER_PROJECTILE = applyUpscale(new Image("file:src/img/tower/waterProjectile.png"),
+				"file:src/img/tower/waterProjectile.png", 6);
+		
+		WATER_PARTICLE = applyUpscale(new Image("file:src/img/particle/waterParticle.png"),
+				"file:src/img/particle/waterParticle.png", 6);
+		
+		SPIDERWEB = applyUpscale(new Image("file:src/img/tower/spider-web.png"),
+				"file:src/img/tower/spider-web.png", 6);
+		
+		SPIDER_PROJECTILE = applyUpscale(new Image("file:src/img/tower/spider.png"),
+				"file:src/img/tower/spider.png", 6);
 		
 		STAR_PARTICLE = applyUpscale(new Image("file:src/img/particle/star.png"),
 				"file:src/img/particle/star.png", 6);

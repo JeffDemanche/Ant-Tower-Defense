@@ -75,9 +75,21 @@ public class SystemGUI extends GameSystem {
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
 				new Vec2d(50,5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.HONEY));
+		
+		towerIcons.put("water", new GUITowerIcon(this,
+				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
+				new Vec2d(90,5), atdWorld.getViewport().getScreenSize(),
+				TowerInfo.WATER));
+		
+		towerIcons.put("spiderweb", new GUITowerIcon(this,
+				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
+				new Vec2d(130,5), atdWorld.getViewport().getScreenSize(),
+				TowerInfo.SPIDERWEB));
 
 		this.addGameObject(GUI_Z + 1, towerIcons.get("cinnamon"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("honey"));
+		this.addGameObject(GUI_Z + 1, towerIcons.get("water"));
+		this.addGameObject(GUI_Z + 1, towerIcons.get("spiderweb"));
 	}
 
 	public void setInfoDisplay(TowerInfo info) {

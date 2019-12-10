@@ -28,15 +28,14 @@ public abstract class Projectile extends GameObject
 		
 		this.bound = new ComponentCircle(this, hex.toGameSpaceCentered(),
 				HexCoordinates.HEX_WIDTH / 2);
-		this.sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.HONEY_PROJECTILE, bound);
+		
 
 		this.target = projectileInfo.target;
 		this.hit = false;
 		
 		
 		this.addComponent(bound);
-		this.addComponent(sprite);
+		
 	}
 
 	
