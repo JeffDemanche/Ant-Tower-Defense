@@ -24,32 +24,14 @@ public class SystemAnts extends GameSystem {
 
 	private ATDWorld atdWorld;
 	private SystemLevel level;
-
-	private int antCounter;
+	private WaveFactory waveFactory;
 
 	public SystemAnts(ATDWorld world, SystemLevel level) {
 		super(world);
 		this.atdWorld = world;
 		this.level = level;
+		this.waveFactory = new WaveFactory(level, this, world);
 		currentWave = -1;
-
-		this.antCounter = 0;
-	}
-
-	public ArrayList<Wave> generateWaves() {
-		ArrayList<Wave> w = new ArrayList<>();
-		w.add(new Wave(this, 3000, createCarpenterAnts(10)));
-		return w;
-	}
-
-	public AntCarpenter[] createCarpenterAnts(int number) {
-		AntCarpenter[] ants = new AntCarpenter[number];
-		for (int i = 0; i < number; i++) {
-			AntCarpenter newCarpenter = new AntCarpenter(this, antCounter);
-			this.antCounter++;
-			ants[i] = newCarpenter;
-		}
-		return ants;
 	}
 
 	public void spawnAnt(Ant ant) {
@@ -78,6 +60,13 @@ public class SystemAnts extends GameSystem {
 		return this.level;
 	}
 
+	/**
+	 * Called when an ant dies, with the location where the ant was killed.
+	 */
+	public void onAntDeath(HexCoordinates location) {
+		level.onAntDeath(location);
+	}
+
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
 		return null;
@@ -98,7 +87,7 @@ public class SystemAnts extends GameSystem {
 
 	@Override
 	public void onStartup() {
-		this.waves = generateWaves();
+		this.waves = waveFactory.generateWaves();
 	}
 
 	@Override

@@ -7,14 +7,11 @@ import org.w3c.dom.Element;
 
 import application.Vec2d;
 import engine.world.ComponentRegisteredSprite;
-import engine.world.gameobject.ComponentCircle;
 import game.world.gameobject.SpriteRegistry;
-import game.world.gameobject.projectile.HoneyProjectile;
 import game.world.gameobject.projectile.Projectile;
 import game.world.gameobject.projectile.ProjectileConstants;
 import game.world.gameobject.projectile.ProjectileFactory;
 import game.world.gameobject.projectile.ProjectileInfo;
-import game.world.gameobject.tower.lineofsight.LineOfSightComponent;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 

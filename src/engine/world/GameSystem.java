@@ -1,6 +1,8 @@
 package engine.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,11 +28,11 @@ public abstract class GameSystem implements XMLSerializable {
 
 	private World world;
 	private static final int MAX_Z = 1000;
-	private ConcurrentHashMap<Integer, Set<GameObject>> gameObjects;
+	private HashMap<Integer, Set<GameObject>> gameObjects;
 
 	public GameSystem(World world) {
 		this.world = world;
-		this.gameObjects = new ConcurrentHashMap<>();
+		this.gameObjects = new HashMap<>();
 	}
 
 	public void addGameObject(int zIndex, GameObject object) {

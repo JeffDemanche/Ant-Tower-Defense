@@ -21,11 +21,11 @@ public class TileGrass extends Tile {
 				offsetCoordinates, Type.Grass);
 
 		bound = offsetCoordinates.createPolygon(this);
-		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.GRASS_MASKED, bound);
+		this.setSprite(new ComponentRegisteredSprite(this,
+				SpriteRegistry.GRASS_MASKED, bound));
 
 		this.addComponent(bound);
-		this.addComponent(sprite);
+		this.addComponent(this.getSprite());
 	}
 
 	public TileGrass(Element element, SystemLevel system) {

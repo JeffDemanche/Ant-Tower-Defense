@@ -33,9 +33,14 @@ public class ComponentAIBehaviorTree extends Component {
 	public void onDraw(GraphicsContext g) {
 	}
 
+	public void setRootBehavior(BehaviorNode rootBehavior) {
+		this.rootBehavior = rootBehavior;
+	}
+
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		this.rootBehavior.tickBehavior(nanosSincePreviousTick);
+		if (rootBehavior != null)
+			this.rootBehavior.tickBehavior(nanosSincePreviousTick);
 	}
 
 	@Override

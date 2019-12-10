@@ -21,11 +21,11 @@ public class TileAntHill extends Tile {
 				offsetCoordinates,Type.AntHill);
 
 		bound = offsetCoordinates.createPolygon(this);
-		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.ANTHILL_MASKED, bound);
+		this.setSprite(new ComponentRegisteredSprite(this,
+				SpriteRegistry.ANTHILL_MASKED, bound));
 
 		this.addComponent(bound);
-		this.addComponent(sprite);
+		this.addComponent(this.getSprite());
 	}
 
 	public TileAntHill(Element element, SystemLevel system) {

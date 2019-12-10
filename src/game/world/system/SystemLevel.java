@@ -15,6 +15,7 @@ import engine.world.TileCoordinates;
 import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
 import game.world.gameobject.SugarPile;
+import game.world.gameobject.ant.TileMemory;
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tile.TileAntHill;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,7 +27,9 @@ public class SystemLevel extends GameSystem
 
 	private ATDWorld atdWorld;
 	private LevelGenerator levelGenerator;
-	
+
+	private TileMemory tileMemory;
+
 	private Vec2i size;
 
 	private HexCoordinates antHill;
@@ -45,6 +48,7 @@ public class SystemLevel extends GameSystem
 		super(world);
 		this.atdWorld = world;
 		this.tiles = new HashMap<>();
+		this.tileMemory = new TileMemory(this);
 		this.size = new Vec2i(64, 64);
 		this.levelGenerator = new LevelGenerator(this, size, 20);
 		this.repalcedTiles = new HashMap<HexCoordinates, Tile>();
@@ -104,6 +108,21 @@ public class SystemLevel extends GameSystem
 		return this.sugarPile;
 	}
 
+	public TileMemory getTileMemory() {
+		return this.tileMemory;
+	}
+
+	public void onTileMemoryUpdated(HexCoordinates coords) {
+		GameObject obj = this.getTileAt(coords.getX(), coords.getY());
+		if (obj instanceof Tile) {
+			((Tile) obj).setSpriteOpacity(1 - tileMemory.getAvoidance(coords));
+		}
+	}
+
+	public void onAntDeath(HexCoordinates location) {
+		tileMemory.onAntDeath(location);
+	}
+
 	@Override
 	public Element writeXML(Document doc) throws ParserConfigurationException {
 		Element SystemLevel = doc.createElement("SystemLevel");
@@ -161,14 +180,12 @@ public class SystemLevel extends GameSystem
 		}
 		return neighborsGameSpace;
 	}
-	
+
 	/**
 	 * save a hit tile into auxiliar map
 	 */
-	public void saveTile( HexCoordinates hex, Tile tile)
-	{
-		if(!this.repalcedTiles.containsKey(hex))
-		{
+	public void saveTile(HexCoordinates hex, Tile tile) {
+		if (!this.repalcedTiles.containsKey(hex)) {
 			this.repalcedTiles.put(hex, tile);
 		}
 	}
@@ -176,13 +193,11 @@ public class SystemLevel extends GameSystem
 	/**
 	 * retrieve a saved hit tile from auxiliar map
 	 */
-	public Tile retrieveTile( HexCoordinates hex)
-	{
-		if(this.repalcedTiles.containsKey(hex))
-		{
+	public Tile retrieveTile(HexCoordinates hex) {
+		if (this.repalcedTiles.containsKey(hex)) {
 			return this.repalcedTiles.get(hex);
 		}
 		return null;
 	}
-	
+
 }

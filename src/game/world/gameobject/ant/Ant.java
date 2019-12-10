@@ -1,24 +1,28 @@
 package game.world.gameobject.ant;
 
+import engine.world.WorldError;
 import engine.world.gameobject.ComponentAIBehaviorTree;
 import engine.world.gameobject.Drawable;
 import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
+import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 
 public abstract class Ant extends GameObject {
 
 	protected static final int ANT_DAMAGE_ANIMATION_TIMER = 200;
-	
+
 	private int antId;
 	private boolean alive;
 
 	private SystemAnts system;
+	private Wave wave;
 
 	private int maxHealth;
 	private int currentHealth;
 
-	public Ant(SystemAnts system, String antType, int antId, int maxHealth) {
+	public Ant(SystemAnts system, String antType, int antId,
+			int maxHealth) {
 		super(system, createName(antType, antId));
 
 		this.system = system;
@@ -33,6 +37,10 @@ public abstract class Ant extends GameObject {
 	public abstract Drawable getBound();
 
 	public abstract ComponentAIBehaviorTree getBehaviorTree();
+	
+	public void setWave(Wave wave) {
+		this.wave = wave;
+	}
 
 	public int getMaxHealth() {
 		return this.maxHealth;
@@ -41,9 +49,13 @@ public abstract class Ant extends GameObject {
 	public int getCurrentHealth() {
 		return this.currentHealth;
 	}
+	
+	protected Wave getWave() {
+		return this.wave;
+	}
 
 	public abstract int getSugarCap();
-	
+
 	public void damage(int amount) {
 		if (currentHealth - amount <= 0) {
 			this.kill();
@@ -63,10 +75,17 @@ public abstract class Ant extends GameObject {
 
 	public void onSpawn() {
 		alive = true;
+		
+		if (wave == null) {
+			throw new WorldError("Ant spawned with null wave reference");
+		}
 	}
 
 	public void kill() {
 		this.alive = false;
+
+		this.system.onAntDeath(
+				HexCoordinates.fromGameSpace(getBound().getPosition()));
 	}
 
 	/**

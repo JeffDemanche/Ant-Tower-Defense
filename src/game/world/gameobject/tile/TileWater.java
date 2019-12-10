@@ -21,11 +21,11 @@ public class TileWater extends Tile {
 				offsetCoordinates, Type.Water);
 
 		bound = offsetCoordinates.createPolygon(this);
-		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.WATER_MASKED, bound, 200, 3);
+		this.setSprite(new ComponentRegisteredSprite(this,
+				SpriteRegistry.WATER_MASKED, bound, 200, 3));
 
 		this.addComponent(bound);
-		this.addComponent(sprite);
+		this.addComponent(this.getSprite());
 	}
 
 	public TileWater(Element element, SystemLevel system) {

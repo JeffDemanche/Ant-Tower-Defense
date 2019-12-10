@@ -27,7 +27,9 @@ public class ComponentRegisteredSprite extends Component {
 	/** -1 for non-animated sprites. */
 	private int phaseDuration;
 	private int numPhases;
-
+ 
+	private double opacity;
+	
 	private int currentPhase;
 	private long phaseNanosCounter;
 
@@ -44,6 +46,8 @@ public class ComponentRegisteredSprite extends Component {
 		this.currentPhase = 0;
 		this.phaseNanosCounter = 0;
 		this.numPhases = 0;
+		
+		this.opacity = 1;
 
 		this.drawable = drawable;
 	}
@@ -59,7 +63,13 @@ public class ComponentRegisteredSprite extends Component {
 		this.phaseNanosCounter = 0;
 		this.numPhases = numPhases;
 
+		this.opacity = 1;
+		
 		this.drawable = drawable;
+	}
+	
+	public void setOpacity(double opacity) {
+		this.opacity = opacity;
 	}
 
 	@Override
@@ -72,9 +82,10 @@ public class ComponentRegisteredSprite extends Component {
 		Vec2d screenPos = this.drawable.getScreenPosition();
 		Vec2d screenSize = this.drawable.getScreenSize();
 
+		g.setGlobalAlpha(this.opacity);
 		g.drawImage(composite[currentPhase], screenPos.x, screenPos.y,
 				screenSize.x, screenSize.y);
-
+		g.setGlobalAlpha(1D);
 	}
 
 	@Override

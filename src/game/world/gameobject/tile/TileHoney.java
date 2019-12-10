@@ -25,11 +25,11 @@ public class TileHoney extends Tile{
 				offsetCoordinates, Type.Honey);
 
 		bound = offsetCoordinates.createPolygon(this);
-		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.HONEY_MASKED, bound);
+		this.setSprite(new ComponentRegisteredSprite(this,
+				SpriteRegistry.HONEY_MASKED, bound));
 
 		this.addComponent(bound);
-		this.addComponent(sprite);
+		this.addComponent(this.getSprite());
 	}
 
 	@Override

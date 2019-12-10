@@ -20,11 +20,11 @@ public class TileSand extends Tile {
 		super(system, createName("Sand", offsetCoordinates), offsetCoordinates, Type.Sand);
 
 		bound = offsetCoordinates.createPolygon(this);
-		ComponentRegisteredSprite sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.SAND_MASKED, bound);
+		this.setSprite(new ComponentRegisteredSprite(this,
+				SpriteRegistry.SAND_MASKED, bound));
 
 		this.addComponent(bound);
-		this.addComponent(sprite);
+		this.addComponent(this.getSprite());
 	}
 
 	public TileSand(Element element, SystemLevel system) {
