@@ -33,36 +33,37 @@ public class SpiderWebTower extends Tower {
 	private int spiderTime = 2;
 	private boolean spiderSpwaned = false;
 	private Ant caughtAnt;
-	
+
 	public SpiderWebTower(SystemTowers system, HexCoordinates hexCoordinates) {
-		super(system, TowerInfo.SPIDERWEB, system.nextTowerId(), hexCoordinates, 0);
+		super(system, TowerInfo.SPIDERWEB, system.nextTowerId(),
+				hexCoordinates);
 		// TODO Auto-generated constructor stub
-		
+
 		this.projectileSpeed = 0.02;
 
 		this.sprite = new ComponentRegisteredSprite(this,
 				SpriteRegistry.SPIDERWEB, bound);
-		
+
 		spiderWebBound = this.bound;
 		this.collidable = new ComponentCollidable(this, this.bound,
 				new CollisionHandler() {
 					@Override
 					public void onCollide(GameObject obj) {
-						if ( !caugthAnt && obj instanceof Ant ) 
-						{
-							//myPos = myPos.smult(3);
-							//spiderWebBound.adjustPosition(new Vec2d(3,0));
+						if (!caugthAnt && obj instanceof Ant) {
+							// myPos = myPos.smult(3);
+							// spiderWebBound.adjustPosition(new Vec2d(3,0));
 							caugthAnt = true;
-							caughtAnt = (AntCarpenter)obj;
-							((AntCarpenter)obj).setCaught(true);
-							((AntCarpenter)obj).getDrawable().setPosition(spiderWebBound.getPosition());
+							caughtAnt = (AntCarpenter) obj;
+							((AntCarpenter) obj).setCaught(true);
+							((AntCarpenter) obj).getDrawable()
+									.setPosition(spiderWebBound.getPosition());
 						}
 					}
 				}, ((ATDWorld) this.getSystem().getWorld()).getAntsSystem());
 
 		this.addComponent(sprite);
 		this.addComponent(collidable);
-		
+
 		this.setEnabled(true);
 	}
 
@@ -81,35 +82,35 @@ public class SpiderWebTower extends Tower {
 	@Override
 	protected void shot() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
-	public void onTick(long nanosSincePreviousTick)
-	{
-		if(this.caugthAnt)
-		{
-			spiderTimer+=nanosSincePreviousTick;
-			if(spiderTimer > 1000000000)
-			{
+	public void onTick(long nanosSincePreviousTick) {
+		if (this.caugthAnt) {
+			spiderTimer += nanosSincePreviousTick;
+			if (spiderTimer > 1000000000) {
 				spiderTime--;
 				spiderTimer = 0;
-				if(spiderTime<0 && !spiderSpwaned)
-				{
-					Vec2d direction = new Vec2d(0,-1);
-					Vec2d target = hex.toGameSpaceCentered().plus(direction.smult(3));
-					// TODO Auto-generated method stub
-					ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.SPIDER,
-							this.direction,this.projectileSpeed,target);
-					
-					Projectile spiderProjectile = ProjectileFactory.getInstance().
-							createProjectile((SystemTowers)getSystem(), hex, pjInfo);
-					
-					getSystem().addGameObject(SystemTowers.PROJECTILE_Z,spiderProjectile);
+				if (spiderTime < 0 && !spiderSpwaned) {
+					Vec2d direction = new Vec2d(0, -1);
+					Vec2d target = hex.toGameSpaceCentered()
+							.plus(direction.smult(3));
+
+					ProjectileInfo pjInfo = new ProjectileInfo(getName(),
+							ProjectileConstants.SPIDER, this.direction,
+							this.projectileSpeed, target);
+
+					Projectile spiderProjectile = ProjectileFactory
+							.getInstance().createProjectile(
+									(SystemTowers) getSystem(), hex, pjInfo);
+
+					getSystem().addGameObject(SystemTowers.PROJECTILE_Z,
+							spiderProjectile);
 					spiderSpwaned = true;
 					this.remove();
-					caughtAnt.kill();
-					
+					caughtAnt.kill(null);
+
 				}
 			}
 		}

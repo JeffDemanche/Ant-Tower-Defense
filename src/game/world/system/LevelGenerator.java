@@ -68,7 +68,7 @@ public class LevelGenerator {
 				0.25, 1, 1);
 
 		double fineWeight = 0.3;
-		double largeWeight = 2.5;
+		double largeWeight = 1;
 		double continentWeight = 1.3;
 
 		for (int y = (int) Math.floor(-size.y / 2); y < Math

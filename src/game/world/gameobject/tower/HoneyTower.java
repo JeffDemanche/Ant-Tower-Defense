@@ -17,23 +17,19 @@ import game.world.system.SystemTowers;
 
 public class HoneyTower extends Tower {
 
-		
-	
-	
 	public HoneyTower(SystemTowers system, HexCoordinates hexCoordinates) {
-		super(system, TowerInfo.HONEY, system.nextTowerId(), hexCoordinates,3);
-		
+		super(system, TowerInfo.HONEY, system.nextTowerId(), hexCoordinates);
 
-        this.projectileSpeed = 0.05;
-		
-    	this.sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.HONEY, bound);
-		
-    	this.addComponent(sprite);
-    	
+		this.projectileSpeed = 0.05;
+
+		this.sprite = new ComponentRegisteredSprite(this, SpriteRegistry.HONEY,
+				bound);
+
+		this.addComponent(sprite);
+
 		cooldownDurationMillis = 3000;
 		enabled = true;
-		
+
 	}
 
 	@Override
@@ -49,20 +45,17 @@ public class HoneyTower extends Tower {
 
 	@Override
 	protected void shot() {
-		
+
 		Vec2d target = lineOfSight.getEndPoint();
 		// TODO Auto-generated method stub
-		ProjectileInfo pjInfo =  new ProjectileInfo(getName(),ProjectileConstants.HONEY,
-				this.direction,this.projectileSpeed,target);
-		
-		Projectile hProjectile = ProjectileFactory.getInstance().
-				createProjectile((SystemTowers)getSystem(), hex, pjInfo);
-		
-		getSystem().addGameObject(SystemTowers.PROJECTILE_Z,hProjectile);
+		ProjectileInfo pjInfo = new ProjectileInfo(getName(),
+				ProjectileConstants.HONEY, this.direction, this.projectileSpeed,
+				target);
+
+		Projectile hProjectile = ProjectileFactory.getInstance()
+				.createProjectile((SystemTowers) getSystem(), hex, pjInfo);
+
+		getSystem().addGameObject(SystemTowers.PROJECTILE_Z, hProjectile);
 	}
 
-	
-
-	
-	
 }

@@ -11,9 +11,9 @@ public class ATDButton extends UIButton {
 	private ATDApp app;
 	
 	public ATDButton(ATDApp app, Vec2d position, Vec2d size, String text) {
-		super(position, size, text, new Font("Segoe Script", 16), Color.WHITE, Color.BLACK);
+		super(position, size, text, new Font("Arial", 16), Color.WHITE, Color.BLACK);
 		this.app = app;
-		this.setArcRadius(5D);
+		this.setArcRadius(15D);
 	}
 	
 	public ATDApp getApp() {

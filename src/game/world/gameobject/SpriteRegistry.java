@@ -1,6 +1,5 @@
 package game.world.gameobject;
 
-import game.world.gameobject.tower.HoneyTower;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -21,6 +20,7 @@ public final class SpriteRegistry {
 	public static Image[] WATER_MASKED;
 
 	public static Image CINNAMON;
+	public static Image SEED_THROWER;
 	public static Image HONEY;
 	public static Image HONEY_PROJECTILE;
 	public static Image HONEY_PARTICLE;
@@ -59,6 +59,8 @@ public final class SpriteRegistry {
 
 		CINNAMON = applyUpscale(new Image("file:src/img/tower/cinnamon.png"),
 				"file:src/img/tower/cinnamon.png", 6);
+		SEED_THROWER = applyUpscale(new Image("file:src/img/tower/seed_thrower.png"),
+				"file:src/img/tower/seed_thrower.png", 6);
 
 		HONEY = applyUpscale(new Image("file:src/img/tower/honey.png"),
 				"file:src/img/tower/honey.png", 6);

@@ -104,6 +104,12 @@ public class WavePaths {
 			Set<HexCoordinates> neighbors = coordinates.getTraversableNeighbors(
 					currentNode.getX(), currentNode.getY());
 
+			// Keep this info in the edge case that all neighbors are avoided.
+			// If that happens the path just chooses the neighbor with the
+			// lowest avoidance.
+			HexCoordinates lowestHex = null;
+			double lowestAvoidance = 2;
+
 			// This loops through neighbors, we figure out tile avoidance
 			// probability in here.
 			Iterator<HexCoordinates> neighborsIter = neighbors.iterator();
@@ -111,10 +117,21 @@ public class WavePaths {
 				HexCoordinates neighbor = neighborsIter.next();
 				double rand = random.nextDouble();
 
+				double neighborAvoidance = tileMemory.getAvoidance(neighbor);
+
+				if (neighborAvoidance < lowestAvoidance) {
+					lowestHex = neighbor;
+					lowestAvoidance = neighborAvoidance;
+				}
+
 				if (tileMemory.getAvoidance(neighbor) > rand) {
 					// If probability says this path should avoid this neighbor.
-					// neighborsIter.remove();
+					neighborsIter.remove();
 				}
+			}
+			
+			if (neighbors.isEmpty()) {
+				neighbors.add(lowestHex);
 			}
 
 			for (HexCoordinates nodeSuccessor : neighbors) {

@@ -1,10 +1,12 @@
 package game.world.gameobject.ant;
 
+import application.Vec2d;
 import engine.world.WorldError;
 import engine.world.gameobject.ComponentAIBehaviorTree;
 import engine.world.gameobject.Drawable;
 import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
+import game.world.gameobject.tower.Tower;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 
@@ -18,14 +20,18 @@ public abstract class Ant extends GameObject {
 	private SystemAnts system;
 	private Wave wave;
 
+	private int reward;
+
 	private int maxHealth;
 	private int currentHealth;
 
-	public Ant(SystemAnts system, String antType, int antId,
-			int maxHealth) {
+	public Ant(SystemAnts system, String antType, int antId, int maxHealth,
+			int reward) {
 		super(system, createName(antType, antId));
 
 		this.system = system;
+
+		this.reward = reward;
 
 		this.antId = antId;
 		this.alive = false;
@@ -37,7 +43,7 @@ public abstract class Ant extends GameObject {
 	public abstract Drawable getBound();
 
 	public abstract ComponentAIBehaviorTree getBehaviorTree();
-	
+
 	public void setWave(Wave wave) {
 		this.wave = wave;
 	}
@@ -49,16 +55,20 @@ public abstract class Ant extends GameObject {
 	public int getCurrentHealth() {
 		return this.currentHealth;
 	}
-	
+
+	public int getReward() {
+		return this.reward;
+	}
+
 	protected Wave getWave() {
 		return this.wave;
 	}
 
 	public abstract int getSugarCap();
 
-	public void damage(int amount) {
+	public void damage(int amount, Tower tower) {
 		if (currentHealth - amount <= 0) {
-			this.kill();
+			this.kill(tower);
 		} else {
 			currentHealth -= amount;
 		}
@@ -69,23 +79,29 @@ public abstract class Ant extends GameObject {
 		super.onTick(nanosSincePreviousTick);
 
 		if (getCurrentHealth() <= 0) {
-			kill();
+			kill(null);
 		}
 	}
 
 	public void onSpawn() {
 		alive = true;
-		
+
 		if (wave == null) {
 			throw new WorldError("Ant spawned with null wave reference");
 		}
 	}
 
-	public void kill() {
+	/**
+	 * Kill the ant. If killed by projectile, pass null to tower parameter.
+	 */
+	public void kill(Tower tower) {
 		this.alive = false;
 
-		this.system.onAntDeath(
-				HexCoordinates.fromGameSpace(getBound().getPosition()));
+		Vec2d position = tower != null
+				? tower.getCoordinates().toGameSpaceCentered()
+				: getBound().getPosition();
+
+		this.system.onAntDeath(HexCoordinates.fromGameSpace(position), this);
 	}
 
 	/**

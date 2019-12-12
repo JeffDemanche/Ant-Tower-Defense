@@ -65,7 +65,7 @@ public class ATDMenuScreen extends Screen {
 		this.scoreLabels.add(new UITextLabel(
 				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP),
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
-				VerticalAlign.TOP, "High Scores:", new Font("Segoe Script", 16),
+				VerticalAlign.TOP, "High Scores:", new Font("Arial", 20),
 				Color.BLACK));
 
 		// Read in high scores
@@ -100,31 +100,39 @@ public class ATDMenuScreen extends Screen {
 		Collections.sort(scores);
 
 		// Adding all the labels for the scores
-		double top = HIGH_SCORES_TOP;
-		int ind = 1;
+		double top = HIGH_SCORES_TOP + 20;
+		int ind = 0;
 		for (Score s : scores) {
-			this.scoreLabels.add(new UITextLabel(
+			UITextLabel l = new UITextLabel(
 					new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP), 
 					new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
 					VerticalAlign.TOP, 
 					Integer.toString(ind) + ". " + s.toString(), 
-					new Font("Segoe Script", 16), 
-					Color.BLACK));
+					new Font("Arial", 16), 
+					Color.BLACK);
+			l.setPosition(new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, top));
+			this.scoreLabels.add(l);
 			ind++;
 			top += 20;
 		}
 		
-		List<Vec2d> controlPoints = new ArrayList<Vec2d>();
-		controlPoints.add(new Vec2d(0,50));
-		controlPoints.add(new Vec2d(85,85));
-		controlPoints.add(new Vec2d(103,45));
-		controlPoints.add(new Vec2d(130,85));
-		controlPoints.add(new Vec2d(150,130));
-		controlPoints.add(new Vec2d(200,200));
-		controlPoints.add(new Vec2d(350,150));
-		controlPoints.add(new Vec2d(410,250));
+//		List<Vec2d> controlPoints = new ArrayList<Vec2d>();
+//		controlPoints.add(new Vec2d(0,50));
+//		controlPoints.add(new Vec2d(85,85));
+//		controlPoints.add(new Vec2d(103,45));
+//		controlPoints.add(new Vec2d(130,85));
+//		controlPoints.add(new Vec2d(150,130));
+//		controlPoints.add(new Vec2d(200,200));
+//		controlPoints.add(new Vec2d(350,150));
+//		controlPoints.add(new Vec2d(410,250));
+//		
+//		this.spline  =  new UISpline(controlPoints);
+//		for (UIElement controlPoint : this.spline.getControlPoints()) {
+//			this.add(controlPoint);
+//		}
+
+//		this.add(spline);
 		
-		this.spline  =  new UISpline(controlPoints);
 		this.add(logo);
 
 		this.add(newGameButton);
@@ -133,11 +141,7 @@ public class ATDMenuScreen extends Screen {
 		for (UITextLabel l : this.scoreLabels)
 			this.add(l);
 
-		for (UIElement controlPoint : this.spline.getControlPoints()) {
-			this.add(controlPoint);
-		}
-		this.add(spline);
-
+		
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import engine.world.ComponentRegisteredSprite;
-import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.ComponentCollidable;
 import engine.world.gameobject.ComponentCollidable.CollisionHandler;
 import engine.world.gameobject.GameObject;
@@ -18,19 +17,17 @@ import game.world.system.SystemTowers;
 
 public class TowerCinnamon extends Tower {
 
-	private SystemTowers towers;
-
 	private ComponentRegisteredSprite sprite;
 	private ComponentCollidable collidable;
 
 	private boolean fireThisTick;
 
 	public TowerCinnamon(SystemTowers system, HexCoordinates hex) {
-		super(system, TowerInfo.CINNAMON, system.nextTowerId(), hex, 0);
+		super(system, TowerInfo.CINNAMON, system.nextTowerId(), hex);
 
+		Tower instance = this;
+		
 		this.fireThisTick = false;
-
-		this.towers = system;
 
 		this.sprite = new ComponentRegisteredSprite(this,
 				SpriteRegistry.CINNAMON, bound);
@@ -39,7 +36,7 @@ public class TowerCinnamon extends Tower {
 					@Override
 					public void onCollide(GameObject obj) {
 						if (obj instanceof Ant && fireThisTick) {
-							((Ant) obj).damage(TowerInfo.CINNAMON.damage);
+							((Ant) obj).damage(TowerInfo.CINNAMON.damage, instance);
 							fireThisTick = false;
 						}
 					}

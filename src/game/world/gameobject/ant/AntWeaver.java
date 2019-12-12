@@ -28,10 +28,10 @@ import game.world.gameobject.tower.Tower;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 
-public class AntCarpenter extends Ant {
+public class AntWeaver extends Ant {
 
-	private final double CARPENTER_RADIUS = 0.2;
-	private final double CARPENTER_SPEED = 1.5;
+	private final double WEAVER_RADIUS = 0.15;
+	private final double WEAVER_SPEED = 2.5;
 
 	private ComponentCircle bound;
 	private ComponentDynamicSprite sprite;
@@ -45,16 +45,15 @@ public class AntCarpenter extends Ant {
 
 	private boolean caught;
 
-	public AntCarpenter(SystemAnts system, int antId, int maxHealth,
-			int reward) {
-		super(system, "Carpenter", antId, maxHealth, reward);
+	public AntWeaver(SystemAnts system, int maxHealth, int antId, int reward) {
+		super(system, "Weaver", antId, maxHealth, reward);
 
 		this.caught = false;
 
-		this.bound = new ComponentCircle(this, new Vec2d(0), CARPENTER_RADIUS);
+		this.bound = new ComponentCircle(this, new Vec2d(0), WEAVER_RADIUS);
 		this.sprite = new ComponentDynamicSprite(this,
-				"file:src/img/ant/carpenter.png", bound, 8, 150);
-		this.navigable = new ComponentNavigable(this, CARPENTER_SPEED, bound);
+				"file:src/img/ant/weaver.png", bound, 8, 150);
+		this.navigable = new ComponentNavigable(this, WEAVER_SPEED, bound);
 
 		this.createWalkingAnimation();
 		this.createDamageAnimation();
@@ -69,7 +68,7 @@ public class AntCarpenter extends Ant {
 		this.addComponent(navigable);
 	}
 
-	public AntCarpenter(Element element, Wave wave, SystemAnts system) {
+	public AntWeaver(Element element, Wave wave, SystemAnts system) {
 		this(system, Integer.parseInt(element.getAttribute("id")),
 				Integer.parseInt(element.getAttribute("maxHealth")),
 				Integer.parseInt(element.getAttribute("reward")));
@@ -159,10 +158,10 @@ public class AntCarpenter extends Ant {
 		Tile targetTile = (Tile) ((SystemAnts) this.getSystem()).getLevel()
 				.getTileAt(currentHex.getX(), currentHex.getY());
 		if (targetTile.getType() == Tile.Type.Honey) {
-			this.navigable.setSpeed(CARPENTER_SPEED * 0.2);
+			this.navigable.setSpeed(WEAVER_SPEED * 0.2);
 			// System.out.println("on honey TILE");
 		} else {
-			this.navigable.setSpeed(CARPENTER_SPEED);
+			this.navigable.setSpeed(WEAVER_SPEED);
 		}
 
 		if (damageTimer > 0) {

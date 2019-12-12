@@ -29,7 +29,7 @@ public class ComponentGUIImageRenderer extends Component {
 		super("GUI Image Renderer", object);
 		this.screenPos = screenPos;
 		this.screenSize = screenSize;
-
+		
 		Image lowRes = new Image(imagePath);
 		this.image = new Image(imagePath,
 				lowRes.getWidth() * sampleMultiplier,

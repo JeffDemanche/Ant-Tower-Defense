@@ -68,25 +68,31 @@ public class SystemGUI extends GameSystem {
 	private void initializeTowerIcons() {
 		towerIcons.put("cinnamon", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
-				new Vec2d(5), atdWorld.getViewport().getScreenSize(),
+				new Vec2d(10, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.CINNAMON));
 		
+		towerIcons.put("seedthrower", new GUITowerIcon(this,
+				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
+				new Vec2d(50, 5), atdWorld.getViewport().getScreenSize(),
+				TowerInfo.SEED_THROWER));
+
 		towerIcons.put("honey", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
-				new Vec2d(50,5), atdWorld.getViewport().getScreenSize(),
+				new Vec2d(90, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.HONEY));
-		
+
 		towerIcons.put("water", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
-				new Vec2d(90,5), atdWorld.getViewport().getScreenSize(),
+				new Vec2d(130, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.WATER));
-		
+
 		towerIcons.put("spiderweb", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
-				new Vec2d(130,5), atdWorld.getViewport().getScreenSize(),
+				new Vec2d(170, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.SPIDERWEB));
 
 		this.addGameObject(GUI_Z + 1, towerIcons.get("cinnamon"));
+		this.addGameObject(GUI_Z + 1, towerIcons.get("seedthrower"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("honey"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("water"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("spiderweb"));
@@ -167,8 +173,9 @@ public class SystemGUI extends GameSystem {
 	public void onTick(long nanosSincePreviousTick) {
 		this.tickGameObjects(nanosSincePreviousTick);
 
-		worldInfo.setSugarRemaining(atdWorld.getRemainingSugar());
-		worldInfo.setCash(atdWorld.getCash());
+		worldInfo.setInfo(atdWorld.getAntsSystem().getCurrentWave(),
+				atdWorld.getAntsSystem().getNumberOfWaves(),
+				atdWorld.getRemainingSugar(), atdWorld.getCash());
 	}
 
 	@Override

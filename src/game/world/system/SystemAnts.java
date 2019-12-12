@@ -11,7 +11,6 @@ import application.Vec2d;
 import engine.world.GameSystem;
 import game.world.ATDWorld;
 import game.world.gameobject.ant.Ant;
-import game.world.gameobject.ant.AntCarpenter;
 import game.world.gameobject.ant.Wave;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -59,12 +58,22 @@ public class SystemAnts extends GameSystem {
 	public SystemLevel getLevel() {
 		return this.level;
 	}
+	
+	public int getCurrentWave() {
+		return this.currentWave;
+	}
 
+	public int getNumberOfWaves() {
+		return this.waves.size();
+	}
+	
 	/**
 	 * Called when an ant dies, with the location where the ant was killed.
 	 */
-	public void onAntDeath(HexCoordinates location) {
+	public void onAntDeath(HexCoordinates location, Ant ant) {
 		level.onAntDeath(location);
+
+		atdWorld.addCash(ant.getReward());
 	}
 
 	@Override

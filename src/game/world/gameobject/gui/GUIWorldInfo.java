@@ -19,6 +19,9 @@ public class GUIWorldInfo extends GameObject {
 
 	private SystemGUI gui;
 
+	private int currentWave;
+	private int totalWaves;
+
 	private int sugarRemaining;
 	private int cash;
 
@@ -48,25 +51,27 @@ public class GUIWorldInfo extends GameObject {
 		this.addComponent(text);
 	}
 
-	public void setSugarRemaining(int sugarRemaining) {
+	public void setInfo(int currentWave, int totalWaves, int sugarRemaining,
+			int cash) {
+		// Accounts for off-by-one.
+		this.currentWave = currentWave + 1;
+		this.totalWaves = totalWaves;
 		this.sugarRemaining = sugarRemaining;
-	}
-
-	public void setCash(int cash) {
 		this.cash = cash;
 	}
-	
+
 	private String createText() {
 		StringBuilder builder = new StringBuilder();
+		builder.append("Wave: " + currentWave + " / " + totalWaves + "\n\n");
 		builder.append("Sugar Remaining: " + sugarRemaining + "\n");
 		builder.append("Cash: $" + cash + "\n");
 		return builder.toString();
 	}
-	
+
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 		super.onTick(nanosSincePreviousTick);
-		
+
 		this.text.setText(createText());
 	}
 

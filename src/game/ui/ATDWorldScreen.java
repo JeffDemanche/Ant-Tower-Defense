@@ -42,7 +42,7 @@ public class ATDWorldScreen extends Screen {
 				HorizontalAlign.RIGHT, 
 				VerticalAlign.TOP, 
 				"Score: " + this.s.getScore(), 
-				new Font("Segoe Script", 16),
+				new Font("Arial", 16),
 				Color.WHITE);
 		// Adding score display
 		this.add(scoreText);

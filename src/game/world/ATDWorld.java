@@ -93,6 +93,10 @@ public class ATDWorld extends World {
 		return this.cash;
 	}
 
+	public void addCash(int amount) {
+		this.cash += amount;
+	}
+	
 	public SystemAnts getAntsSystem() {
 		return this.ants;
 	}

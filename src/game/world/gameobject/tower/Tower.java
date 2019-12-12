@@ -37,11 +37,11 @@ public abstract class Tower extends GameObject {
 	private int fireCooldownTimer;
 
 	private static double FortyFivedegreesToRadians = 45 * Math.PI / 180;
-	
+
 	protected double projectileSpeed;
 
 	public Tower(GameSystem system, TowerInfo towerType, int towerId,
-			HexCoordinates hexCoordinates, double range) {
+			HexCoordinates hexCoordinates) {
 		super(system, createName(towerType.name, towerId));
 
 		this.hex = hexCoordinates;
@@ -53,11 +53,11 @@ public abstract class Tower extends GameObject {
 		this.direction = new Vec2d(0, -1);
 		canAttack = false;
 		lineOfSight = new LineOfSight(system, "lineOfSight" + towerId,
-				hex.toGameSpaceCentered(), this.direction, range);
+				hex.toGameSpaceCentered(), this.direction, towerType.range);
 
 		// One minute in milliseconds divided by the rounds per minute.
 		this.cooldownDurationMillis = (60.0 * 1000) / towerType.rateOfFire;
-		
+
 		system.addGameObject(SystemTowers.TOWERS_Z + 3, lineOfSight);
 	}
 
@@ -70,15 +70,14 @@ public abstract class Tower extends GameObject {
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
 
-		if(((ATDWorld)getSystem().getWorld()).isWaveActive())
-		{
+		if (((ATDWorld) getSystem().getWorld()).isWaveActive()) {
 			if (enabled) {
 				if (!canAttack) {
 
 					attackTimer += nanosSincePreviousTick;
 
 					attackTimerMilliSeconds = attackTimer / 1000000;
-					
+
 					if (attackTimerMilliSeconds >= cooldownDurationMillis) {
 						canAttack = true;
 					}
@@ -91,7 +90,7 @@ public abstract class Tower extends GameObject {
 			}
 
 		}
-		
+
 		super.onTick(nanosSincePreviousTick);
 	}
 
@@ -130,6 +129,10 @@ public abstract class Tower extends GameObject {
 			lineOfSight.updateEndPoint(this.direction);
 			this.selected = false;
 		}
+	}
+
+	public HexCoordinates getCoordinates() {
+		return this.hex;
 	}
 
 	protected abstract void shot();
@@ -173,7 +176,7 @@ public abstract class Tower extends GameObject {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	public double getProjectileSpeed() {
 		return projectileSpeed;
 	}
