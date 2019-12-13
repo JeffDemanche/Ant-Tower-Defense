@@ -27,7 +27,7 @@ import game.world.system.SystemTowers;
 public class SpiderWebTower extends Tower {
 
 	private ComponentCollidable collidable;
-	private boolean caugthAnt = false;
+	private boolean antCaugth = false;
 	private ComponentCircle spiderWebBound;
 	private long spiderTimer;
 	private int spiderTime = 2;
@@ -49,13 +49,13 @@ public class SpiderWebTower extends Tower {
 				new CollisionHandler() {
 					@Override
 					public void onCollide(GameObject obj) {
-						if (!caugthAnt && obj instanceof Ant) {
+						if (!antCaugth && obj instanceof Ant) {
 							// myPos = myPos.smult(3);
 							// spiderWebBound.adjustPosition(new Vec2d(3,0));
-							caugthAnt = true;
-							caughtAnt = (AntCarpenter) obj;
-							((AntCarpenter) obj).setCaught(true);
-							((AntCarpenter) obj).getDrawable()
+							antCaugth = true;
+							caughtAnt = (Ant) obj;
+							caughtAnt.setCaught(true);
+							caughtAnt.getDrawable()
 									.setPosition(spiderWebBound.getPosition());
 						}
 					}
@@ -87,7 +87,7 @@ public class SpiderWebTower extends Tower {
 
 	@Override
 	public void onTick(long nanosSincePreviousTick) {
-		if (this.caugthAnt) {
+		if (this.antCaugth) {
 			spiderTimer += nanosSincePreviousTick;
 			if (spiderTimer > 1000000000) {
 				spiderTime--;

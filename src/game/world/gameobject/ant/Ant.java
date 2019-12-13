@@ -1,5 +1,10 @@
 package game.world.gameobject.ant;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+
 import application.Vec2d;
 import engine.world.WorldError;
 import engine.world.gameobject.ComponentAIBehaviorTree;
@@ -9,6 +14,7 @@ import game.world.ATDWorld;
 import game.world.gameobject.tower.Tower;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
+import game.world.system.SystemTowers;
 
 public abstract class Ant extends GameObject {
 
@@ -24,7 +30,17 @@ public abstract class Ant extends GameObject {
 
 	private int maxHealth;
 	private int currentHealth;
+	
+	protected Stack<HexCoordinates> pathTo;
+	protected Stack<HexCoordinates> pathFrom;
 
+	protected List<Vec2d> controlPointsFrom;
+	protected List<Vec2d> controlPointsTo;
+	
+	protected AntPathSpline pathSpline;
+	
+	protected boolean caught;
+	
 	public Ant(SystemAnts system, String antType, int antId, int maxHealth,
 			int reward) {
 		super(system, createName(antType, antId));
@@ -124,5 +140,42 @@ public abstract class Ant extends GameObject {
 	private static String createName(String antType, int antId) {
 		return antType + antId;
 	}
+	
+	protected void generateSpliePath()
+	{
+        this.controlPointsTo = new ArrayList<Vec2d>();
+		
+		Iterator<HexCoordinates> it = this.pathTo.iterator();
+        while(it.hasNext())
+        {
+        	HexCoordinates hexCoordinates = it.next();
+        	Vec2d gameWorldPos = hexCoordinates.toGameSpaceCentered();
+        	this.controlPointsTo.add(gameWorldPos);
+        }
+        
+        this.controlPointsFrom = new ArrayList<Vec2d>();
+        
+        Iterator<HexCoordinates> it2 = this.pathFrom.iterator();
+        while(it2.hasNext())
+        {
+        	HexCoordinates hexCoordinates = it2.next();
+        	Vec2d gameWorldPos = hexCoordinates.toGameSpaceCentered();
+            this.controlPointsFrom.add(gameWorldPos);
+        }
+		
+        this.pathSpline  = new AntPathSpline(this.system,"spline",
+        		this.controlPointsTo,this.controlPointsFrom);
+        
+        this.system.addGameObject(SystemTowers.TOWERS_Z + 3, pathSpline);
+	}
 
+	public boolean isCaught() {
+		return caught;
+	}
+
+	public void setCaught(boolean caught) {
+		this.caught = caught;
+	}
+
+	
 }

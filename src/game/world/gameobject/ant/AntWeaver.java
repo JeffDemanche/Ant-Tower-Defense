@@ -27,6 +27,7 @@ import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tower.Tower;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
+import javafx.scene.input.MouseEvent;
 
 public class AntWeaver extends Ant {
 
@@ -38,9 +39,7 @@ public class AntWeaver extends Ant {
 	private ComponentNavigable navigable;
 	private ComponentAIBehaviorTree behaviorTree;
 
-	private Stack<HexCoordinates> pathTo;
-	private Stack<HexCoordinates> pathFrom;
-
+	
 	private Blackboard behaviorBlackboard;
 
 	private boolean caught;
@@ -173,12 +172,16 @@ public class AntWeaver extends Ant {
 
 	@Override
 	public void onSpawn() {
-		super.onSpawn();
-
+		
 		this.pathTo = getWave().getPaths().getPathTo();
 		this.pathFrom = getWave().getPaths().getPathFrom();
-
+		generateSpliePath();
+		
 		this.behaviorTree.setRootBehavior(createBehavior());
+		
+		super.onSpawn();
+
+		
 
 		behaviorBlackboard.put("Alive", true);
 		behaviorBlackboard.put("Has Sugar", false);
@@ -239,6 +242,38 @@ public class AntWeaver extends Ant {
 
 	public void setCaught(boolean caught) {
 		this.caught = caught;
+	}
+	
+	/**
+	 * Draw path of ant on mouse hover
+	 */
+	@Override
+	public void onMouseMoved(MouseEvent e) {
+		Vec2d clickPos = new Vec2d(e.getX(), e.getY());
+		if (getDrawable().insideBB(clickPos)) {
+			if(pathSpline != null)
+			{
+				if(behaviorBlackboard.get("Has Sugar").getValue().equals(true))
+				{
+					pathSpline.enableShowPathFrom(true);
+				}
+				else
+				{
+					pathSpline.enableShowPathTo(true);
+				}	
+			}
+			
+			 
+		}
+		else
+		{
+			 if(pathSpline != null)
+			 {
+				 pathSpline.enableShowPathTo(false);
+				 pathSpline.enableShowPathFrom(false);
+			 }
+		}
+
 	}
 
 }

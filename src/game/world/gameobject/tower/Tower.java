@@ -103,27 +103,16 @@ public abstract class Tower extends GameObject {
 			this.mousePos = clickPos;
 		}
 
-		// super.onMousePressed(e);
 	}
 
 	@Override
 	public void onMouseDragged(MouseEvent e) {
-		/*
-		 * Vec2d currentMousePos = new Vec2d(e.getX(),e.getY());
-		 * if(this.selected) { //Vec2d delta =
-		 * currentMousePos.minus(this.mousePos);
-		 * 
-		 * this.mousePos = currentMousePos; }
-		 */
+		
 	}
 
 	@Override
 	public void onMouseReleased(MouseEvent e) {
 		if (this.selected) {
-			// double rX = Math.cos(FortyFivedegreesToRadians)*direction.x -
-			// Math.sin(FortyFivedegreesToRadians)*direction.y;
-			// double rY = Math.sin(FortyFivedegreesToRadians)*direction.x +
-			// Math.cos(FortyFivedegreesToRadians)*direction.y;
 
 			this.direction = this.direction.rotate(FortyFivedegreesToRadians);
 			lineOfSight.updateEndPoint(this.direction);

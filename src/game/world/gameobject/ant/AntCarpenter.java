@@ -1,5 +1,8 @@
 package game.world.gameobject.ant;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -8,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import application.Vec2d;
+import engine.world.GameSystem;
 import engine.world.gameobject.ComponentAIBehaviorTree;
 import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.ComponentDynamicSprite;
@@ -27,6 +31,8 @@ import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tower.Tower;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
+import game.world.system.SystemTowers;
+import javafx.scene.input.MouseEvent;
 
 public class AntCarpenter extends Ant {
 
@@ -38,12 +44,10 @@ public class AntCarpenter extends Ant {
 	private ComponentNavigable navigable;
 	private ComponentAIBehaviorTree behaviorTree;
 
-	private Stack<HexCoordinates> pathTo;
-	private Stack<HexCoordinates> pathFrom;
 
 	private Blackboard behaviorBlackboard;
 
-	private boolean caught;
+	
 
 	public AntCarpenter(SystemAnts system, int antId, int maxHealth,
 			int reward) {
@@ -178,7 +182,33 @@ public class AntCarpenter extends Ant {
 
 		this.pathTo = getWave().getPaths().getPathTo();
 		this.pathFrom = getWave().getPaths().getPathFrom();
-
+		generateSpliePath();
+		
+		/*this.controlPointsTo = new ArrayList<Vec2d>();
+		
+		Iterator<HexCoordinates> it = this.pathTo.iterator();
+        while(it.hasNext())
+        {
+        	HexCoordinates hexCoordinates = it.next();
+        	Vec2d gameWorldPos = hexCoordinates.toGameSpaceCentered();
+        	this.controlPointsTo.add(gameWorldPos);
+        }
+        
+        this.controlPointsFrom = new ArrayList<Vec2d>();
+        
+        Iterator<HexCoordinates> it2 = this.pathFrom.iterator();
+        while(it2.hasNext())
+        {
+        	HexCoordinates hexCoordinates = it2.next();
+        	Vec2d gameWorldPos = hexCoordinates.toGameSpaceCentered();
+            this.controlPointsFrom.add(gameWorldPos);
+        }
+		
+        this.pathSpline  = new AntPathSpline((GameSystem)getSystem(),"spline",
+        		this.controlPointsTo,this.controlPointsFrom);
+        
+        getSystem().addGameObject(SystemTowers.TOWERS_Z + 3, pathSpline);*/
+        
 		this.behaviorTree.setRootBehavior(createBehavior());
 
 		behaviorBlackboard.put("Alive", true);
@@ -234,12 +264,36 @@ public class AntCarpenter extends Ant {
 		return 1;
 	}
 
-	public boolean isCaught() {
-		return caught;
-	}
+	/**
+	 * Draw path of ant on mouse hover
+	 */
+	@Override
+	public void onMouseMoved(MouseEvent e) {
+		Vec2d clickPos = new Vec2d(e.getX(), e.getY());
+		if (getDrawable().insideBB(clickPos)) {
+			if(pathSpline != null)
+			{
+				if(behaviorBlackboard.get("Has Sugar").getValue().equals(true))
+				{
+					pathSpline.enableShowPathFrom(true);
+				}
+				else
+				{
+					pathSpline.enableShowPathTo(true);
+				}	
+			}
+			
+			 
+		}
+		else
+		{
+			 if(pathSpline != null)
+			 {
+				 pathSpline.enableShowPathTo(false);
+				 pathSpline.enableShowPathFrom(false);
+			 }
+		}
 
-	public void setCaught(boolean caught) {
-		this.caught = caught;
 	}
 
 }
