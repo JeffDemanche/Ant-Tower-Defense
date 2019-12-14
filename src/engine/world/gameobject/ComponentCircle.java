@@ -1,5 +1,7 @@
 package engine.world.gameobject;
 
+import java.util.Vector;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
@@ -65,12 +67,14 @@ public class ComponentCircle extends Component implements Collidable, Drawable {
 
 	@Override
 	public boolean collides(Collidable collider) {
-		return collider.collidesCircle(this);
+		
+		return collider != null ? collider.collidesCircle(this):false;	
+		
 	}
 
 	@Override
 	public Vec2d collidesMTV(Collidable collider) {
-		return collider.collidesCircleMTV(this);
+		return collider != null ? collider.collidesCircleMTV(this): Vec2d.ORIGIN;
 	}
 
 	@Override
