@@ -141,7 +141,7 @@ public abstract class Ant extends GameObject {
 		return antType + antId;
 	}
 	
-	protected void generateSpliePath()
+	protected void generateSplinePath()
 	{
         this.controlPointsTo = new ArrayList<Vec2d>();
 		

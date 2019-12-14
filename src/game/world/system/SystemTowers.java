@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import application.Vec2d;
 import engine.world.GameSystem;
 import game.world.ATDWorld;
+import game.world.gameobject.CostBillboard;
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tower.Tower;
 import game.world.gameobject.tower.TowerInfo;
@@ -66,12 +67,15 @@ public class SystemTowers extends GameSystem {
 
 		if (canPlaceTower(hex, tower)) {
 			Tower t = TowerInfo.createTower(this, hex, tower);
+			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", "$"+tower.cost, gameCoords);
 			this.addGameObject(TOWERS_Z, t);
+			this.addGameObject(TOWERS_Z+1, costbillboard);
 			towers.put(hex, t);
-
 			atdWorld.onTowerPlaced(tower);
 		} else {
 			// TODO
+			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", "NO CASH", gameCoords);
+			this.addGameObject(TOWERS_Z+1, costbillboard);
 			System.out.println("Can't place tower.");
 		}
 	}

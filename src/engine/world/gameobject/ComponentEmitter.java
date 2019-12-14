@@ -26,10 +26,6 @@ public class ComponentEmitter extends Component {
 	};
 	
 	
-	private static final  String starTexture = "img/particle/star.png";
-	private static final  String fireTexture = "img/particle/fire.png";
-	private static final  String rainTexture = "img/particle/rainDrop.png";
-	
 	List<Particle> myParticles;
 	Queue<Particle> myParticlesToRemove;
 	
@@ -182,7 +178,7 @@ public class ComponentEmitter extends Component {
 		{
 			currentTimer+=nanosSincePreviousTick;
 			float toSeconds = (float)currentTimer/1000000000.0f;
-			if(toSeconds > 0.2)
+			if(toSeconds > 0.6)
 			{
 
 				this.initializeRainParticle();
@@ -241,6 +237,19 @@ public class ComponentEmitter extends Component {
 	public void onGameObjectRemoved() {
 		// TODO Auto-generated method stub
 		
+		
+		for(int i = 0 ; i < this.myParticles.size(); i++)
+		{
+			myParticlesToRemove.add(this.myParticles.get(i));
+		}
+		
+		while(!myParticlesToRemove.isEmpty())
+		{
+			Particle p = myParticlesToRemove.remove();
+			this.myParticles.remove(p);
+			
+			p.remove();
+		}
 	}
 
 	private void initializeExplosionParticles()
@@ -300,8 +309,8 @@ public class ComponentEmitter extends Component {
 		// double anglesDt = (360.0/myInitParticles) * (Math.PI/180);
 		// double currentAngle = 0;
 
-		double x = this.myParticlesInitialPosition.x + ((Math.random() * ((0.8 + 0.8)) + 1) - 0.8);
-		double y = this.myParticlesInitialPosition.y + 0.5;
+		double x = this.myParticlesInitialPosition.x;// + ((Math.random() * ((0.8 + 0.8)) + 1) - 0.8);
+		double y = this.myParticlesInitialPosition.y;// + 0.5;
 		Vec2d positon = new Vec2d(x, y);
 
 		// Vec2d rotatedDirection = new Vec2d(x,y);
@@ -322,6 +331,14 @@ public class ComponentEmitter extends Component {
 
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	public Vec2d getParticlesInitialPosition() {
+		return myParticlesInitialPosition;
+	}
+
+	public void setParticlesInitialPosition(Vec2d position) {
+		this.myParticlesInitialPosition = position;
 	}
 	
 

@@ -32,6 +32,8 @@ public final class SpriteRegistry {
 	public static Image SPIDERWEB;
 	public static Image SPIDER_PROJECTILE;
 	
+	public static Image SUGAR_PARTICLE;
+	
 	public static Image STAR_PARTICLE;
 	public static Image FIRE_PARTICLE;
 	
@@ -92,6 +94,9 @@ public final class SpriteRegistry {
 		
 		FIRE_PARTICLE = applyUpscale(new Image("file:src/img/particle/fire.png"),
 				"file:src/img/particle/fire.png", 6);
+		
+		SUGAR_PARTICLE = applyUpscale(new Image("file:src/img/particle/sugarParticle.png"),
+				"file:src/img/particle/sugarParticle.png", 6);
 				
 		initialized = true;
 	}
