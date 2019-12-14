@@ -14,13 +14,13 @@ import javafx.scene.paint.Color;
 
 public class CostBillboardComponent extends Component implements Drawable{
 
-	private int cost;
+	private String cost;
 	private Vec2d position;
 	
 	private long timer;
 	private int visibleTime = 2;
 	
-	public CostBillboardComponent(String tag, GameObject object, int cost,Vec2d position) {
+	public CostBillboardComponent(String tag, GameObject object, String cost,Vec2d position) {
 		super(tag, object);
 		// TODO Auto-generated constructor stub
 		this.cost = cost;
@@ -82,7 +82,7 @@ public class CostBillboardComponent extends Component implements Drawable{
 		Vec2d startPosScreenCords =  this.getObject().gameToScreen(position, false);
 		//text.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
 		g.setFill(Color.BLACK);
-		g.strokeText("$"+cost, startPosScreenCords.x, startPosScreenCords.y);
+		g.strokeText(cost, startPosScreenCords.x, startPosScreenCords.y);
 	}
 
 	@Override

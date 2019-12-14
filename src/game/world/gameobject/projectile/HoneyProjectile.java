@@ -57,11 +57,11 @@ public class HoneyProjectile extends Projectile{
 			//remove projectile
 			this.remove();
 			
-			GameObject emptyGameObject = new HoneyParticlesEmitter(((SystemTowers) this.getSystem())
+			/*GameObject emptyGameObject = new HoneyParticlesEmitter(((SystemTowers) this.getSystem())
 					.getLevel(),"emittergo1", this.target);
 			
 			((SystemTowers) this.getSystem()).getLevel().
-			    addGameObject(SystemTowers.PROJECTILE_Z+1, emptyGameObject);
+			    addGameObject(SystemTowers.PROJECTILE_Z+1, emptyGameObject);*/
 		}
 
 		super.onTick(nanosSincePreviousTick);

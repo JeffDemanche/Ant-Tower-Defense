@@ -11,7 +11,7 @@ import engine.world.gameobject.GameObject;
 
 public class CostBillboard extends GameObject{
 
-	public CostBillboard(GameSystem system, String name, int cost, Vec2d position) {
+	public CostBillboard(GameSystem system, String name, String cost, Vec2d position) {
 		super(system, name);
 		// TODO Auto-generated constructor stub
 		CostBillboardComponent costBillboard =

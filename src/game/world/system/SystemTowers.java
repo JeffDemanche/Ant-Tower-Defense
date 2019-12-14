@@ -67,13 +67,15 @@ public class SystemTowers extends GameSystem {
 
 		if (canPlaceTower(hex, tower)) {
 			Tower t = TowerInfo.createTower(this, hex, tower);
-			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", tower.cost, gameCoords);
+			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", "$"+tower.cost, gameCoords);
 			this.addGameObject(TOWERS_Z, t);
 			this.addGameObject(TOWERS_Z+1, costbillboard);
 			towers.put(hex, t);
 			atdWorld.onTowerPlaced(tower);
 		} else {
 			// TODO
+			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", "NO CASH", gameCoords);
+			this.addGameObject(TOWERS_Z+1, costbillboard);
 			System.out.println("Can't place tower.");
 		}
 	}

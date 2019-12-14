@@ -27,6 +27,7 @@ import engine.world.gameobject.behavior.BehaviorSelector;
 import engine.world.gameobject.behavior.BehaviorSequence;
 import engine.world.gameobject.behavior.BehaviorWrapperNot;
 import engine.world.gameobject.behavior.Blackboard;
+import game.world.gameobject.SugarParticlesEmitter;
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tower.Tower;
 import game.world.system.HexCoordinates;
@@ -46,7 +47,7 @@ public class AntCarpenter extends Ant {
 
 
 	private Blackboard behaviorBlackboard;
-
+	private SugarParticlesEmitter sugarEmitter;
 	
 
 	public AntCarpenter(SystemAnts system, int antId, int maxHealth,
@@ -157,6 +158,22 @@ public class AntCarpenter extends Ant {
 			this.navigable.setSpeed(0.005);
 			return;
 		}
+		
+		if( behaviorBlackboard.get("Has Sugar").getValue().equals(true))
+		{
+			if(sugarEmitter == null)
+			{
+				sugarEmitter = new SugarParticlesEmitter(getSystem(),"sugarEmitter",getDrawable().getPosition());
+				getSystem().addGameObject(SystemTowers.TOWERS_Z + 3, sugarEmitter);
+			}
+			else
+			{
+				sugarEmitter.adjustPosition(getDrawable().getPosition());	
+			}
+			
+			
+		}
+			
 
 		HexCoordinates currentHex = HexCoordinates
 				.fromGameSpace(this.bound.getPosition());
@@ -182,32 +199,8 @@ public class AntCarpenter extends Ant {
 
 		this.pathTo = getWave().getPaths().getPathTo();
 		this.pathFrom = getWave().getPaths().getPathFrom();
-		generateSpliePath();
+		generateSplinePath();
 		
-		/*this.controlPointsTo = new ArrayList<Vec2d>();
-		
-		Iterator<HexCoordinates> it = this.pathTo.iterator();
-        while(it.hasNext())
-        {
-        	HexCoordinates hexCoordinates = it.next();
-        	Vec2d gameWorldPos = hexCoordinates.toGameSpaceCentered();
-        	this.controlPointsTo.add(gameWorldPos);
-        }
-        
-        this.controlPointsFrom = new ArrayList<Vec2d>();
-        
-        Iterator<HexCoordinates> it2 = this.pathFrom.iterator();
-        while(it2.hasNext())
-        {
-        	HexCoordinates hexCoordinates = it2.next();
-        	Vec2d gameWorldPos = hexCoordinates.toGameSpaceCentered();
-            this.controlPointsFrom.add(gameWorldPos);
-        }
-		
-        this.pathSpline  = new AntPathSpline((GameSystem)getSystem(),"spline",
-        		this.controlPointsTo,this.controlPointsFrom);
-        
-        getSystem().addGameObject(SystemTowers.TOWERS_Z + 3, pathSpline);*/
         
 		this.behaviorTree.setRootBehavior(createBehavior());
 
@@ -219,6 +212,11 @@ public class AntCarpenter extends Ant {
 	public void kill(Tower tower) {
 		super.kill(tower);
 		behaviorBlackboard.put("Alive", false);
+		if(sugarEmitter != null)
+		{
+			sugarEmitter.endParticles();
+		}
+		
 		this.remove();
 	}
 
@@ -227,7 +225,13 @@ public class AntCarpenter extends Ant {
 		super.anthillDespawn();
 
 		behaviorBlackboard.put("Alive", false);
+		
+		if(sugarEmitter != null)
+		{
+			sugarEmitter.endParticles();	
+		}
 		this.remove();
+		
 	}
 
 	private void createWalkingAnimation() {
@@ -295,5 +299,9 @@ public class AntCarpenter extends Ant {
 		}
 
 	}
+	
+	
+	
+	
 
 }
