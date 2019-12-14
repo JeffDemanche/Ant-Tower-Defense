@@ -2,7 +2,6 @@ package engine.world;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,6 +53,14 @@ public abstract class GameSystem implements XMLSerializable {
 			z++;
 		}
 		return count;
+	}
+	
+	public ArrayList<GameObject> getAllObjects() {
+		ArrayList<GameObject> objects = new ArrayList<>();
+		for (int key : gameObjects.keySet()) {
+			objects.addAll(gameObjects.get(key));
+		}
+		return objects;
 	}
 
 	public void removeGameObject(GameObject obj) {

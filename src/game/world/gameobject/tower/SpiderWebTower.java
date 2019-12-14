@@ -116,4 +116,9 @@ public class SpiderWebTower extends Tower {
 		}
 		super.onTick(nanosSincePreviousTick);
 	}
+
+	@Override
+	public boolean traversable() {
+		return true;
+	}
 }

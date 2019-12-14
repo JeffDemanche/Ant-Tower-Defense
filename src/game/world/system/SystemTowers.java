@@ -53,6 +53,10 @@ public class SystemTowers extends GameSystem {
 		return id;
 	}
 
+	public Tower towerAt(HexCoordinates coord) {
+		return towers.get(coord);
+	}
+	
 	/**
 	 * This is called before any checks or updates to world state, so all that
 	 * should be handled within it.

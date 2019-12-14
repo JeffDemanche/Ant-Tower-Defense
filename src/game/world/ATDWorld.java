@@ -1,7 +1,6 @@
 package game.world;
 
 import java.util.Random;
-import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -13,7 +12,6 @@ import engine.world.World;
 import game.viewport.ATDViewport;
 import game.world.gameobject.ant.Ant;
 import game.world.gameobject.tower.TowerInfo;
-import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 import game.world.system.SystemGUI;
 import game.world.system.SystemLevel;
@@ -100,6 +98,10 @@ public class ATDWorld extends World {
 	public SystemAnts getAntsSystem() {
 		return this.ants;
 	}
+	
+	public SystemTowers getTowersSystem() {
+		return this.towers;
+	}
 
 	public boolean isWaveActive() {
 		return this.ants.isWaveActive();
@@ -121,11 +123,6 @@ public class ATDWorld extends World {
 	@Override
 	public void onMouseClicked(MouseEvent e) {
 		super.onMouseClicked(e);
-
-		HexCoordinates click = (HexCoordinates.fromGameSpace(viewport
-				.toGameSpace(new Vec2d(e.getSceneX(), e.getSceneY()), false)));
-		Set<HexCoordinates> neighbs = level.getTraversableNeighbors(
-				click.getOffsetCoordinates().x, click.getOffsetCoordinates().y);
 	}
 
 	@Override

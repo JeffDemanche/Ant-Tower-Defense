@@ -82,11 +82,16 @@ public abstract class Ant extends GameObject {
 
 	public abstract int getSugarCap();
 
-	public void damage(int amount, Tower tower) {
+	/**
+	 * @return True if the ant died.
+	 */
+	public boolean damage(int amount, Tower tower) {
 		if (currentHealth - amount <= 0) {
 			this.kill(tower);
+			return true;
 		} else {
 			currentHealth -= amount;
+			return false;
 		}
 	}
 

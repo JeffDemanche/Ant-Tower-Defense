@@ -1,17 +1,11 @@
 package game.world.gameobject.ant;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import application.Vec2d;
-import engine.world.GameSystem;
 import engine.world.gameobject.ComponentAIBehaviorTree;
 import engine.world.gameobject.ComponentCircle;
 import engine.world.gameobject.ComponentDynamicSprite;
@@ -44,7 +38,6 @@ public class AntCarpenter extends Ant {
 	private ComponentDynamicSprite sprite;
 	private ComponentNavigable navigable;
 	private ComponentAIBehaviorTree behaviorTree;
-
 
 	private Blackboard behaviorBlackboard;
 	private SugarParticlesEmitter sugarEmitter;
@@ -143,11 +136,11 @@ public class AntCarpenter extends Ant {
 	private int damageTimer = 0;
 
 	@Override
-	public void damage(int amount, Tower tower) {
-		super.damage(amount, tower);
-
+	public boolean damage(int amount, Tower tower) {
 		this.damageTimer = ANT_DAMAGE_ANIMATION_TIMER;
 		this.sprite.setAnimation("Damage");
+
+		return super.damage(amount, tower);
 	}
 
 	@Override

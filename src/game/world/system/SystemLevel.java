@@ -18,6 +18,7 @@ import game.world.gameobject.SugarPile;
 import game.world.gameobject.ant.TileMemory;
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tile.TileAntHill;
+import game.world.gameobject.tower.Tower;
 import javafx.scene.canvas.GraphicsContext;
 
 public class SystemLevel extends GameSystem
@@ -176,6 +177,10 @@ public class SystemLevel extends GameSystem
 
 		HashSet<HexCoordinates> neighborsGameSpace = new HashSet<>();
 		for (HexCoordinates neighbor : hexNeighbors) {
+			Tower neighborTower = atdWorld.getTowersSystem().towerAt(neighbor);
+			if (neighborTower != null && !neighborTower.traversable()) {
+				continue;
+			}
 			neighborsGameSpace.add(neighbor);
 		}
 		return neighborsGameSpace;

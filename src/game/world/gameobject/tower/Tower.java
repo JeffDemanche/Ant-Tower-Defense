@@ -10,6 +10,7 @@ import game.world.gameobject.tower.lineofsight.LineOfSight;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 
 public abstract class Tower extends GameObject {
 
@@ -22,6 +23,8 @@ public abstract class Tower extends GameObject {
 	protected boolean enabled;
 
 	protected Vec2d direction;
+
+	private boolean drawLineOfSight;
 
 	protected LineOfSight lineOfSight;
 
@@ -44,6 +47,8 @@ public abstract class Tower extends GameObject {
 			HexCoordinates hexCoordinates) {
 		super(system, createName(towerType.name, towerId));
 
+		this.drawLineOfSight = true;
+
 		this.hex = hexCoordinates;
 		this.bound = new ComponentCircle(this, hex.toGameSpaceCentered(),
 				HexCoordinates.HEX_WIDTH / 2);
@@ -62,6 +67,8 @@ public abstract class Tower extends GameObject {
 	}
 
 	public abstract int getCost();
+
+	public abstract boolean traversable();
 
 	private static String createName(String towerType, int towerId) {
 		return towerType + towerId;
@@ -107,7 +114,7 @@ public abstract class Tower extends GameObject {
 
 	@Override
 	public void onMouseDragged(MouseEvent e) {
-		
+
 	}
 
 	@Override
@@ -122,6 +129,10 @@ public abstract class Tower extends GameObject {
 
 	public HexCoordinates getCoordinates() {
 		return this.hex;
+	}
+
+	public LineOfSight getLineOfSight() {
+		return this.lineOfSight;
 	}
 
 	protected abstract void shot();
@@ -156,6 +167,10 @@ public abstract class Tower extends GameObject {
 
 	public void setAttackTime(double attackTime) {
 		this.cooldownDurationMillis = attackTime;
+	}
+
+	public void setDrawLineOfSight(boolean draw) {
+		this.drawLineOfSight = draw;
 	}
 
 	public boolean isEnabled() {

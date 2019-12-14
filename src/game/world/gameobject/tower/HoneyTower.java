@@ -58,4 +58,9 @@ public class HoneyTower extends Tower {
 		getSystem().addGameObject(SystemTowers.PROJECTILE_Z, hProjectile);
 	}
 
+	@Override
+	public boolean traversable() {
+		return false;
+	}
+
 }

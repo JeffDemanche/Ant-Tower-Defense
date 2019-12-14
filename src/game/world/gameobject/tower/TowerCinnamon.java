@@ -67,4 +67,9 @@ public class TowerCinnamon extends Tower {
 		this.fireThisTick = true;
 	}
 
+	@Override
+	public boolean traversable() {
+		return true;
+	}
+
 }

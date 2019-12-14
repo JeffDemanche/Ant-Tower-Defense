@@ -19,7 +19,7 @@ public class TowerInfo {
 			SpriteRegistry.CINNAMON, "file:src/img/tower/cinnamon.png");
 
 	public static TowerInfo SEED_THROWER = new TowerInfo("Seed Thrower",
-			"Throws seeds at nearby ants.", 10, 60, 5, 3,
+			"Throws seeds at nearby ants.", 10, 60, 5, 1.5,
 			SpriteRegistry.SEED_THROWER, "file:src/img/tower/seed_thrower.png");
 
 	public static TowerInfo HONEY = new TowerInfo("Honey",

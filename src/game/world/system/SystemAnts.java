@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 
 import application.Vec2d;
 import engine.world.GameSystem;
+import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
 import game.world.gameobject.ant.Ant;
 import game.world.gameobject.ant.Wave;
@@ -58,7 +59,7 @@ public class SystemAnts extends GameSystem {
 	public SystemLevel getLevel() {
 		return this.level;
 	}
-	
+
 	public int getCurrentWave() {
 		return this.currentWave;
 	}
@@ -66,7 +67,7 @@ public class SystemAnts extends GameSystem {
 	public int getNumberOfWaves() {
 		return this.waves.size();
 	}
-	
+
 	/**
 	 * Called when an ant dies, with the location where the ant was killed.
 	 */
@@ -74,6 +75,23 @@ public class SystemAnts extends GameSystem {
 		level.onAntDeath(location);
 
 		atdWorld.addCash(ant.getReward());
+	}
+
+	public Ant findClosestTarget(HexCoordinates towerLocation, double range) {
+		Ant closestAnt = null;
+		double closestDist = Double.MAX_VALUE;
+
+		for (GameObject object : this.getAllObjects()) {
+			if (object instanceof Ant) {
+				double dist = ((Ant) object).getBound().getPosition()
+						.dist(towerLocation.toGameSpaceCentered());
+				if (dist < closestDist && dist < range) {
+					closestAnt = (Ant) object;
+					closestDist = dist;
+				}
+			}
+		}
+		return closestAnt;
 	}
 
 	@Override

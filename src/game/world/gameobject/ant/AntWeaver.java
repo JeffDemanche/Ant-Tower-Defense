@@ -139,11 +139,11 @@ public class AntWeaver extends Ant {
 	private int damageTimer = 0;
 
 	@Override
-	public void damage(int amount, Tower tower) {
-		super.damage(amount, tower);
-
+	public boolean damage(int amount, Tower tower) {
 		this.damageTimer = ANT_DAMAGE_ANIMATION_TIMER;
 		this.sprite.setAnimation("Damage");
+
+		return super.damage(amount, tower);
 	}
 
 	@Override

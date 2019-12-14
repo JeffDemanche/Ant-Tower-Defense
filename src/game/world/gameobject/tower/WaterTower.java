@@ -59,4 +59,9 @@ public class WaterTower extends Tower {
 		getSystem().addGameObject(SystemTowers.PROJECTILE_Z, wProjectile);
 	}
 
+	@Override
+	public boolean traversable() {
+		return false;
+	}
+
 }
