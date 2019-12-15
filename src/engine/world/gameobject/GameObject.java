@@ -196,6 +196,9 @@ public abstract class GameObject implements XMLSerializable {
 	public void onResize(Vec2d newSize) {
 	}
 
+	public void onMouseClicked(MouseEvent e) {
+	}
+	
 	public void onMousePressed(MouseEvent e) {
 	}
 

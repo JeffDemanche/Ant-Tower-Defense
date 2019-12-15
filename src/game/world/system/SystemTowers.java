@@ -9,12 +9,15 @@ import org.w3c.dom.Element;
 
 import application.Vec2d;
 import engine.world.GameSystem;
+import engine.world.gameobject.GameObject;
 import game.world.ATDWorld;
 import game.world.gameobject.CostBillboard;
+import game.world.gameobject.gui.GUITowerInfoPopup;
 import game.world.gameobject.tile.Tile;
 import game.world.gameobject.tower.Tower;
 import game.world.gameobject.tower.TowerInfo;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 
 public class SystemTowers extends GameSystem {
 
@@ -23,6 +26,8 @@ public class SystemTowers extends GameSystem {
 
 	private ATDWorld atdWorld;
 	private SystemLevel level;
+
+	private GUITowerInfoPopup selectedTowerInfo;
 
 	private int towerCounter;
 	private int projectileCounter;
@@ -57,6 +62,15 @@ public class SystemTowers extends GameSystem {
 		return towers.get(coord);
 	}
 	
+	@Override
+	public void removeGameObject(GameObject obj) {
+		super.removeGameObject(obj);
+
+		if (obj instanceof Tower) {
+			towers.remove(((Tower) obj).getCoordinates());
+		}
+	}
+
 	/**
 	 * This is called before any checks or updates to world state, so all that
 	 * should be handled within it.
@@ -71,19 +85,28 @@ public class SystemTowers extends GameSystem {
 
 		if (canPlaceTower(hex, tower)) {
 			Tower t = TowerInfo.createTower(this, hex, tower);
-			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", "$"+tower.cost, gameCoords);
+			CostBillboard costbillboard = new CostBillboard(this,
+					"costbillboard", "$" + tower.cost, gameCoords);
 			this.addGameObject(TOWERS_Z, t);
-			this.addGameObject(TOWERS_Z+1, costbillboard);
+			this.addGameObject(TOWERS_Z + 1, costbillboard);
 			towers.put(hex, t);
 			atdWorld.onTowerPlaced(tower);
 		} else {
 			// TODO
-			CostBillboard costbillboard = new CostBillboard(this, "costbillboard", "NO CASH", gameCoords);
-			this.addGameObject(TOWERS_Z+1, costbillboard);
+			CostBillboard costbillboard = new CostBillboard(this,
+					"costbillboard", "NO CASH", gameCoords);
+			this.addGameObject(TOWERS_Z + 1, costbillboard);
 			System.out.println("Can't place tower.");
 		}
 	}
 
+	public void sellTower(Tower tower) {
+		if (tower != null) {
+			atdWorld.addCash(tower.getInfo().cost);
+			tower.remove();
+		}
+	}
+	
 	/**
 	 * Validation of whether a new tower can be placed at a given world
 	 * location.
@@ -96,6 +119,28 @@ public class SystemTowers extends GameSystem {
 		boolean noCurrentWave = !atdWorld.isWaveActive();
 
 		return validTileType && enoughCash && noCurrentWave;
+	}
+
+	@Override
+	public void onMouseClicked(MouseEvent e) {
+		super.onMouseClicked(e);
+
+		if (!e.isConsumed()) {
+			Vec2d gameLoc = atdWorld.getViewport().toGameSpace(
+					new Vec2d(e.getSceneX(), e.getSceneY()), false);
+			HexCoordinates hex = HexCoordinates.fromGameSpace(gameLoc);
+			Tower tower = towerAt(hex);
+			if (tower != null) {
+				if (selectedTowerInfo != null)
+					this.removeGameObject(selectedTowerInfo);
+				selectedTowerInfo = new GUITowerInfoPopup(this, hex, tower);
+				this.addGameObject(5, selectedTowerInfo);
+			} else {
+				if (selectedTowerInfo != null)
+					this.removeGameObject(selectedTowerInfo);
+				selectedTowerInfo = null;
+			}
+		}
 	}
 
 	@Override

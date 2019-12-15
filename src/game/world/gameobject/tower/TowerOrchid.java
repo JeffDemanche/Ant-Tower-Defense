@@ -15,23 +15,23 @@ import game.world.system.HexCoordinates;
 import game.world.system.SystemAnts;
 import game.world.system.SystemTowers;
 
-public class TowerSeedThrower extends Tower {
+public class TowerOrchid extends Tower {
 
 	private ComponentRegisteredSprite sprite;
 
 	private SystemTowers towers;
 	private SystemAnts ants;
 
-	private Ant lockedAnt;
+	private List<Ant> lockedAnts;
 
-	public TowerSeedThrower(SystemTowers system, HexCoordinates hex) {
-		super(system, TowerInfo.SEED_THROWER, system.nextTowerId(), hex);
+	public TowerOrchid(SystemTowers system, HexCoordinates hex) {
+		super(system, TowerInfo.ORCHID, system.nextTowerId(), hex);
 
 		this.towers = system;
 		this.ants = ((ATDWorld) system.getWorld()).getAntsSystem();
 
 		this.sprite = new ComponentRegisteredSprite(this,
-				SpriteRegistry.SEED_THROWER, bound);
+				SpriteRegistry.ORCHID, bound);
 
 		this.setDrawLineOfSight(false);
 
@@ -45,12 +45,9 @@ public class TowerSeedThrower extends Tower {
 		super.onTick(nanosSincePreviousTick);
 
 		// Find ant.
-		if (lockedAnt == null) {
-			List<Ant> targets = ants.findClosestTargets(this.hex,
-					TowerInfo.SEED_THROWER.range, 1);
-			if (targets.size() > 0)
-				this.lockedAnt = ants.findClosestTargets(this.hex,
-						TowerInfo.SEED_THROWER.range, 1).get(0);
+		if (lockedAnts == null) {
+			this.lockedAnts = ants.findClosestTargets(this.hex,
+					TowerInfo.SEED_THROWER.range, 2);
 		}
 	}
 
@@ -66,15 +63,17 @@ public class TowerSeedThrower extends Tower {
 
 	@Override
 	protected void shot() {
-		if (lockedAnt != null) {
-			if (lockedAnt.isAlive()) {
-				Bullet b = new Bullet(this.getSystem(),
-						this.bound.getGamePosition(),
-						lockedAnt.getBound().getPosition());
-				getSystem().addGameObject(4, b);
-				this.lockedAnt.damage(TowerInfo.SEED_THROWER.damage, null);
+		if (lockedAnts != null) {
+			for (Ant a : lockedAnts) {
+				if (a.isAlive()) {
+					Bullet b = new Bullet(this.getSystem(),
+							this.bound.getGamePosition(),
+							a.getBound().getPosition());
+					getSystem().addGameObject(4, b);
+					a.damage(TowerInfo.SEED_THROWER.damage, null);
+				}
 			}
-			lockedAnt = null;
+			lockedAnts = null;
 		}
 	}
 

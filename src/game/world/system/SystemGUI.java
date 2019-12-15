@@ -76,23 +76,29 @@ public class SystemGUI extends GameSystem {
 				new Vec2d(50, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.SEED_THROWER));
 
-		towerIcons.put("honey", new GUITowerIcon(this,
+		towerIcons.put("orchid", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
 				new Vec2d(90, 5), atdWorld.getViewport().getScreenSize(),
+				TowerInfo.ORCHID));
+		
+		towerIcons.put("honey", new GUITowerIcon(this,
+				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
+				new Vec2d(130, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.HONEY));
 
 		towerIcons.put("water", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
-				new Vec2d(130, 5), atdWorld.getViewport().getScreenSize(),
+				new Vec2d(170, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.WATER));
 
 		towerIcons.put("spiderweb", new GUITowerIcon(this,
 				(ComponentGUIDrawable) towersPanel.getComponent("GUI Drawable"),
-				new Vec2d(170, 5), atdWorld.getViewport().getScreenSize(),
+				new Vec2d(210, 5), atdWorld.getViewport().getScreenSize(),
 				TowerInfo.SPIDERWEB));
 
 		this.addGameObject(GUI_Z + 1, towerIcons.get("cinnamon"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("seedthrower"));
+		this.addGameObject(GUI_Z + 1, towerIcons.get("orchid"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("honey"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("water"));
 		this.addGameObject(GUI_Z + 1, towerIcons.get("spiderweb"));

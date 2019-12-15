@@ -260,6 +260,8 @@ public abstract class World implements XMLSerializable {
 
 	public void onMouseClicked(MouseEvent e) {
 		eventHandler.dispatchMouseEvent("MouseClick", e);
+
+		this.systems.forEach(system -> system.onMouseClicked(e));
 	}
 
 	public void onMouseMoved(MouseEvent e) {

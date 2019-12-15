@@ -21,6 +21,10 @@ public class TowerInfo {
 	public static TowerInfo SEED_THROWER = new TowerInfo("Seed Thrower",
 			"Throws seeds at nearby ants.", 10, 60, 5, 1.5,
 			SpriteRegistry.SEED_THROWER, "file:src/img/tower/seed_thrower.png");
+	
+	public static TowerInfo ORCHID = new TowerInfo("Orchid",
+			"Can target two ants.", 25, 45, 5, 1.2,
+			SpriteRegistry.ORCHID, "file:src/img/tower/orchid.png");
 
 	public static TowerInfo HONEY = new TowerInfo("Honey",
 			"Slows down ants 80% of their regular movement speed", 10, 60, 15,
@@ -63,6 +67,8 @@ public class TowerInfo {
 			return new TowerCinnamon(system, hex);
 		case "Seed Thrower":
 			return new TowerSeedThrower(system, hex);
+		case "Orchid":
+			return new TowerOrchid(system, hex);
 		case "Honey":
 			return new HoneyTower(system, hex);
 		case "WaterGun":

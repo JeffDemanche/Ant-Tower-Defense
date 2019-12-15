@@ -10,7 +10,6 @@ import game.world.gameobject.tower.lineofsight.LineOfSight;
 import game.world.system.HexCoordinates;
 import game.world.system.SystemTowers;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Line;
 
 public abstract class Tower extends GameObject {
 
@@ -20,6 +19,8 @@ public abstract class Tower extends GameObject {
 	private double attackTimerMilliSeconds;
 	protected double cooldownDurationMillis;
 
+	private TowerInfo info;
+	
 	protected boolean enabled;
 
 	protected Vec2d direction;
@@ -47,6 +48,8 @@ public abstract class Tower extends GameObject {
 			HexCoordinates hexCoordinates) {
 		super(system, createName(towerType.name, towerId));
 
+		this.info = towerType;
+		
 		this.drawLineOfSight = true;
 
 		this.hex = hexCoordinates;
@@ -66,6 +69,10 @@ public abstract class Tower extends GameObject {
 		system.addGameObject(SystemTowers.TOWERS_Z + 3, lineOfSight);
 	}
 
+	public TowerInfo getInfo() {
+		return this.info;
+	}
+	
 	public abstract int getCost();
 
 	public abstract boolean traversable();

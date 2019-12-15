@@ -148,6 +148,17 @@ public abstract class GameSystem implements XMLSerializable {
 		}
 	}
 
+	public void onMouseClicked(MouseEvent e) {
+		for (int key : gameObjects.keySet()) {
+			Iterator<GameObject> iter = gameObjects.get(key).iterator();
+			while (iter.hasNext()) {
+				GameObject next = iter.next();
+				next.onMouseClicked(e);
+			}
+		}
+	}
+
+	
 	public void onMousePressed(MouseEvent e) {
 		for (int key : gameObjects.keySet()) {
 			Iterator<GameObject> iter = gameObjects.get(key).iterator();

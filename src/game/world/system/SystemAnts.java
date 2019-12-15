@@ -1,6 +1,8 @@
 package game.world.system;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -77,12 +79,16 @@ public class SystemAnts extends GameSystem {
 		atdWorld.addCash(ant.getReward());
 	}
 
-	public Ant findClosestTarget(HexCoordinates towerLocation, double range) {
+	public List<Ant> findClosestTargets(HexCoordinates towerLocation,
+			double range, int howMany) {
 		Ant closestAnt = null;
 		double closestDist = Double.MAX_VALUE;
 
+		ArrayList<Ant> ants = new ArrayList<>();
+
 		for (GameObject object : this.getAllObjects()) {
 			if (object instanceof Ant) {
+				ants.add((Ant) object);
 				double dist = ((Ant) object).getBound().getPosition()
 						.dist(towerLocation.toGameSpaceCentered());
 				if (dist < closestDist && dist < range) {
@@ -91,7 +97,28 @@ public class SystemAnts extends GameSystem {
 				}
 			}
 		}
-		return closestAnt;
+
+		ants.sort(new Comparator<Ant>() {
+			@Override
+			public int compare(Ant o1, Ant o2) {
+				double dist1 = o1.getBound().getPosition()
+						.dist(towerLocation.toGameSpaceCentered());
+				double dist2 = o2.getBound().getPosition()
+						.dist(towerLocation.toGameSpaceCentered());
+
+				if (dist1 < dist2) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		});
+		ArrayList<Ant> list = new ArrayList<>();
+		for (int i = 0; i < howMany; i++) {
+			if (i <= ants.size() - 1)
+				list.add(ants.get(i));
+		}
+		return list;
 	}
 
 	@Override
