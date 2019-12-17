@@ -1,0 +1,43 @@
+This is the readme for the final submission for our final project.
+
+This is the breakdown of our work overall:
+
+Camilo: 
+    - Implemented splines for the project. This is used for visualizing the
+      paths ants take. You can hover the mouse over ants to see functionality
+      for this. The code for this is mostly in 
+      game.world.gameobject.ant.AntPahSplineComponent.
+    - Implemented particle effects. This is used for some of the towers and
+      for when ants are carrying sugar. This can be found in the different
+      classes ending in "Emitter" in game.world.gameobject.
+    - Implemented some of the towers used in the game.
+
+Jeffrey:
+    - Implemented the hex tile system. For more details look at 
+      game.world.system.HexCoordinates and LevelGenerator for how the levels
+      are procedurally generated.
+    - Implemented the A* pathfinding system for ants, as well as the system
+      for generating waves. One feature of the system we use is that as ants
+      die on certain tiles, we start darkening the tile. The ants will 
+      probabilistically avoid that tile based on how dark it is. Note that the
+      paths are generated at the start of the wave, so a tile that becomes 
+      darker during a wave will not have an effect until the next one. Work 
+      for these can be found in game.world.gameobject.ant.Wave and WavePaths,
+      as well as game.world.system.WaveFactory, and this is effectively how
+      we implemented squad tactics. 
+    - Worked on all the ants and some of the other towers (specifically the targeted towers). 
+    - Worked on part of the main menu GUI.
+
+Michael:
+    - Implemented high score keeping as well as high score file security. This
+      is done mostly in classes kept in engine.scores. The files contain most of
+      the information on how this is done in the comments. If you want to do some
+      testing on this, there is some code in ATDMenuScreen that can be slightly
+      modified that you can use. If scores.txt gets modified in an irrecoverable
+      manner, you can copy over scores_backup.txt, or try to load a new score
+      file and changing the cheat detection flag in a call to the getScores method
+      to false, and then write the scores normally. 
+    - Implemented GUI/functionality for pause screen. The code is primarily in
+      buttons used in ATDWorldScreen. These buttons can be found in
+      game.ui.element. 
+    - Implemented score UI, as well as user name creation and saving.
