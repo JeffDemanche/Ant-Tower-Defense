@@ -102,7 +102,7 @@ public class SystemTowers extends GameSystem {
 
 	public void sellTower(Tower tower) {
 		if (tower != null) {
-			atdWorld.addCash(tower.getInfo().cost);
+			atdWorld.addCashNotScore(tower.getInfo().cost);
 			tower.remove();
 		}
 	}

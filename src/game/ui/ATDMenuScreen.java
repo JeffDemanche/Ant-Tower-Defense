@@ -36,7 +36,7 @@ public class ATDMenuScreen extends Screen {
 	private final double NEW_GAME_TOP = 210;
 	private final double LOAD_GAME_TOP = 300;
 	private final double SETTINGS_TOP = 390;
-	private final double HIGH_SCORES_TOP = 460;
+	private final double HIGH_SCORES_TOP = 300;
 
 	private UIImage logo;
 
@@ -55,13 +55,13 @@ public class ATDMenuScreen extends Screen {
 		this.newGameButton = new NewGameButton(app,
 				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, NEW_GAME_TOP),
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT));
-		this.loadGameButton = new LoadGameButton(app,
+		/*this.loadGameButton = new LoadGameButton(app,
 				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, LOAD_GAME_TOP),
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT));
 		this.settingsButton = new SettingsButton(app,
 				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, SETTINGS_TOP),
-				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT));
-		this.scoreLabels = new ArrayList<UITextLabel>();
+				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT)); */
+		this.scoreLabels = new ArrayList<UITextLabel>(); 
 		this.scoreLabels.add(new UITextLabel(
 				new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP),
 				new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
@@ -100,11 +100,11 @@ public class ATDMenuScreen extends Screen {
 		Collections.sort(scores);
 
 		// Adding all the labels for the scores
-		double top = HIGH_SCORES_TOP + 20;
+		double top = HIGH_SCORES_TOP;
 		int ind = 0;
 		for (Score s : scores) {
 			UITextLabel l = new UITextLabel(
-					new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP), 
+					new Vec2d((initialSize.x - BUTTON_WIDTH) / 2, top), 
 					new Vec2d(BUTTON_WIDTH, BUTTON_HEIGHT), HorizontalAlign.CENTER,
 					VerticalAlign.TOP, 
 					Integer.toString(ind) + ". " + s.toString(), 
@@ -136,8 +136,8 @@ public class ATDMenuScreen extends Screen {
 		this.add(logo);
 
 		this.add(newGameButton);
-		this.add(loadGameButton);
-		this.add(settingsButton);
+//		this.add(loadGameButton);
+//		this.add(settingsButton);
 		for (UITextLabel l : this.scoreLabels)
 			this.add(l);
 
@@ -161,16 +161,17 @@ public class ATDMenuScreen extends Screen {
 				.setPosition(new Vec2d((newSize.x - LOGO_WIDTH) / 2, LOGO_TOP));
 		this.newGameButton.setPosition(
 				new Vec2d((newSize.x - BUTTON_WIDTH) / 2, NEW_GAME_TOP));
-		this.loadGameButton.setPosition(
-				new Vec2d((newSize.x - BUTTON_WIDTH) / 2, LOAD_GAME_TOP));
-		this.settingsButton.setPosition(
-				new Vec2d((newSize.x - BUTTON_WIDTH) / 2, SETTINGS_TOP));
+//		this.loadGameButton.setPosition(
+//				new Vec2d((newSize.x - BUTTON_WIDTH) / 2, LOAD_GAME_TOP));
+//		this.settingsButton.setPosition(
+//				new Vec2d((newSize.x - BUTTON_WIDTH) / 2, SETTINGS_TOP));
 		// Updating the position for all the high score labels
-		double top = HIGH_SCORES_TOP;
+		double top = HIGH_SCORES_TOP+20;
 		for (UITextLabel l : this.scoreLabels) {
 			l.setPosition(new Vec2d((newSize.x - BUTTON_WIDTH) / 2, top));
 			top += 20;
 		}
+		this.scoreLabels.get(0).setPosition(new Vec2d((newSize.x - BUTTON_WIDTH) / 2, HIGH_SCORES_TOP));
 	}
 
 }

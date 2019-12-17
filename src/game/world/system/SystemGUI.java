@@ -40,6 +40,7 @@ public class SystemGUI extends GameSystem {
 	private TowerInfo towerBeingDragged;
 	private GUITowerIconDragged draggedTower;
 	private HashMap<String, GUITowerIcon> towerIcons;
+	private boolean showMenu;
 
 	private SystemTowers towers;
 
@@ -63,6 +64,7 @@ public class SystemGUI extends GameSystem {
 		this.addGameObject(GUI_Z, towersPanel);
 		this.addGameObject(GUI_Z, infoPanel);
 		this.addGameObject(GUI_Z, worldInfo);
+		this.showMenu = false;
 	}
 
 	private void initializeTowerIcons() {

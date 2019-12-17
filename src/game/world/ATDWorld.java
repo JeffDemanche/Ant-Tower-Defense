@@ -8,7 +8,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import application.Vec2d;
+import engine.scores.Score;
+import engine.ui.UITextLabel;
 import engine.world.World;
+import game.ui.ATDWorldScreen;
 import game.viewport.ATDViewport;
 import game.world.gameobject.ant.Ant;
 import game.world.gameobject.tower.TowerInfo;
@@ -40,20 +43,26 @@ public class ATDWorld extends World {
 
 	private int remainingSugar;
 	private int cash;
+	
+	private boolean paused;
+	private ATDWorldScreen screen;
+	private Score score;
+	private UITextLabel text;
 
-	public ATDWorld(ATDViewport viewport, String name) {
+	public ATDWorld(ATDViewport viewport, String name, ATDWorldScreen screen, Score s, UITextLabel text) {
 		super(viewport);
 		this.viewport = viewport;
 		this.name = name;
-
+		this.screen = screen;
 		this.level = new SystemLevel(this);
 		this.ants = new SystemAnts(this, level);
 		this.towers = new SystemTowers(this, level);
 		this.gui = new SystemGUI(this, towers);
 		this.projectiles = new SystemProjectiles(this, level);
-
+		this.score = s;
 		this.worldSeed = System.currentTimeMillis();
 		this.worldRandom = new Random(this.worldSeed);
+		this.text = text;
 
 		this.remainingSugar = STARTING_SUGAR;
 		this.cash = STARTING_CASH;
@@ -62,7 +71,13 @@ public class ATDWorld extends World {
 		this.addSystem(towers);
 		this.addSystem(ants);
 		this.addSystem(gui);
+		this.paused = false;
 	}
+	@Override
+	public void onTick(long nanosSincePreviousTick) {
+		if (!this.paused) super.onTick(nanosSincePreviousTick);
+	}
+	
 
 	/**
 	 * Construct from XML element.
@@ -92,6 +107,12 @@ public class ATDWorld extends World {
 	}
 
 	public void addCash(int amount) {
+		this.cash += amount;
+		this.score.addScore(amount);
+		this.text.setText("Score: " + Integer.toString(this.score.getScore()));
+	}
+	
+	public void addCashNotScore(int amount) {
 		this.cash += amount;
 	}
 	
@@ -131,6 +152,9 @@ public class ATDWorld extends World {
 
 		if (e.getCode() == KeyCode.SPACE) {
 			ants.startWave();
+		} else if (e.getCode() == KeyCode.ESCAPE) {
+			this.paused = !this.paused;
+			this.screen.togglePaused();
 		}
 	}
 
@@ -147,5 +171,6 @@ public class ATDWorld extends World {
 		ATDWorld.appendChild(ants.writeXML(doc));
 		return ATDWorld;
 	}
+	
 
 }
